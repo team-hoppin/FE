@@ -117,23 +117,23 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 
   /* Brand */
-  --color-main: #6A40FC;
-  --color-sub: #BDFB46;
+  --color-main: #6a40fc;
+  --color-sub: #bdfb46;
 
   /* Semantic */
-  --color-success: #16B44A;
-  --color-warning: #F59E0B;
-  --color-danger: #ED2525;
+  --color-success: #16b44a;
+  --color-warning: #f59e0b;
+  --color-danger: #ed2525;
 
   /* Greyscale */
-  --color-grey1: #F5F6F8;
-  --color-grey2: #E6E8EB;
-  --color-border: #D9D9D9;
+  --color-grey1: #f5f6f8;
+  --color-grey2: #e6e8eb;
+  --color-border: #d9d9d9;
 
   /* Font Color */
   --color-font-basic: #222222;
-  --color-font-middle: #6C6C6C;
-  --color-font-light: #AAAAAA;
+  --color-font-middle: #6c6c6c;
+  --color-font-light: #aaaaaa;
 
   /* Max Width */
   --max-width: var(--max-width);
@@ -268,4 +268,28 @@
     @apply bg-background text-foreground;
     font-family: var(--font-base), sans-serif;
   }
+}
+
+/* embla carousel */
+.embla__viewport {
+  overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+  touch-action: pan-y pinch-zoom;
+}
+
+.embla__slide {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+.embla__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-grey2);
+}
+.embla__dot--selected {
+  background: var(--color-main);
 }
