@@ -119,6 +119,8 @@
   /* Brand */
   --color-main: #6A40FC;
   --color-sub: #BDFB46;
+  --main-light1: #F4F1FF;
+  --main-light2: #D4C4FF;
 
   /* Semantic */
   --color-success: #16B44A;
@@ -182,35 +184,44 @@
   .p1-bold {
     font-size: 1rem; /* 16px */
     font-weight: 700;
+    line-height: 140%;
   }
   .p1-semibold {
     font-size: 1rem; /* 16px */
     font-weight: 600;
+    line-height: 140%;
   }
   .p1-medium {
     font-size: 1rem; /* 16px */
     font-weight: 500;
+    line-height: 140%;
   }
   .p1-regular {
     font-size: 1rem; /* 16px */
     font-weight: 400;
+    line-height: 140%;
   }
 
   .p2-bold {
     font-size: 0.875rem; /* 14px */
     font-weight: 700;
+    line-height: 130%;
+
   }
   .p2-semibold {
     font-size: 0.875rem; /* 14px */
     font-weight: 600;
+    line-height: 130%;
   }
   .p2-medium {
     font-size: 0.875rem; /* 14px */
     font-weight: 500;
+    line-height: 130%;
   }
   .p2-regular {
     font-size: 0.875rem; /* 14px */
     font-weight: 400;
+    line-height: 130%;
   }
 
   /* Caption */
