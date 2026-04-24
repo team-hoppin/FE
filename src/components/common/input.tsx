@@ -27,12 +27,9 @@ export function Input({ label, className, iconBtn, ...props }: Props) {
       />
 
       {iconBtn && (
-        <button
-          className="text-font-light absolute top-1/2 right-4 -translate-y-1/2 hover:cursor-pointer"
-          type="button"
-        >
+        <div className="text-font-light absolute top-1/2 right-4 -translate-y-1/2">
           {iconBtn}
-        </button>
+        </div>
       )}
     </div>
   );

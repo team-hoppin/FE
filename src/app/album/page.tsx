@@ -1,9 +1,21 @@
+"use client";
+
 import { Input } from "@/components/common/input";
 import { Textarea } from "@/components/common/textarea";
 import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon, PlusIcon } from "lucide-react";
+import { useState } from "react";
+import { format } from "date-fns";
 
 export default function AlbumPage() {
+  const [date, setDate] = useState<Date | undefined>();
+
   return (
     <main className="flex flex-col">
       <div className="mt-10 mb-7 flex flex-col gap-1">
@@ -34,7 +46,20 @@ export default function AlbumPage() {
         <Input
           label="발매일"
           placeholder="YYYY.MM.DD"
-          iconBtn={<CalendarIcon size={24} />}
+          value={date ? format(date, "yyyy.MM.dd") : ""}
+          readOnly
+          iconBtn={
+            <Popover>
+              <PopoverTrigger asChild>
+                <button className="hover: cursor-poin" type="button">
+                  <CalendarIcon size={24} />
+                </button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0">
+                <Calendar mode="single" selected={date} onSelect={setDate} />
+              </PopoverContent>
+            </Popover>
+          }
         />
         <Input label="스트리밍 링크" placeholder="링크를 붙여넣으세요" />
         <button className="mb-1 flex w-fit flex-col items-center self-center hover:cursor-pointer">
