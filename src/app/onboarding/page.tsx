@@ -100,7 +100,7 @@ export default function OnboardingPage() {
               <button
                 key={index}
                 onClick={() => scrollTo(index)}
-                className={`embla__dot ${
+                className={`embla__dot cursor-pointer ${
                   index === selectedIndex ? "embla__dot--selected" : ""
                 }`}
               />
@@ -116,9 +116,12 @@ export default function OnboardingPage() {
           className="embla__next"
           onClick={handleNext}
         >
-          <span className="p1-bold">{canNext ? "다음" : "시작하기"}</span>
+          {canNext ? "다음" : "시작하기"}
         </Button>
-        <button className="text-font-light p2-semibold" onClick={handleFinish}>
+        <button
+          className="text-font-light p2-semibold cursor-pointer"
+          onClick={handleFinish}
+        >
           건너뛰기
         </button>
       </div>
