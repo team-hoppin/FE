@@ -1,9 +1,33 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import ErrorView from "@/components/common/error-view";
+import Link from "next/link";
 
 const BASE_URL = "https://api.musicpeak.site/oauth2/authorization";
 
-export default function Login() {
+export default async function Login({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const { error } = await searchParams;
+
+  if (error) {
+    return (
+      <main className="p-5">
+        <ErrorView
+          title="로그인에 실패했어요"
+          description="다시 시도해주세요"
+        />
+        <div className="fixed right-0 bottom-30 left-0 mx-auto max-w-(--max-width) px-11">
+          <Button asChild variant="btnPurple" size="full">
+            <Link href="/">메인으로 이동</Link>
+          </Button>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="p-5">
       <div className="mt-25 mb-24 flex flex-col items-center gap-8 text-center">
