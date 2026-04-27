@@ -294,6 +294,8 @@
 .embla__container {
   display: flex;
   touch-action: pan-y pinch-zoom;
+  align-items: flex-start;
+  transition: height 0.2s;
 }
 
 .embla__slide {

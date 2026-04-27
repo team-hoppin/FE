@@ -3,12 +3,15 @@ import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { Button } from "@/components/ui/button";
 import Autoplay from "embla-carousel-autoplay";
+import AutoHeight from "embla-carousel-auto-height";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function OnboardingPage() {
   const router = useRouter();
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false }, [
-    Autoplay({ delay: 5000, stopOnInteraction: false }),
+    // Autoplay({ delay: 5000, stopOnInteraction: false }),
+    AutoHeight(),
   ]);
   const [scrollSnaps, setScrollSnaps] = useState<number[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -74,12 +77,12 @@ export default function OnboardingPage() {
           >
             <div className="embla__container">
               <div className="embla__slide">
-                <div className="inline-flex flex-col gap-2">
-                  <div className="bg-grey1 p2-medium relative left-4 rounded-2xl px-4.5 py-3.5 text-left">
+                <div className="flex flex-col items-center gap-2">
+                  <div className="bg-grey1 p2-medium relative ml-4 rounded-2xl px-4.5 py-3.5 text-left">
                     &quot;홍보는 했는데 팬이 늘었는지 <br />잘 모르겠어요
                     😮‍💨&quot;
                   </div>
-                  <div className="bg-grey1 p2-medium relative left-7 rounded-2xl px-4.5 py-3.5 text-left">
+                  <div className="bg-grey1 p2-medium relative ml-7 rounded-2xl px-4.5 py-3.5 text-left">
                     &quot;뭘 해야 할지 몰라서 그냥 올리고 <br />
                     기다렸어요 😶&quot;
                   </div>
@@ -89,8 +92,28 @@ export default function OnboardingPage() {
                   </div>
                 </div>
               </div>
-              <div className="embla__slide">Slide 2</div>
-              <div className="embla__slide">Slide 3</div>
+              <div className="embla__slide">
+                <div className="flex items-start justify-center">
+                  <Image
+                    src="/tutorial02.png"
+                    alt=""
+                    width={244}
+                    height={244}
+                    className="h-auto w-[288px] object-contain px-6 py-6 drop-shadow-[0px_4px_20px_rgba(0,0,0,0.08)]"
+                  />
+                </div>
+              </div>
+              <div className="embla__slide">
+                <div className="flex items-start justify-center">
+                  <Image
+                    src="/tutorial03.png"
+                    alt=""
+                    width={244}
+                    height={244}
+                    className="h-auto w-[288px] object-contain px-6 py-6 drop-shadow-[0px_4px_20px_rgba(0,0,0,0.08)]"
+                  />
+                </div>
+              </div>
             </div>
           </div>
 
@@ -116,7 +139,8 @@ export default function OnboardingPage() {
           className="embla__next"
           onClick={handleNext}
         >
-          {canNext ? "다음" : "시작하기"}
+          {/* {canNext ? "다음" : "시작하기"} */}
+          다음
         </Button>
         <button
           className="text-font-light p2-semibold cursor-pointer"
