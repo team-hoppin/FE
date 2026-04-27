@@ -20,7 +20,7 @@ export default function OnboardingPage() {
 
   const handleFinish = () => {
     localStorage.setItem("onboarding", "done");
-    router.push("/");
+    router.push("/login");
   };
   const handleNext = () => {
     if (canNext) emblaApi?.scrollNext();
