@@ -1,7 +1,7 @@
-import { StreamingType } from "@/types/album";
+import { StreamingCode } from "@/types/album";
 
 export const mapToStreamingBtn: Record<
-  StreamingType,
+  StreamingCode,
   {
     label: string;
     icon: string;

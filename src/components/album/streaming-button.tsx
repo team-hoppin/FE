@@ -1,13 +1,13 @@
 import Image from "next/image";
-import { StreamingType } from "@/types/album";
 import { mapToStreamingBtn } from "@/utils/mapper";
+import { StreamingCode } from "@/types/album";
 
 interface Props {
-  streamingType: StreamingType;
+  streamingCode: StreamingCode;
 }
 
-export default function StreamingButton({ streamingType }: Props) {
-  const { label, icon } = mapToStreamingBtn[streamingType];
+export default function StreamingButton({ streamingCode }: Props) {
+  const { label, icon } = mapToStreamingBtn[streamingCode];
 
   return (
     <button className="bg-grey1 flex h-14 w-full items-center gap-3 rounded-2xl px-4">

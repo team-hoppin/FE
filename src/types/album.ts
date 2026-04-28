@@ -1,4 +1,4 @@
-export type StreamingType =
+export type StreamingCode =
   | "spotify"
   | "applemusic"
   | "melon"

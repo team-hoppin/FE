@@ -25,9 +25,9 @@ export default function AlbumDetailPage() {
         <div className="flex flex-col gap-2">
           <p className="p1-bold text-font-middle">음원 들으러 가기</p>
           <div className="grid grid-cols-2 gap-2">
-            <StreamingButton streamingType="spotify" />
-            <StreamingButton streamingType="youtube" />
-            <StreamingButton streamingType="soundcloud" />
+            <StreamingButton streamingCode="spotify" />
+            <StreamingButton streamingCode="youtube" />
+            <StreamingButton streamingCode="soundcloud" />
           </div>
         </div>
         <div className="flex flex-col gap-2">
