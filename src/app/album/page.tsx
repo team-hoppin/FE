@@ -40,7 +40,10 @@ export default function AlbumPage() {
       </div>
       <section className="mb-5 flex flex-col gap-2">
         <div className="bg-grey1 border-border mb-1 flex h-22 w-22 items-center justify-center rounded-2xl border">
-          <button className="c1-medium text-font-light flex flex-col items-center hover:cursor-pointer">
+          <button
+            className="c1-medium text-font-light flex flex-col items-center hover:cursor-pointer"
+            aria-label="앨범 커버 이미지 추가"
+          >
             <PlusIcon size={40} />
             <span>커버 추가</span>
           </button>
@@ -66,6 +69,7 @@ export default function AlbumPage() {
                 <button
                   className="flex items-center justify-center hover:cursor-pointer"
                   type="button"
+                  aria-label="발매일 날짜 선택"
                 >
                   <CalendarIcon size={24} />
                 </button>
@@ -92,6 +96,7 @@ export default function AlbumPage() {
                 <button
                   className="flex items-center justify-center hover:cursor-pointer"
                   type="button"
+                  aria-label={`스트리밍 링크 ${idx + 1} 삭제`}
                   onClick={() => handleRemoveLink(idx)}
                 >
                   <XIcon size={16} />
