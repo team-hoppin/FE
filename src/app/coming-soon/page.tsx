@@ -13,7 +13,7 @@ export default function ComingSoon() {
             <span className="text-main">오픈되면 알려드릴게요!</span>
           </h1>
           <div className="flex flex-col items-center gap-6">
-            <div className="bg-grey2 h-30 w-30 rounded-full">
+            <div className="bg-grey2 h-37 w-37 rounded-full">
               <Image
                 src={"/bamti-dancing.svg"}
                 alt="밤티"
