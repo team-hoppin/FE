@@ -124,7 +124,7 @@ export default function AlbumPage() {
         />
       </section>
       <Button variant="btnPurple" size="full">
-        홍보 페이지 미리보기
+        홍보 링크 생성하기
       </Button>
     </main>
   );
