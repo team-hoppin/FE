@@ -100,6 +100,7 @@ export default function MyPage() {
             toast.error("회원탈퇴에 실패했어요. 잠시 후 다시 시도해 주세요.");
             return;
           }
+          localStorage.removeItem("onboarding");
           router.replace("/login");
           router.refresh();
         } catch {
