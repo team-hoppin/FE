@@ -20,6 +20,7 @@ const buttonVariants = cva(
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
         btnPurple: "bg-main text-white",
+        btnPurpleSub: "bg-main-light1 text-main border-main-light2",
         btnWhite: "bg-white text-font-middle border-border",
       },
       size: {
@@ -35,6 +36,8 @@ const buttonVariants = cva(
           "size-7 rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:rounded-lg",
         "icon-lg": "size-9",
         full: "flex justify-center items-center h-13 w-full rounded-full p1-bold",
+        md: "flex justify-center items-center h-12 w-40 rounded-full p1-bold",
+        mini: "flex justify-center items-center h-7 w-14 rounded-lg p2-semibold",
       },
     },
     defaultVariants: {
