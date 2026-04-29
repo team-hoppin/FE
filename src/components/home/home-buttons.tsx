@@ -47,7 +47,11 @@ export default function HomeButtons({ isLoggedIn }: { isLoggedIn: boolean }) {
       <div className="flex flex-col gap-4">
         <Tooltip open={showIntro}>
           <TooltipTrigger asChild>
-            <Button variant="btnPurple" size="full" onClick={() => handleCta("/album")}>
+            <Button
+              variant="btnPurple"
+              size="full"
+              onClick={() => handleCta("/album")}
+            >
               신곡 홍보 링크 만들기
             </Button>
           </TooltipTrigger>
@@ -61,7 +65,11 @@ export default function HomeButtons({ isLoggedIn }: { isLoggedIn: boolean }) {
         </Tooltip>
         <Tooltip open={showIntro}>
           <TooltipTrigger asChild>
-            <Button variant="btnWhite" size="full" onClick={() => handleCta("/diagnose")}>
+            <Button
+              variant="btnWhite"
+              size="full"
+              onClick={() => handleCta("/report")}
+            >
               내 음원 홍보 진단하기
             </Button>
           </TooltipTrigger>
