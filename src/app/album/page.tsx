@@ -9,7 +9,7 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon, PlusIcon, XIcon } from "lucide-react";
+import { PlusIcon, ImageIcon, CalendarIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { useOpenAlertModal } from "@/stores/alert-modal-store";
@@ -91,15 +91,21 @@ export default function AlbumPage() {
 
       <section className="mb-5 flex flex-col gap-2">
         <div className="bg-grey1 border-border mb-1 flex h-22 w-22 items-center justify-center overflow-hidden rounded-2xl border">
-          <label className="flex h-full w-full cursor-pointer items-center justify-center">
+          <label className="relative flex h-full w-full cursor-pointer items-center justify-center">
             {coverPreview ? (
-              <Image
-                src={coverPreview}
-                alt="앨범 커버 이미지"
-                width={88}
-                height={88}
-                className="object-cover"
-              />
+              <>
+                <Image
+                  src={coverPreview}
+                  alt="앨범 커버 이미지"
+                  width={88}
+                  height={88}
+                  className="object-cover"
+                />
+
+                <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                  <ImageIcon className="text-white" size={24} />
+                </div>
+              </>
             ) : (
               <div className="c1-medium text-font-light flex flex-col items-center">
                 <PlusIcon size={40} />
