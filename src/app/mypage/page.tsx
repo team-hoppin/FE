@@ -101,6 +101,7 @@ export default function MyPage() {
             return;
           }
           router.replace("/onboarding");
+          router.refresh();
         } catch {
           toast.error("네트워크 오류로 회원탈퇴에 실패했어요.");
         }
