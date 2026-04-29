@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useOpenAlertModal } from "@/stores/alert-modal-store";
+import { toast } from "sonner";
 
 const BASE_URL = "https://api.musicpeak.site";
 
@@ -27,11 +28,19 @@ export default function MyPage() {
       type: "confirm",
       message: "정말 탈퇴하시겠어요?\n탈퇴 후 90일간 재가입이 불가합니다.",
       onAction: async () => {
-        await fetch(`${BASE_URL}/api/me/delete`, {
-          method: "DELETE",
-          credentials: "include",
-        });
-        router.replace("/login");
+        try {
+          const res = await fetch(`${BASE_URL}/api/me/delete`, {
+            method: "DELETE",
+            credentials: "include",
+          });
+          if (!res.ok) {
+            toast.error("회원탈퇴에 실패했어요. 잠시 후 다시 시도해 주세요.");
+            return;
+          }
+          router.replace("/login");
+        } catch {
+          toast.error("네트워크 오류로 회원탈퇴에 실패했어요.");
+        }
       },
     });
   };
