@@ -21,7 +21,8 @@ export function Input({ label, className, iconBtn, ...props }: Props) {
         className={cn(
           "flex-1 bg-transparent p-0 caret-current outline-none",
           "p2-regular text-font-basic",
-          "placeholder:text-font-light"
+          "placeholder:text-font-light",
+          iconBtn && "pr-6"
         )}
         {...props}
       />
