@@ -1,40 +1,17 @@
-"use client";
+import { cookies } from "next/headers";
+import HomeButtons from "@/components/home/home-buttons";
+import Image from "next/image";
 
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-} from "@/components/ui/tooltip";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-
-export default function Home() {
-  const [showIntro, setShowIntro] = useState(
-    () => typeof window !== "undefined" && !localStorage.getItem("peak-intro-seen")
-  );
-
-  const dismissIntro = () => {
-    localStorage.setItem("peak-intro-seen", "true");
-    setShowIntro(false);
-  };
-  const router = useRouter();
-  useEffect(() => {
-    const done = localStorage.getItem("onboarding");
-    if (!done) router.replace("/onboarding");
-  }, [router]);
+export default async function Home() {
+  const cookieStore = await cookies();
+  const isLoggedIn = cookieStore.has("refreshToken");
 
   return (
     <main className="p-5">
-      {showIntro && (
-        <div
-          className="fixed inset-0 z-1000 bg-black/50"
-          onClick={dismissIntro}
-        />
-      )}
       <div className="mt-25 mb-24 flex flex-col items-center gap-8 text-center">
-        <div className="bg-grey2 h-30 w-30 rounded-full"></div>
+        <div className="bg-grey2 h-30 w-30 rounded-full">
+          <Image src="/bamti-dancing.svg" alt="밤티" width={120} height={120} />
+        </div>
         <div className="flex flex-col gap-6">
           <h1 className="h1-bold">
             신곡 홍보,
@@ -42,43 +19,14 @@ export default function Home() {
             <span className="text-main">이제 쉽게</span>
             <br />할 수 있어요
           </h1>
-          <p className="text-font-middle p3-regular">
+          <p className="text-font-middle p2-regular">
             뭘 해야 할지 몰라서 답답했다면
             <br />
             Peak가 딱 맞는 방법을 알려드릴게요
           </p>
         </div>
       </div>
-      <div className="flex flex-col gap-4">
-        <Tooltip open={showIntro}>
-          <TooltipTrigger asChild>
-            <Button variant="btnPurple" size="full">
-              신곡 홍보 링크 만들기
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>
-              발매 정보를 입력하면 <strong>팬에게 바로</strong>
-              <br />
-              <strong>공유</strong>할 수 있는 링크가 생겨요
-            </p>
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip open={showIntro}>
-          <TooltipTrigger asChild>
-            <Button variant="btnWhite" size="full">
-              내 음원 홍보 진단하기
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent side="bottom">
-            <p>
-              지금 <strong>팬이 왜 안 늘고 있는지</strong>,
-              <br />
-              다음엔 뭘 하면 좋을지 알려드려요
-            </p>
-          </TooltipContent>
-        </Tooltip>
-      </div>
+      <HomeButtons isLoggedIn={isLoggedIn} />
     </main>
   );
 }

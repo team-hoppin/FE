@@ -1,7 +1,6 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-
+import { Button } from "@/components/ui/button";
 const BASE_URL = "https://api.musicpeak.site";
 
 export default function MyPage() {
@@ -12,7 +11,8 @@ export default function MyPage() {
       method: "POST",
       credentials: "include",
     });
-    router.replace("/login");
+    router.push("/");
+    router.refresh();
   };
 
   const handleWithdraw = async () => {
@@ -20,7 +20,7 @@ export default function MyPage() {
       method: "DELETE",
       credentials: "include",
     });
-    router.replace("/login");
+    window.location.href = "/login";
   };
 
   return (
