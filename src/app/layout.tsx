@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { pretendard, poppins } from "./fonts/fonts";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -39,6 +40,25 @@ export default function RootLayout({
       lang="ko"
       className={cn(pretendard.variable, poppins.variable, "font-sans")}
     >
+      <Script
+        id="maze-snippet"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `(function (m, a, z, e) {
+  var s, t, u, v;
+  try { t = m.sessionStorage.getItem('maze-us'); } catch (err) {}
+  if (!t) { t = new Date().getTime(); try { m.sessionStorage.setItem('maze-us', t); } catch (err) {} }
+  u = document.currentScript || (function () { var w = document.getElementsByTagName('script'); return w[w.length - 1]; })();
+  v = u && u.nonce;
+  s = a.createElement('script');
+  s.src = z + '?apiKey=' + e;
+  s.async = true;
+  if (v) s.setAttribute('nonce', v);
+  a.getElementsByTagName('head')[0].appendChild(s);
+  m.mazeUniversalSnippetApiKey = e;
+})(window, document, 'https://snippet.maze.co/maze-universal-loader.js', 'fae9f26d-e465-4de0-b44d-643e3cbf66e7');`,
+        }}
+      />
       <body>
         <div className="mx-auto min-h-screen w-full max-w-(--max-width) bg-white px-5 pb-9 shadow-2xl">
           <Header />
