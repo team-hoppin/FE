@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import AlertModal from "@/components/common/alert-modal";
 import Header from "@/components/common/header";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.musicpeak.site"),
@@ -66,6 +67,7 @@ export default function RootLayout({
             <TooltipProvider>{children}</TooltipProvider>
           </div>
           <AlertModal />
+          <Toaster position="top-center" />
         </div>
       </body>
     </html>
