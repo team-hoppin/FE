@@ -58,7 +58,21 @@ export default function MyPage() {
   const handleWithdraw = () => {
     openAlertModal({
       type: "confirm",
-      message: "정말 탈퇴하시겠어요?\n탈퇴 후 90일간 재가입이 불가합니다.",
+      message: (
+        <>
+          탈퇴 시{" "}
+          <span className="p2-semibold">
+            현재 사용 중인 모든 링크와 정보가 사라지고
+          </span>
+          {"\n"}
+          이후{" "}
+          <span className="p2-semibold">
+            3개월간 동일 계정으로 재가입이 불가
+          </span>
+          해요.{"\n"}
+          정말 탈퇴하시겠어요?
+        </>
+      ),
       onAction: async () => {
         try {
           const res = await fetch(`${BASE_URL}/api/me/delete`, {

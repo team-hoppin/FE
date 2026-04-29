@@ -26,9 +26,9 @@ export default function AlertModal() {
       <div className="flex flex-col items-center gap-4 rounded-2xl bg-white px-6 py-5 text-center">
         <TriangleAlertIcon className="text-main" size={28} />
 
-        <p className="p2-regular text-font-middle whitespace-pre-line">
+        <div className="p2-regular text-font-middle whitespace-pre-line text-center">
           {store.message}
-        </p>
+        </div>
 
         <div className="flex gap-1">
           {isConfirm && (

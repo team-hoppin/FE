@@ -1,9 +1,10 @@
 import { create } from "zustand";
+import { ReactNode } from "react";
 
 interface OpenState {
   isOpen: true;
   type: "alert" | "confirm";
-  message: string;
+  message: ReactNode;
   onAction?: () => void;
   onCancel?: () => void;
 }
