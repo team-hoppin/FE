@@ -7,6 +7,40 @@ import AutoHeight from "embla-carousel-auto-height";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
+type Slide = {
+  titleBefore: string;
+  titleHighlight: string;
+  titleAfter?: string;
+  description: string;
+  src: string;
+  imgClassName?: string;
+};
+
+const SLIDES: Slide[] = [
+  {
+    titleBefore: "새 음원 홍보,",
+    titleHighlight: "어떻게 해야 할지 몰라",
+    titleAfter: "막막하셨죠?",
+    description: "이젠 혼자 하지 마세요.\nPEAK가 도와드릴게요!",
+    src: "/step01.png",
+    imgClassName: "h-auto w-[245px] object-contain",
+  },
+  {
+    titleBefore: "신곡을 냈다면",
+    titleHighlight: "홍보 링크를",
+    titleAfter: "만들어보세요",
+    description:
+      "신곡 정보 입력하면 홍보 링크 완성!\n인스타그램 프로필에 딱 붙여두면 돼요.",
+    src: "/step02.png",
+  },
+  {
+    titleBefore: "팬이 왜 안 느는지",
+    titleHighlight: "PEAK가 찾아드려요",
+    description: "링크와 날짜만 입력하면\n홍보 상태를 점검할 수 있어요",
+    src: "/step03.png",
+  },
+];
+
 export default function OnboardingPage() {
   const router = useRouter();
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false }, [
@@ -55,16 +89,21 @@ export default function OnboardingPage() {
       <div className="mt-20 mb-16 flex flex-col items-center gap-12 text-center">
         <div className="flex flex-col gap-6">
           <h1 className="h1-bold text-font-basic">
-            새 음원 홍보,
+            {SLIDES[selectedIndex].titleBefore}
             <br />
-            <span className="text-main">어떻게 해야 할지 몰라</span>
+            <span className="text-main">
+              {SLIDES[selectedIndex].titleHighlight}
+            </span>
             <br />
-            막막하셨죠?
+            {SLIDES[selectedIndex].titleAfter}
           </h1>
-          <p className="text-font-middle p2-regular">
-            이젠 혼자 하지 마세요.
-            <br />
-            PEAK가 도와드릴게요!
+          <p className="text-font-middle p2-semibold">
+            {SLIDES[selectedIndex].description.split("\n").map((line, i) => (
+              <span key={i}>
+                {line}
+                <br />
+              </span>
+            ))}
           </p>
         </div>
         <>
@@ -76,44 +115,21 @@ export default function OnboardingPage() {
             onMouseLeave={() => emblaApi?.plugins()?.autoplay?.play()}
           >
             <div className="embla__container">
-              <div className="embla__slide">
-                <div className="flex flex-col items-center gap-2">
-                  <div className="bg-grey1 p2-medium relative ml-4 rounded-2xl px-4.5 py-3.5 text-left">
-                    &quot;홍보는 했는데 팬이 늘었는지 <br />잘 모르겠어요
-                    😮‍💨&quot;
-                  </div>
-                  <div className="bg-grey1 p2-medium relative ml-7 rounded-2xl px-4.5 py-3.5 text-left">
-                    &quot;뭘 해야 할지 몰라서 그냥 올리고 <br />
-                    기다렸어요 😶&quot;
-                  </div>
-                  <div className="bg-grey1 p2-medium rounded-2xl px-4.5 py-3.5 text-left">
-                    &quot;다음엔 뭘 다르게 해야 할지 기준이 <br />
-                    없어서 막막해요 😔&quot;
+              {SLIDES.map((slide, index) => (
+                <div key={index} className="embla__slide">
+                  <div className="flex items-start justify-center">
+                    <Image
+                      src={slide.src}
+                      alt="설명 이미지"
+                      width={244}
+                      height={244}
+                      className={
+                        slide.imgClassName ?? "h-auto w-70 object-contain"
+                      }
+                    />
                   </div>
                 </div>
-              </div>
-              <div className="embla__slide">
-                <div className="flex items-start justify-center">
-                  <Image
-                    src="/tutorial02.png"
-                    alt="설명 이미지"
-                    width={244}
-                    height={244}
-                    className="h-auto w-[288px] object-contain px-6 py-6 drop-shadow-[0px_4px_20px_rgba(0,0,0,0.08)]"
-                  />
-                </div>
-              </div>
-              <div className="embla__slide">
-                <div className="flex items-start justify-center">
-                  <Image
-                    src="/tutorial03.png"
-                    alt="설명 이미지"
-                    width={244}
-                    height={244}
-                    className="h-auto w-[288px] object-contain px-6 py-6 drop-shadow-[0px_4px_20px_rgba(0,0,0,0.08)]"
-                  />
-                </div>
-              </div>
+              ))}
             </div>
           </div>
 
