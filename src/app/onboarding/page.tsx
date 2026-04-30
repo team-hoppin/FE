@@ -13,6 +13,7 @@ type Slide = {
   titleAfter?: string;
   description: string;
   src: string;
+  imgClassName?: string;
 };
 
 const SLIDES: Slide[] = [
@@ -22,6 +23,7 @@ const SLIDES: Slide[] = [
     titleAfter: "막막하셨죠?",
     description: "이젠 혼자 하지 마세요.\nPEAK가 도와드릴게요!",
     src: "/step01.png",
+    imgClassName: "h-auto w-[245px] object-contain",
   },
   {
     titleBefore: "신곡을 냈다면",
@@ -95,7 +97,7 @@ export default function OnboardingPage() {
             <br />
             {SLIDES[selectedIndex].titleAfter}
           </h1>
-          <p className="text-font-middle p2-regular">
+          <p className="text-font-middle p2-semibold">
             {SLIDES[selectedIndex].description.split("\n").map((line, i) => (
               <span key={i}>
                 {line}
@@ -121,7 +123,9 @@ export default function OnboardingPage() {
                       alt="설명 이미지"
                       width={244}
                       height={244}
-                      className="h-auto w-[288px] object-contain"
+                      className={
+                        slide.imgClassName ?? "h-auto w-70 object-contain"
+                      }
                     />
                   </div>
                 </div>
