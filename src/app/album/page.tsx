@@ -66,8 +66,14 @@ export default function AlbumPage() {
     if (!VALID_COVER_IMG_TYPES.includes(file.type)) {
       openAlertModal({
         type: "alert",
-        message:
-          "지원하지 않는 파일 형식입니다.\nJPG, JPEG, PNG, WEBP 형식의 이미지만\n업로드할 수 있습니다.",
+        message: (
+          <>
+            지원하지 않는 파일 형식입니다.{"\n"}
+            <span className="p2-semibold">JPG, JPEG, PNG, WEBP</span> 형식의
+            이미지만 {"\n"}
+            업로드할 수 있습니다.
+          </>
+        ),
       });
       return;
     }
@@ -93,8 +99,14 @@ export default function AlbumPage() {
     if (!code) {
       openAlertModal({
         type: "alert",
-        message:
-          "스포티파이 ∙ 애플뮤직 ∙ 멜론\n유튜브뮤직 ∙ 사운드클라우드\n링크만 입력 가능합니다.",
+        message: (
+          <>
+            <span className="p2-semibold">
+              스포티파이 ∙ 애플뮤직 ∙ 멜론 ∙ 유튜브뮤직 ∙ 사운드클라우드{"\n"}
+            </span>
+            링크만 입력 가능합니다.
+          </>
+        ),
       });
 
       setLinks((prev) => {
