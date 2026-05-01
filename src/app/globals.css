@@ -155,6 +155,12 @@
   --radius-r1: 8px;
   --radius-r2: 16px;
   --radius-r3: 20px;
+
+  /* Weight */
+  --weight-b: 700;
+  --weight-m: 500;
+  --weight-r: 400;
+  --weight-sb: 600;
 }
 
 /* Typography */
