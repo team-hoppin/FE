@@ -21,7 +21,10 @@ export default function AlbumActionButton({
     try {
       await navigator.clipboard.writeText(url);
       toast.success("링크가 복사되었습니다!", { position: "bottom-center" });
-      router.push("/album/promote");
+
+      if (isLoggedIn) {
+        router.push("/album/promote");
+      }
     } catch {
       toast.error("복사에 실패했습니다.", { position: "bottom-center" });
     }
