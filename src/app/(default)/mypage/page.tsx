@@ -37,9 +37,13 @@ async function fetchAlbums(): Promise<AlbumData[]> {
     streamingLinks: data.streamingLinks
       .sort((a, b) => a.displayOrder - b.displayOrder)
       .map((link) => {
-        const code = getStreamingCode(`https://${link.domain}`);
+        const code = getStreamingCode(link.url);
         if (!code) return null;
-        return { code, url: link.redirectUrl };
+
+        return {
+          code,
+          url: link.clickUrl,
+        };
       })
       .filter((v): v is NonNullable<typeof v> => v !== null),
     link: data.trackingUrl,
