@@ -22,6 +22,13 @@ import {
   updateMusicPromotion,
 } from "@/lib/api/music-promotion";
 import { getStreamingCode } from "@/utils/album";
+import {
+  validateField,
+  validateAll,
+  isAlbumFormValid,
+  AlbumFormValues,
+  AlbumFormErrors,
+} from "@/utils/validation";
 import { format } from "date-fns";
 
 const VALID_COVER_IMG_TYPES = ["image/jpeg", "image/png", "image/webp"];
@@ -51,30 +58,14 @@ export default function AlbumPage() {
   const [description, setDescription] = useState("");
 
   // 유효성 검사 실패 여부 상태 ( true = validation 실패 )
-  const [errors, setErrors] = useState({
+  const [errors, setErrors] = useState<AlbumFormErrors>({
     cover: false,
     artist: false,
     albumName: false,
     date: false,
-    links: false,
+    links: [false],
     description: false,
   });
-
-  // 유효성 검사
-  const validate = () => {
-    const newErrors = {
-      cover: !(coverFile || coverPreview),
-      artist: !artist.trim(),
-      albumName: !albumName.trim(),
-      date: !date,
-      links: links.every((l) => !l.trim()),
-      description: !description.trim(),
-    };
-
-    setErrors(newErrors);
-
-    return !Object.values(newErrors).some(Boolean);
-  };
 
   useEffect(() => {
     if (!editId) return;
@@ -82,11 +73,11 @@ export default function AlbumPage() {
     const fetchData = async () => {
       const data = await getMusicPromotion(Number(editId));
 
+      setCoverPreview(data.imageUrl);
       setArtist(data.activityName);
       setAlbumName(data.songTitle);
       setDate(new Date(data.releaseDate));
       setDescription(data.shortDescription);
-      setCoverPreview(data.imageUrl);
 
       const sortedLinks = data.streamingLinks.sort(
         (a, b) => a.displayOrder - b.displayOrder
@@ -106,6 +97,54 @@ export default function AlbumPage() {
     fetchData();
   }, [editId]);
 
+  // 공통 업데이트 함수
+  const updateField = <K extends keyof AlbumFormValues>(
+    field: K,
+    value: AlbumFormValues[K],
+    setter: (v: AlbumFormValues[K]) => void
+  ) => {
+    setter(value);
+
+    const valid = validateField(field, value);
+
+    if (typeof valid === "boolean" && valid) {
+      setErrors((prev) => ({ ...prev, [field]: false }));
+    }
+  };
+
+  // 링크 전용 업데이트 함수
+  const updateLink = (idx: number, value: string) => {
+    const newLinks = [...links];
+    newLinks[idx] = value;
+    setLinks(newLinks);
+
+    const valid = validateField("links", newLinks);
+
+    if (Array.isArray(valid)) {
+      setErrors((prev) => ({
+        ...prev,
+        links: valid.map((r) => !r),
+      }));
+    }
+  };
+
+  // 유효성 검사
+  const validate = () => {
+    const newErrors = validateAll({
+      cover: coverFile,
+      coverPreview,
+      artist,
+      albumName,
+      date,
+      links,
+      description,
+    });
+
+    setErrors(newErrors);
+
+    return isAlbumFormValid(newErrors);
+  };
+
   const handleSelectImage = (file: File) => {
     if (!VALID_COVER_IMG_TYPES.includes(file.type)) {
       openAlertModal({
@@ -124,15 +163,31 @@ export default function AlbumPage() {
 
     setCoverFile(file);
     setCoverPreview(URL.createObjectURL(file));
+
+    setErrors((prev) => ({
+      ...prev,
+      cover: false,
+    }));
   };
 
   const handleAddLink = () => {
     if (links.length >= MAX_LINK) return;
+
     setLinks((prev) => [...prev, ""]);
+
+    setErrors((prev) => ({
+      ...prev,
+      links: [...prev.links, false],
+    }));
   };
 
   const handleRemoveLink = (idx: number) => {
     setLinks((prev) => prev.filter((_, i) => i !== idx));
+
+    setErrors((prev) => ({
+      ...prev,
+      links: prev.links.filter((_, i) => i !== idx),
+    }));
   };
 
   const handleBlurLink = (value: string, idx: number) => {
@@ -285,7 +340,7 @@ export default function AlbumPage() {
           placeholder="아티스트 이름을 입력하세요"
           maxLength={50}
           value={artist}
-          onChange={(e) => setArtist(e.target.value)}
+          onChange={(e) => updateField("artist", e.target.value, setArtist)}
         />
 
         <Input
@@ -296,7 +351,9 @@ export default function AlbumPage() {
           placeholder="앨범 / 싱글명을 입력하세요"
           maxLength={50}
           value={albumName}
-          onChange={(e) => setAlbumName(e.target.value)}
+          onChange={(e) =>
+            updateField("albumName", e.target.value, setAlbumName)
+          }
         />
 
         <Input
@@ -319,7 +376,11 @@ export default function AlbumPage() {
                 </button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
-                <Calendar mode="single" selected={date} onSelect={setDate} />
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={(d) => updateField("date", d, setDate)}
+                />
               </PopoverContent>
             </Popover>
           }
@@ -328,17 +389,13 @@ export default function AlbumPage() {
         {links.map((link, idx) => (
           <Input
             className={
-              errors.links ? "border-danger focus-visible:ring-danger" : ""
+              errors.links[idx] ? "border-danger focus-visible:ring-danger" : ""
             }
             key={idx}
             label={idx === 0 ? "스트리밍 링크" : undefined}
             placeholder="링크를 붙여넣으세요"
             value={link}
-            onChange={(e) => {
-              const newLinks = [...links];
-              newLinks[idx] = e.target.value;
-              setLinks(newLinks);
-            }}
+            onChange={(e) => updateLink(idx, e.target.value)}
             onBlur={(e) => handleBlurLink(e.target.value, idx)}
             iconBtn={
               links.length > 1 && (
@@ -376,7 +433,9 @@ export default function AlbumPage() {
           placeholder="이 곡에 담긴 이야기를 들려주세요"
           maxLength={200}
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(e) =>
+            updateField("description", e.target.value, setDescription)
+          }
         />
       </section>
 
