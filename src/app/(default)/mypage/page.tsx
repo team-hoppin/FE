@@ -73,6 +73,16 @@ export default function MyPage() {
     setSelectedAlbumId(album.id);
   }, []);
 
+  const handleCopy = async () => {
+    if (!selectedAlbum) return;
+    try {
+      await navigator.clipboard.writeText(selectedAlbum.link);
+      toast.success("링크가 복사되었습니다!", { position: "bottom-center" });
+    } catch {
+      toast.error("복사에 실패했습니다.", { position: "bottom-center" });
+    }
+  };
+
   const handleLogout = async () => {
     await fetch(`${BASE_URL}/api/auth/logout`, {
       method: "POST",
@@ -172,10 +182,7 @@ export default function MyPage() {
             <Button
               variant="btnPurple"
               size="full"
-              onClick={() =>
-                selectedAlbum &&
-                navigator.clipboard.writeText(selectedAlbum.link)
-              }
+              onClick={handleCopy}
             >
               🔗 링크 복사
             </Button>
