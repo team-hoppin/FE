@@ -151,7 +151,7 @@ export default function MyPage() {
       ) : isError ? (
         <>
           <ErrorView
-            title="데이터를 불러오지 못했어요."
+            title={`죄송합니다\n데이터를 불러오지 못했어요.`}
             description={`연결이 잠시 불안정해요.\n다시 시도해 주세요.`}
           />
           <div className="fixed right-0 bottom-30 left-0 mx-auto max-w-(--max-width) px-11">
