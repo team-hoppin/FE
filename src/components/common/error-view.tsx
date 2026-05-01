@@ -20,7 +20,7 @@ export default function ErrorView({
   actionLabel,
 }: ErrorViewProps) {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-between pt-25 text-center whitespace-pre-line">
+    <div className="flex min-h-screen flex-col items-center justify-around text-center whitespace-pre-line">
       <div className="flex flex-col items-center gap-8">
         <div className="flex flex-col gap-14">
           <h1 className="h1-bold">{title}</h1>
