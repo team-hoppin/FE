@@ -42,7 +42,7 @@ export default function Report() {
       </div>
 
       <div className="flex flex-col gap-20">
-        <button className="text-font-middle bg-allwhite rounded-r2 shadow-btn flex h-15 items-center gap-4 p-3">
+        <button className="text-font-middle bg-allwhite rounded-r2 shadow-btn flex h-15 cursor-pointer items-center gap-4 p-3">
           <Image src="/insta.svg" alt="인스타그램" width={24} height={24} />
           <div className="flex flex-col items-start">
             <h6 className="p2-bold">인스타그램 계정 연동하기</h6>
@@ -51,6 +51,17 @@ export default function Report() {
             </p>
           </div>
         </button>
+        {/* <button className="text-font-middle bg-allwhite rounded-r2 shadow-btn flex h-15 items-center gap-4 p-3">
+          <Image
+            src="/peak-round-sm.svg"
+            alt="피크로고"
+            width={32}
+            height={32}
+          />
+          <div className="flex flex-col items-start">
+            <h6 className="p2-bold">music_peak</h6>
+          </div>
+        </button> */}
 
         <section className="flex flex-col gap-3">
           <div className="flex flex-col gap-1">
@@ -121,6 +132,9 @@ export default function Report() {
             }
           />
         </section>
+        {/* <Button variant="btnPurple" size="full" disabled={!date}>
+          진단 시작하기
+        </Button> */}
         <Button variant="btnPurple" size="full">
           진단 시작하기
         </Button>
