@@ -1,54 +1,61 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { useOpenAlertModal } from "@/stores/alert-modal-store";
 import { toast } from "sonner";
 import AlbumCarousel, { AlbumData } from "@/components/mypage/album-carousel";
+import { getMyPagePromotions, getMusicPromotion } from "@/lib/api/music-promotion";
+import { getStreamingCode } from "@/utils/album";
 
 const BASE_URL = "https://api.musicpeak.site";
-
-// TODO: API 연결 시 교체
-const MOCK_ALBUMS: AlbumData[] = [
-  {
-    id: "1",
-    coverUrl: "/test-cover.png",
-    title: "피크와 함께라면",
-    artist: "김피크",
-    releaseDate: "2026.01.01",
-    streamingLinks: [
-      { code: "spotify", url: "https://open.spotify.com/" },
-      { code: "youtubemusic", url: "https://open.spotify.com/" },
-      { code: "soundcloud", url: "https://open.spotify.com/" },
-    ],
-    message:
-      "난 지금 미쳐가고 있다.\n이 헤드폰에 내 모든 몸과 영혼을 맡겼다.\n음악만이 나라에서 허락하는 유일한 마약이니까.\n이게 바로 지금의 나다.",
-    link: "https://www.musicpeak.site/album/1",
-  },
-  {
-    id: "2",
-    coverUrl: "/test-cover.png",
-    title: "피크와 함께라면",
-    artist: "김피크",
-    releaseDate: "2026.01.01",
-    streamingLinks: [
-      { code: "spotify", url: "https://open.spotify.com/" },
-      { code: "youtubemusic", url: "https://open.spotify.com/" },
-      { code: "soundcloud", url: "https://open.spotify.com/" },
-    ],
-    message:
-      "난 지금 미쳐가고 있다.\n이 헤드폰에 내 모든 몸과 영혼을 맡겼다.\n음악만이 나라에서 허락하는 유일한 마약이니까.\n이게 바로 지금의 나다.",
-    link: "https://www.musicpeak.site/album/2",
-  },
-];
 
 export default function MyPage() {
   const router = useRouter();
   const openAlertModal = useOpenAlertModal();
-  const [selectedAlbum, setSelectedAlbum] = useState<AlbumData>(MOCK_ALBUMS[0]);
-  const hasAlbums = MOCK_ALBUMS.length > 0;
+  const [albums, setAlbums] = useState<AlbumData[]>([]);
+  const [selectedAlbum, setSelectedAlbum] = useState<AlbumData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchAlbums = async () => {
+      try {
+        const { promotions } = await getMyPagePromotions();
+        const details = await Promise.all(
+          promotions.map((p) => getMusicPromotion(p.promotionId))
+        );
+
+        const albumData: AlbumData[] = details.map((data) => ({
+          id: String(data.promotionId),
+          coverUrl: data.imageUrl,
+          title: data.songTitle,
+          artist: data.activityName,
+          releaseDate: data.releaseDate,
+          message: data.shortDescription,
+          streamingLinks: data.streamingLinks
+            .sort((a, b) => a.displayOrder - b.displayOrder)
+            .map((link) => {
+              const code = getStreamingCode(`https://${link.domain}`);
+              if (!code) return null;
+              return { code, url: link.redirectUrl };
+            })
+            .filter((v): v is NonNullable<typeof v> => v !== null),
+          link: data.trackingUrl,
+        }));
+
+        setAlbums(albumData);
+        if (albumData.length > 0) setSelectedAlbum(albumData[0]);
+      } catch {
+        toast.error("앨범 목록을 불러오지 못했어요.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchAlbums();
+  }, []);
 
   const handleSelect = useCallback((album: AlbumData) => {
     setSelectedAlbum(album);
@@ -119,10 +126,10 @@ export default function MyPage() {
 
   return (
     <main className="flex flex-1 flex-col gap-6 px-5 pt-10">
-      {hasAlbums ? (
+      {isLoading ? null : albums.length > 0 ? (
         <>
           <AlbumCarousel
-            albums={MOCK_ALBUMS}
+            albums={albums}
             onSelect={handleSelect}
             onDelete={handleDeleteAlbum}
           />
@@ -130,14 +137,19 @@ export default function MyPage() {
             <Button
               variant="btnPurple"
               size="full"
-              onClick={() => navigator.clipboard.writeText(selectedAlbum.link)}
+              onClick={() =>
+                selectedAlbum &&
+                navigator.clipboard.writeText(selectedAlbum.link)
+              }
             >
               🔗 링크 복사
             </Button>
             <Button
               variant="btnWhite"
               size="full"
-              onClick={() => router.push(`/album/${selectedAlbum.id}`)}
+              onClick={() =>
+                selectedAlbum && router.push(`/album/${selectedAlbum.id}`)
+              }
             >
               수정하기
             </Button>
