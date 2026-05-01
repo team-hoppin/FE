@@ -7,9 +7,14 @@ import { useRouter } from "next/navigation";
 interface Props {
   url: string;
   promotionId: number;
+  isLoggedIn: boolean;
 }
 
-export default function AlbumActionButton({ url, promotionId }: Props) {
+export default function AlbumActionButton({
+  url,
+  promotionId,
+  isLoggedIn,
+}: Props) {
   const router = useRouter();
 
   const handleCopy = async () => {
@@ -31,9 +36,12 @@ export default function AlbumActionButton({ url, promotionId }: Props) {
       <Button variant="btnPurple" size="md" onClick={handleCopy}>
         🔗 링크 복사
       </Button>
-      <Button variant="btnPurpleSub" size="md" onClick={handleEdit}>
-        수정하기
-      </Button>
+
+      {isLoggedIn && (
+        <Button variant="btnPurpleSub" size="md" onClick={handleEdit}>
+          수정하기
+        </Button>
+      )}
     </div>
   );
 }

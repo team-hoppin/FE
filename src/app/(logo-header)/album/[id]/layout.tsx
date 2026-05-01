@@ -8,7 +8,7 @@ export default async function AlbumLayout({
   children: React.ReactNode;
 }) {
   const cookieStore = await cookies();
-  const isLoggedIn = cookieStore.has("refreshToken");
+  const isLoggedIn = cookieStore.has("accessToken");
 
   return (
     <>

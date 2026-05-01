@@ -1,5 +1,6 @@
 import AlbumDetail from "@/components/album/album-detail";
 import AlbumActionButton from "@/components/album/album-action-button";
+import { cookies } from "next/headers";
 import { getMusicPromotion } from "@/lib/api/music-promotion";
 import { getStreamingCode } from "@/utils/album";
 
@@ -8,6 +9,9 @@ interface Props {
 }
 
 export default async function AlbumDetailPage({ params }: Props) {
+  const cookieStore = await cookies();
+  const isLoggedIn = cookieStore.has("accessToken");
+
   const { id } = await params;
   const promotionId = Number(id);
 
@@ -38,13 +42,30 @@ export default async function AlbumDetailPage({ params }: Props) {
       <AlbumDetail {...albumInfo} />
 
       <div className="flex flex-col items-center gap-1">
-        <span className="c1-medium text-font-light">
-          팬들이 링크를 눌렀을 때 이렇게 보여요.
-        </span>
-        <span className="p2-bold text-font-middle mb-2">
-          마음에 들면 인스타그램 프로필에 바로 붙여보세요!
-        </span>
-        <AlbumActionButton url={data.trackingUrl} promotionId={promotionId} />
+        {isLoggedIn ? (
+          <>
+            <span className="c1-medium text-font-light">
+              팬들이 링크를 눌렀을 때 이렇게 보여요
+            </span>
+            <span className="p2-bold text-font-middle mb-2">
+              마음에 들면 인스타그램 프로필에 바로 붙여보세요!
+            </span>
+          </>
+        ) : (
+          <>
+            <span className="c1-medium text-font-light">
+              이 노래가 마음에 든다면?
+            </span>
+            <span className="p2-bold text-font-middle mb-2">
+              함께 듣고 싶은 사람에게 공유하세요
+            </span>
+          </>
+        )}
+        <AlbumActionButton
+          url={data.trackingUrl}
+          promotionId={promotionId}
+          isLoggedIn={isLoggedIn}
+        />
       </div>
     </main>
   );
