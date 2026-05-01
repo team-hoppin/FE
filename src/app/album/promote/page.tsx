@@ -4,8 +4,8 @@ import Link from "next/link";
 
 export default function Promote() {
   return (
-    <main className="flex flex-col gap-14">
-      <div className="mt-10 flex flex-col gap-1">
+    <main className="flex flex-col gap-16">
+      <div className="mt-7 flex flex-col gap-1">
         <h4 className="h3-bold text-font-basic">링크 복사 완료!</h4>
         <p className="p2-regular text-font-middle">
           이제 인스타 프로필에 링크를 붙여두세요.

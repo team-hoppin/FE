@@ -7,12 +7,13 @@ const MOCK_ALBUM = {
   artist: "김피크",
   releaseDate: "2026.01.01",
   streamingCodes: ["spotify", "youtube", "soundcloud"] as const,
-  message: "난 지금 미쳐가고 있다.\n이 헤드폰에 내 모든 몸과 영혼을 맡겼다.\n음악만이 나라에서 허락하는 유일한 마약이니까.\n이게 바로 지금의 나다.",
+  message:
+    "난 지금 미쳐가고 있다.\n이 헤드폰에 내 모든 몸과 영혼을 맡겼다.\n음악만이 나라에서 허락하는 유일한 마약이니까.\n이게 바로 지금의 나다.",
 };
 
 export default function AlbumDetailPage() {
   return (
-    <main className="mt-4 flex flex-col justify-center gap-10">
+    <main className="my-7 flex flex-col justify-center gap-10">
       <AlbumDetail {...MOCK_ALBUM} />
 
       <div className="flex flex-col items-center gap-3">
