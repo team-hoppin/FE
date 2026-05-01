@@ -22,12 +22,12 @@ export default async function AlbumDetailPage({ params }: Props) {
     streamingLinks: data.streamingLinks
       .sort((a, b) => a.displayOrder - b.displayOrder)
       .map((link) => {
-        const code = getStreamingCode(`https://${link.domain}`);
+        const code = getStreamingCode(link.url);
         if (!code) return null;
 
         return {
           code,
-          url: link.redirectUrl,
+          url: link.clickUrl,
         };
       })
       .filter((v): v is NonNullable<typeof v> => v !== null),
@@ -44,7 +44,7 @@ export default async function AlbumDetailPage({ params }: Props) {
         <span className="p2-bold text-font-middle mb-2">
           마음에 들면 인스타그램 프로필에 바로 붙여보세요!
         </span>
-        <AlbumActionButton url={data.trackingUrl} />
+        <AlbumActionButton url={data.trackingUrl} promotionId={promotionId} />
       </div>
     </main>
   );

@@ -15,7 +15,6 @@ export interface GetCoverImgUploadUrlRes {
 
 // 뮤지션 홍보 생성 Res
 export interface CreateMusicPromotionRes {
-  trackingUrl: string;
   promotionId: number;
 }
 
@@ -41,18 +40,16 @@ export interface GetMyPagePromotionsRes {
 // 뮤지션 홍보 조회 Res
 export interface GetMusicPromotionRes {
   promotionId: number;
-  trackingCode: string;
-  trackingUrl: string;
   activityName: string;
   songTitle: string;
   releaseDate: string;
   imageUrl: string;
   shortDescription: string;
   createdAt: string;
+  trackingUrl: string;
   streamingLinks: {
-    streamingCode: string;
-    domain: string;
-    redirectUrl: string;
+    url: string;
+    clickUrl: string;
     displayOrder: number;
   }[];
 }
