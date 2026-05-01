@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import AlbumCarousel, { AlbumData } from "@/components/mypage/album-carousel";
 import { getMyPagePromotions, getMusicPromotion, deleteMusicPromotion } from "@/lib/api/music-promotion";
 import { getStreamingCode } from "@/utils/album";
+import { Spinner } from "@/components/ui/spinner";
 
 const BASE_URL = "https://api.musicpeak.site";
 
@@ -137,7 +138,11 @@ export default function MyPage() {
 
   return (
     <main className="flex flex-1 flex-col gap-6 px-5 pt-10">
-      {isLoading ? null : albums.length > 0 ? (
+      {isLoading ? (
+        <div className="flex flex-1 items-center justify-center">
+          <Spinner className="text-main" />
+        </div>
+      ) : albums.length > 0 ? (
         <>
           <AlbumCarousel
             albums={albums}
