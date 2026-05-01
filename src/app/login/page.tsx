@@ -16,7 +16,7 @@ export default function Login() {
           <Image src={"/bamti.svg"} alt="Logo" width={128} height={128} />
         </div>
         <div className="flex flex-col gap-3">
-          <h1 className="h1-bold">이제 시작해볼까요?</h1>
+          <h1 className="h1-bold">로그인하고 시작해보세요</h1>
           <p className="text-font-middle p2-regular">
             음악에 더 집중할 시간을 드릴게요.
           </p>

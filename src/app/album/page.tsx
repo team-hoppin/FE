@@ -160,7 +160,7 @@ export default function AlbumPage() {
 
   return (
     <main className="flex flex-col">
-      <div className="mt-10 mb-7 flex flex-col gap-1">
+      <div className="my-7 flex flex-col gap-1">
         <h4 className="h3-bold text-font-basic">신곡에 대해 얘기해주세요</h4>
         <p className="p2-regular text-font-middle">
           뮤지션의 한마디가 스트리밍으로 이어져요.
