@@ -3,11 +3,7 @@
 import { Input } from "@/components/common/input";
 import { Textarea } from "@/components/common/textarea";
 import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Calendar } from "@/components/ui/calendar";
 import { PlusIcon, ImageIcon, CalendarIcon, XIcon } from "lucide-react";
 import Image from "next/image";
@@ -34,6 +30,7 @@ export default function AlbumPage() {
   const [artist, setArtist] = useState("");
   const [albumName, setAlbumName] = useState("");
   const [date, setDate] = useState<Date | undefined>();
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const [links, setLinks] = useState<string[]>([""]);
   const [description, setDescription] = useState("");
 
@@ -242,8 +239,8 @@ export default function AlbumPage() {
           value={date ? format(date, "yyyy.MM.dd") : ""}
           readOnly
           iconBtn={
-            <Popover>
-              <PopoverTrigger asChild>
+            <Dialog open={calendarOpen} onOpenChange={setCalendarOpen}>
+              <DialogTrigger asChild>
                 <button
                   className="flex items-center justify-center hover:cursor-pointer"
                   type="button"
@@ -251,11 +248,24 @@ export default function AlbumPage() {
                 >
                   <CalendarIcon size={24} />
                 </button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar mode="single" selected={date} onSelect={setDate} />
-              </PopoverContent>
-            </Popover>
+              </DialogTrigger>
+              <DialogContent className="max-w-2xs p-0" showCloseButton={false}>
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={(d) => { setDate(d); setCalendarOpen(false); }}
+                  className="flex w-full"
+                  classNames={{
+                    months:
+                      "flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0 flex-1",
+                    month: "space-y-4 w-full flex flex-col",
+                    table: "w-full h-full border-collapse space-y-1",
+                    head_row: "",
+                    row: "w-full mt-2",
+                  }}
+                />
+              </DialogContent>
+            </Dialog>
           }
         />
 
