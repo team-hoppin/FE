@@ -20,15 +20,11 @@ import { useState } from "react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 
-<<<<<<<< HEAD:src/components/report/coming-soon.tsx
 export default function ComingSoon() {
-========
-export default function Report() {
   const [date, setDate] = useState<Date | undefined>();
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [errors] = useState({ date: false });
 
->>>>>>>> 63109c4ff339601d94921ea6670a5185a4965861:src/app/report/page.tsx
   return (
     <main className="flex flex-col">
       <div className="my-7 flex flex-col gap-1">
