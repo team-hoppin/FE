@@ -124,6 +124,7 @@
   --color-main-dark1: #431ad2;
   --color-main-mid: #7866b5;
   --color-sub-dark1: #87da34;
+  --color-brand-gradient: linear-gradient(90deg, #8866ff 0%, #6a40fc 100%);
 
   /* Semantic */
   --color-success: #16b44a;
@@ -249,6 +250,10 @@
     font-size: 0.75rem; /* 12px */
     font-weight: 500;
     line-height: 130%;
+  }
+
+  .bg-brand-gradient {
+    background: var(--color-brand-gradient);
   }
 }
 
