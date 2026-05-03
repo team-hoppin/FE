@@ -84,7 +84,7 @@ export default function MyPage() {
   };
 
   const handleLogout = async () => {
-    await fetch(`${BASE_URL}/api/auth/logout`, {
+    await fetch(`${BASE_URL}/auth/logout`, {
       method: "POST",
       credentials: "include",
     });
@@ -139,7 +139,7 @@ export default function MyPage() {
       ),
       onAction: async () => {
         try {
-          const res = await fetch(`${BASE_URL}/api/me/delete`, {
+          const res = await fetch(`${BASE_URL}/me/delete`, {
             method: "DELETE",
             credentials: "include",
           });
