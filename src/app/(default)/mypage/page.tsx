@@ -17,7 +17,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import ErrorView from "@/components/common/error-view";
 
-const BASE_URL = "https://api.musicpeak.site";
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 async function fetchAlbums(): Promise<AlbumData[]> {
   const { promotions } = await getMyPagePromotions();
