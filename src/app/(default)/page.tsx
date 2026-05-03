@@ -1,14 +1,9 @@
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import HomeButtons from "@/components/home/home-buttons";
 import Image from "next/image";
 
 export default async function Home() {
   const cookieStore = await cookies();
-
-  if (!cookieStore.has("onboarding")) {
-    redirect("/onboarding");
-  }
 
   const isLoggedIn = cookieStore.has("refreshToken");
   const showIntro = !cookieStore.has("peak-intro-seen");
