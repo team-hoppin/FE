@@ -53,7 +53,7 @@ export default function OnboardingPage() {
   const scrollTo = (index: number) => emblaApi?.scrollTo(index);
 
   const handleFinish = () => {
-    localStorage.setItem("onboarding", "done");
+    document.cookie = "onboarding=done; path=/; max-age=31536000";
     router.push("/login");
   };
   const handleNext = () => {

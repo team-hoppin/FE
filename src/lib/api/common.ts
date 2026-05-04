@@ -10,13 +10,29 @@ export function getAccessToken() {
   return localStorage.getItem("accessToken");
 }
 
+async function refreshAccessToken(): Promise<boolean> {
+  try {
+    const res = await fetch(`${BASE_URL}/auth/token`, {
+      method: "POST",
+      credentials: "include",
+    });
+    if (!res.ok) return false;
+    const data = await res.json();
+    if (data.accessToken) localStorage.setItem("accessToken", data.accessToken);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 /**
  * 공통 API 요청 함수
  * 모든 fetch 요청의 기본 래퍼로 사용
  */
-export async function fetcher<T>(
+async function fetchWithAuth<T>(
   path: string,
-  options: RequestInit = {}
+  options: RequestInit,
+  retry = true
 ): Promise<T> {
   const token = getAccessToken();
 
@@ -36,9 +52,23 @@ export async function fetcher<T>(
     credentials: "include",
   });
 
+  if (res.status === 401 && retry) {
+    const refreshed = await refreshAccessToken();
+    if (refreshed) return fetchWithAuth<T>(path, options, false);
+    if (typeof window !== "undefined") window.location.href = "/login";
+    throw new Error("Unauthorized");
+  }
+
   if (!res.ok) {
     throw Error();
   }
 
   return res.json();
+}
+
+export async function fetcher<T>(
+  path: string,
+  options: RequestInit = {}
+): Promise<T> {
+  return fetchWithAuth<T>(path, options);
 }

@@ -17,7 +17,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import ErrorView from "@/components/common/error-view";
 
-const BASE_URL = "https://api.musicpeak.site";
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 async function fetchAlbums(): Promise<AlbumData[]> {
   const { promotions } = await getMyPagePromotions();
@@ -84,7 +84,7 @@ export default function MyPage() {
   };
 
   const handleLogout = async () => {
-    await fetch(`${BASE_URL}/api/auth/logout`, {
+    await fetch(`${BASE_URL}/auth/logout`, {
       method: "POST",
       credentials: "include",
     });
@@ -139,7 +139,7 @@ export default function MyPage() {
       ),
       onAction: async () => {
         try {
-          const res = await fetch(`${BASE_URL}/api/me/delete`, {
+          const res = await fetch(`${BASE_URL}/me/delete`, {
             method: "DELETE",
             credentials: "include",
           });
@@ -147,6 +147,7 @@ export default function MyPage() {
             toast.error("회원탈퇴에 실패했어요. 잠시 후 다시 시도해 주세요.");
             return;
           }
+          document.cookie = "onboarding=; path=/; max-age=0";
           router.replace("/onboarding");
           router.refresh();
         } catch {
