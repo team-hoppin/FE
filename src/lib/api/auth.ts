@@ -1,4 +1,5 @@
 import { fetcher } from "@/lib/api/common";
+import { GetMeRes } from "@/types/api-response";
 
 /**
  * 로그아웃
@@ -11,6 +12,22 @@ export async function logout(): Promise<void> {
     });
   } catch {
     throw new Error("[auth]: 로그아웃 실패");
+  }
+}
+
+/**
+ * 내 정보 조회
+ * [DELETE] /me
+ */
+export async function getMe(): Promise<GetMeRes> {
+  try {
+    const res = await fetcher<GetMeRes>("/me", {
+      method: "GET",
+    });
+
+    return res;
+  } catch {
+    throw new Error("[auth]: 내 정보 조회 실패");
   }
 }
 

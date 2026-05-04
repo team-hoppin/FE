@@ -2,10 +2,14 @@
 
 import { toast } from "sonner";
 import { ChevronLeftIcon, ExternalLinkIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useOpenAlertModal } from "@/stores/alert-modal-store";
-import { logout, withdraw } from "@/lib/api/auth";
+import { getMe, logout, withdraw } from "@/lib/api/auth";
+import { mapToAuthProvider } from "@/utils/mapper";
+import { GetMeRes } from "@/types/api-response";
 
 const EXTERNAL_LINKS = {
   TERMS:
@@ -17,6 +21,23 @@ const EXTERNAL_LINKS = {
 export default function SettingPage() {
   const router = useRouter();
   const openAlertModal = useOpenAlertModal();
+
+  const [me, setMe] = useState<GetMeRes | null>(null);
+
+  useEffect(() => {
+    const fetchMe = async () => {
+      try {
+        const data = await getMe();
+        setMe(data);
+      } catch {
+        toast.error("사용자 정보를 불러오지 못했어요.");
+      }
+    };
+
+    fetchMe();
+  }, []);
+
+  const providerInfo = me ? mapToAuthProvider[me.provider] : null;
 
   const handleLogout = async () => {
     try {
@@ -73,9 +94,16 @@ export default function SettingPage() {
 
         <div className="border-grey1 -mx-5 flex items-center justify-between border-y px-5">
           <div className="flex items-center gap-3 py-6">
-            <div className="bg-grey1 h-8 w-8 rounded-full"></div>
+            {providerInfo && (
+              <Image
+                src={providerInfo.icon}
+                alt={providerInfo.label}
+                width={32}
+                height={32}
+              />
+            )}
             <span className="p2-semibold text-font-basic">
-              csmusicpeak@gmail.com
+              {me?.email ?? "-"}
             </span>
           </div>
 
