@@ -44,11 +44,14 @@ export default function Report() {
   });
   const [isLoading, setIsLoading] = useState(false);
 
+  const isValidInstagram = (value: string) =>
+    /^@[a-zA-Z0-9._]{1,30}$/.test(value);
+
   const handleInstagramChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     const next = val.startsWith("@") ? val : "@" + val.replace(/^@*/, "");
     setInstagram(next);
-    if (next.trim().length > 1) {
+    if (isValidInstagram(next)) {
       setErrors((prev) => ({ ...prev, instagram: false }));
     }
   };
@@ -62,7 +65,7 @@ export default function Report() {
   const handleSubmit = async () => {
     const newErrors: ReportFormErrors = {
       promotionId: !selectedPromotionId,
-      instagram: instagram.trim().length <= 1,
+      instagram: !isValidInstagram(instagram),
       date: !date,
     };
     setErrors(newErrors);
@@ -218,6 +221,13 @@ export default function Report() {
                   <Calendar
                     mode="single"
                     selected={date}
+                    disabled={(d) => {
+                      const today = new Date();
+                      today.setHours(0, 0, 0, 0);
+                      const oneYearAgo = new Date(today);
+                      oneYearAgo.setFullYear(today.getFullYear() - 1);
+                      return d > today || d < oneYearAgo;
+                    }}
                     onSelect={(d) => {
                       setDate(d);
                       setCalendarOpen(false);
@@ -243,7 +253,7 @@ export default function Report() {
           variant="btnPurple"
           size="full"
           disabled={
-            !selectedPromotionId || instagram.trim().length <= 1 || !date || isLoading
+            !selectedPromotionId || !isValidInstagram(instagram) || !date || isLoading
           }
           onClick={handleSubmit}
         >
