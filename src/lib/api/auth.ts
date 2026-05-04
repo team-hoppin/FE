@@ -17,7 +17,7 @@ export async function logout(): Promise<void> {
 
 /**
  * 내 정보 조회
- * [DELETE] /me
+ * [GET] /me
  */
 export async function getMe(): Promise<GetMeRes> {
   try {
