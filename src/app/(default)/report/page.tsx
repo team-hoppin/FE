@@ -17,11 +17,55 @@ import { CalendarIcon } from "lucide-react";
 import { useState } from "react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
+import { useQuery } from "@tanstack/react-query";
+import { getMyPagePromotions } from "@/lib/api/music-promotion";
+import { useRouter } from "next/navigation";
+
+type ReportFormErrors = {
+  promotionId: boolean;
+  instagram: boolean;
+  date: boolean;
+};
 
 export default function Report() {
+  const router = useRouter();
   const [date, setDate] = useState<Date | undefined>();
   const [calendarOpen, setCalendarOpen] = useState(false);
-  const [errors] = useState({ date: false });
+  const [selectedPromotionId, setSelectedPromotionId] = useState<string>("");
+  const [instagram, setInstagram] = useState("@");
+  const [errors, setErrors] = useState<ReportFormErrors>({
+    promotionId: false,
+    instagram: false,
+    date: false,
+  });
+
+  const handleInstagramChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    const next = val.startsWith("@") ? val : "@" + val.replace(/^@*/, "");
+    setInstagram(next);
+    if (next.trim().length > 1) {
+      setErrors((prev) => ({ ...prev, instagram: false }));
+    }
+  };
+
+  const { data: promotionsData } = useQuery({
+    queryKey: ["myPagePromotions"],
+    queryFn: getMyPagePromotions,
+  });
+  const promotions = promotionsData?.promotions ?? [];
+
+  const handleSubmit = () => {
+    const newErrors: ReportFormErrors = {
+      promotionId: !selectedPromotionId,
+      instagram: instagram.trim().length <= 1,
+      date: !date,
+    };
+    setErrors(newErrors);
+
+    if (newErrors.promotionId || newErrors.instagram || newErrors.date) return;
+
+    router.push("/report/complete");
+  };
 
   return (
     <main className="flex flex-col">
@@ -67,15 +111,25 @@ export default function Report() {
               생성된 홍보 링크 기준으로 분석해드려요
             </p>
           </div>
-          <Select>
-            <SelectTrigger>
+          <Select
+            value={selectedPromotionId}
+            onValueChange={(v) => {
+              setSelectedPromotionId(v);
+              setErrors((prev) => ({ ...prev, promotionId: false }));
+            }}
+          >
+            <SelectTrigger
+              className={errors.promotionId ? "border-danger" : ""}
+            >
               <SelectValue placeholder="앨범 선택하기" />
             </SelectTrigger>
             <SelectContent position="popper">
               <SelectGroup>
-                <SelectItem value="앨범명 1">앨범명 1</SelectItem>
-                <SelectItem value="앨범명 2">앨범명 2</SelectItem>
-                <SelectItem value="앨범명 3">앨범명 3</SelectItem>
+                {promotions.map((p) => (
+                  <SelectItem key={p.promotionId} value={String(p.promotionId)}>
+                    {p.title}
+                  </SelectItem>
+                ))}
               </SelectGroup>
             </SelectContent>
           </Select>
@@ -99,12 +153,16 @@ export default function Report() {
               홍보 중이신 인스타그램 계정을 입력해주세요
             </p>
             <Input
-              // className={
-              //   errors.artist ? "border-danger focus-visible:ring-danger" : ""
-              // }
+              className={
+                errors.instagram
+                  ? "border-danger focus-visible:ring-danger"
+                  : ""
+              }
               label="인스타그램 계정"
               placeholder="인스타그램 계정을 입력해주세요"
               maxLength={50}
+              value={instagram}
+              onChange={handleInstagramChange}
             />
           </div>
         </section>
@@ -147,6 +205,7 @@ export default function Report() {
                     onSelect={(d) => {
                       setDate(d);
                       setCalendarOpen(false);
+                      setErrors((prev) => ({ ...prev, date: false }));
                     }}
                     className="flex w-full"
                     classNames={{
@@ -163,10 +222,16 @@ export default function Report() {
             }
           />
         </section>
-        {/* <Button variant="btnPurple" size="full" disabled={!date}>
-         */}
-        <Button variant="btnPurple" size="full">
-          <Link href="/report/complete">분석시작하기</Link>
+
+        <Button
+          variant="btnPurple"
+          size="full"
+          disabled={
+            !selectedPromotionId || instagram.trim().length <= 1 || !date
+          }
+          onClick={handleSubmit}
+        >
+          분석 시작하기
         </Button>
       </div>
       {/* <ComingSoon /> */}
