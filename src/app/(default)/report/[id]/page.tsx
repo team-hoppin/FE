@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { Calendar, ChevronRight } from "lucide-react";
-import { useRef } from "react";
 import { toJpeg } from "html-to-image";
 import { toast } from "sonner";
 
@@ -13,10 +12,8 @@ const STATS = [
 ];
 
 export default function ReportDetailPage() {
-  const captureRef = useRef<HTMLDivElement>(null);
-
   const handleSaveImage = async () => {
-    const target = captureRef.current;
+    const target = document.getElementById("app-root");
     if (!target) return;
     try {
       const dataUrl = await toJpeg(target, {
@@ -36,7 +33,6 @@ export default function ReportDetailPage() {
   return (
     <main className="flex flex-col gap-9">
       <div
-        ref={captureRef}
         className="bg-allwhite flex min-h-screen flex-col gap-9"
       >
         <div className="mt-7 flex flex-col items-start gap-1">
