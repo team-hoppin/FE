@@ -1,5 +1,5 @@
-import ComingSoon from "@/components/report/coming-soon";
+import ReportForm from "@/components/report/report-form";
 
 export default function Report() {
-  return <ComingSoon />;
+  return <ReportForm />;
 }

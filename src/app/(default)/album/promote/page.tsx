@@ -64,7 +64,7 @@ export default function Promote() {
             이미 게시물을 올렸다면?
           </p>
           <Link
-            href={"/report"}
+            href={"/report/coming-soon"}
             className="text-main cursor-pointer text-xs font-bold underline"
           >
             내 홍보 콘텐츠 진단하기
