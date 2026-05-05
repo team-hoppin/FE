@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Calendar, ChevronRight } from "lucide-react";
 import { useRef } from "react";
-import { toPng } from "html-to-image";
+import { toJpeg } from "html-to-image";
 import { toast } from "sonner";
 
 const STATS = [
@@ -19,13 +19,13 @@ export default function ReportDetailPage() {
     const target = captureRef.current;
     if (!target) return;
     try {
-      const dataUrl = await toPng(target, {
+      const dataUrl = await toJpeg(target, {
         cacheBust: true,
         pixelRatio: 1,
-        filter: (node) => !node.dataset?.captureIgnore,
+        filter: (node: HTMLElement) => !node.dataset?.captureIgnore,
       });
       const link = document.createElement("a");
-      link.download = "report.png";
+      link.download = "report.jpg";
       link.href = dataUrl;
       link.click();
     } catch {
@@ -34,8 +34,11 @@ export default function ReportDetailPage() {
   };
 
   return (
-    <main className="bg-allwhite flex flex-col gap-9">
-      <div ref={captureRef} className="flex min-h-screen flex-col gap-9">
+    <main className="flex flex-col gap-9">
+      <div
+        ref={captureRef}
+        className="bg-allwhite flex min-h-screen flex-col gap-9"
+      >
         <div className="mt-7 flex flex-col items-start gap-1">
           <h2 className="h2-bold text-font-basic">
             김피크님의 홍보 현황이에요
