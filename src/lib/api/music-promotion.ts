@@ -29,38 +29,6 @@ export async function createMusicPromotion(
 }
 
 /**
- * 마이페이지 프로모션 목록 조회
- * [GET] /mypage/promotions
- */
-export async function getMyPagePromotions(): Promise<GetMyPagePromotionsRes> {
-  try {
-    const res = await fetcher<GetMyPagePromotionsRes>("/mypage/promotions", {
-      method: "GET",
-    });
-
-    return res;
-  } catch (e) {
-    console.error("[music-promotion]: 마이페이지 프로모션 목록 조회 실패");
-    throw e;
-  }
-}
-
-/**
- * 뮤지션 홍보 삭제
- * [DELETE] /music-promotions/{promotionId}
- */
-export async function deleteMusicPromotion(promotionId: number): Promise<void> {
-  try {
-    await fetcher<void>(`/music-promotions/${promotionId}`, {
-      method: "DELETE",
-    });
-  } catch (e) {
-    console.error("[music-promotion]: 뮤지션 홍보 삭제 실패");
-    throw e;
-  }
-}
-
-/**
  * 뮤지션 홍보 조회
  * [GET] /music-promotions/{promotionId}
  */
@@ -85,6 +53,52 @@ export async function getMusicPromotion(
  * 뮤지션 홍보 수정
  * [PUT] /music-promotions/{promotionId}
  */
+export async function updateMusicPromotion(
+  promotionId: number,
+  payload: MusicPromotionInfo
+): Promise<void> {
+  try {
+    await fetcher(`/music-promotions/${promotionId}`, {
+      method: "PUT",
+      body: JSON.stringify(payload),
+    });
+  } catch {
+    throw new Error("[music-promotion]: 뮤지션 홍보 수정 실패");
+  }
+}
+
+/**
+ * 뮤지션 홍보 삭제
+ * [DELETE] /music-promotions/{promotionId}
+ */
+export async function deleteMusicPromotion(promotionId: number): Promise<void> {
+  try {
+    await fetcher<void>(`/music-promotions/${promotionId}`, {
+      method: "DELETE",
+    });
+  } catch (e) {
+    console.error("[music-promotion]: 뮤지션 홍보 삭제 실패");
+    throw e;
+  }
+}
+
+/**
+ * 마이페이지 프로모션 목록 조회
+ * [GET] /mypage/promotions
+ */
+export async function getMyPagePromotions(): Promise<GetMyPagePromotionsRes> {
+  try {
+    const res = await fetcher<GetMyPagePromotionsRes>("/mypage/promotions", {
+      method: "GET",
+    });
+
+    return res;
+  } catch (e) {
+    console.error("[music-promotion]: 마이페이지 프로모션 목록 조회 실패");
+    throw e;
+  }
+}
+
 /**
  * AI 분석 요청
  * [POST] /ai/analyze/{promotionId}
@@ -101,19 +115,5 @@ export async function analyzePromotion(
     return res;
   } catch {
     throw new Error("[music-promotion]: AI 분석 요청 실패");
-  }
-}
-
-export async function updateMusicPromotion(
-  promotionId: number,
-  payload: MusicPromotionInfo
-): Promise<void> {
-  try {
-    await fetcher(`/music-promotions/${promotionId}`, {
-      method: "PUT",
-      body: JSON.stringify(payload),
-    });
-  } catch {
-    throw new Error("[music-promotion]: 뮤지션 홍보 수정 실패");
   }
 }
