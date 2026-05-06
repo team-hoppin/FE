@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 
 export default async function Header() {
   const cookieStore = await cookies();
-  const isLoggedIn = cookieStore.has("refreshToken");
+  const isLoggedIn = cookieStore.has("isLoggedIn");
 
   return (
     <div className="sticky top-0 z-40 flex h-14 w-full items-center justify-between bg-white">
