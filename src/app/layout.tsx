@@ -80,8 +80,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-        <div className="mx-auto flex min-h-screen w-full max-w-(--max-width) flex-col bg-white px-5 pb-9 shadow-2xl">
-          <div className="flex flex-1 flex-col">
+        <div className="mx-auto flex min-h-screen w-full max-w-(--max-width) flex-col shadow-2xl">
+          <div
+            id="app-root"
+            className="flex flex-1 flex-col bg-white px-5 pb-9"
+          >
             <QueryProvider>
               <TooltipProvider>{children}</TooltipProvider>
             </QueryProvider>
