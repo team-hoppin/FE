@@ -1,5 +1,6 @@
 "use client";
 
+import BackButton from "@/components/common/back-button";
 import { Button } from "@/components/ui/button";
 import { Calendar, ChevronRight } from "lucide-react";
 import { toJpeg } from "html-to-image";
@@ -32,6 +33,7 @@ export default function ReportDetailPage() {
 
   return (
     <main className="flex flex-col gap-9">
+      <BackButton href="/report" />
       <div
         className="bg-allwhite flex min-h-screen flex-col gap-9 pb-24"
       >
