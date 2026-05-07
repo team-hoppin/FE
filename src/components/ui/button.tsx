@@ -19,8 +19,7 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:hover:bg-destructive/30 dark:focus-visible:ring-destructive/40",
         link: "text-primary underline-offset-4 hover:underline",
-        btnPurple:
-          "bg-main text-white disabled:bg-grey2",
+        btnPurple: "bg-main text-white disabled:bg-font-light",
         btnPurpleSub: "bg-main-light1 text-main border-main-light2",
         btnWhite: "bg-white text-font-middle border-border",
       },
