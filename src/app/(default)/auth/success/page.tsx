@@ -19,7 +19,7 @@ export default function AuthSuccess() {
           window.location.replace("/login");
         }
       })
-      .catch(() => { window.location.replace("/login"); })
+      .catch((err) => { if (err.name !== "AbortError") window.location.replace("/login"); })
       .finally(() => clearTimeout(timer));
 
     return () => {
