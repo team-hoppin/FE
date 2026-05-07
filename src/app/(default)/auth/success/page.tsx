@@ -1,11 +1,8 @@
 "use client";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { Spinner } from "@/components/ui/spinner";
 
 export default function AuthSuccess() {
-  const router = useRouter();
-
   useEffect(() => {
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 10_000);
@@ -17,19 +14,19 @@ export default function AuthSuccess() {
       .then((res) => {
         if (res.ok) {
           document.cookie = "isLoggedIn=true; path=/; max-age=604800";
-          router.replace("/");
+          window.location.replace("/");
         } else {
-          router.replace("/login");
+          window.location.replace("/login");
         }
       })
-      .catch(() => router.replace("/login"))
+      .catch(() => { window.location.replace("/login"); })
       .finally(() => clearTimeout(timer));
 
     return () => {
       clearTimeout(timer);
       controller.abort();
     };
-  }, [router]);
+  }, []);
 
   return (
     <div className="flex min-h-screen items-center justify-center">
