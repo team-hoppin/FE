@@ -86,11 +86,20 @@ export async function deleteMusicPromotion(promotionId: number): Promise<void> {
  * 마이페이지 프로모션 목록 조회
  * [GET] /mypage/promotions
  */
-export async function getMyPagePromotions(): Promise<GetMyPagePromotionsRes> {
+export async function getMyPagePromotions(
+  page = 0
+): Promise<GetMyPagePromotionsRes> {
   try {
-    const res = await fetcher<GetMyPagePromotionsRes>("/mypage/promotions", {
-      method: "GET",
+    const params = new URLSearchParams({
+      page: page.toString(),
     });
+
+    const res = await fetcher<GetMyPagePromotionsRes>(
+      `/mypage/promotions?${params.toString()}`,
+      {
+        method: "GET",
+      }
+    );
 
     return res;
   } catch (e) {

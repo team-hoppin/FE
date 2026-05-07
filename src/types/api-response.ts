@@ -21,15 +21,6 @@ export interface CreateMusicPromotionRes {
 }
 
 // 마이페이지 프로모션 목록 조회 Res
-export interface MyPagePromotion {
-  promotionId: number;
-  title: string;
-  coverImageUrl: string;
-  shareCount: number;
-  profileVisitCount: number;
-  linkClickCount: number;
-}
-
 export interface GetMyPagePromotionsRes {
   promotions: AlbumItem[];
   page: number;

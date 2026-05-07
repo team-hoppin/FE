@@ -7,18 +7,60 @@ import AlbumItemCard from "@/components/mypage/album-item-card";
 import ErrorView from "@/components/common/error-view";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
+import { useRef, useEffect } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { getMyPagePromotions } from "@/lib/api/music-promotion";
 
 export default function MyPage() {
   const router = useRouter();
 
-  const { data, isLoading, isError, refetch } = useQuery({
+  const observerRef = useRef<HTMLDivElement | null>(null);
+
+  const {
+    data,
+    isLoading,
+    isError,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
     queryKey: ["mypage-promotions"],
-    queryFn: getMyPagePromotions,
+    queryFn: ({ pageParam = 0 }) => getMyPagePromotions(pageParam),
+
+    initialPageParam: 0,
+
+    getNextPageParam: (lastPage) => {
+      if (!lastPage.hasNext) return undefined;
+      return lastPage.page + 1;
+    },
   });
 
-  const albums = data?.promotions ?? [];
+  useEffect(() => {
+    const target = observerRef.current;
+
+    if (!target || !hasNextPage) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      {
+        rootMargin: "24px",
+      }
+    );
+
+    observer.observe(target);
+
+    return () => {
+      observer.unobserve(target);
+      observer.disconnect();
+    };
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  const albums = data?.pages.flatMap((page) => page.promotions) ?? [];
 
   return (
     <main className="flex flex-1 flex-col gap-9">
@@ -56,6 +98,14 @@ export default function MyPage() {
               <AlbumItemCard key={album.promotionId} album={album} />
             ))}
           </div>
+
+          {isFetchingNextPage && (
+            <div className="flex justify-center py-8">
+              <Spinner className="text-main" />
+            </div>
+          )}
+
+          <div ref={observerRef} className="h-1" />
         </section>
       ) : (
         <div className="flex flex-1 flex-col items-center justify-center gap-6 text-center">
