@@ -2,18 +2,15 @@
 
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
-import { ChevronLeftIcon } from "lucide-react";
+import BackButton from "@/components/common/back-button";
 import AlbumItemCard from "@/components/mypage/album-item-card";
 import ErrorView from "@/components/common/error-view";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useRef, useEffect } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getMyPagePromotions } from "@/lib/api/music-promotion";
 
 export default function MyPage() {
-  const router = useRouter();
-
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   const {
@@ -64,14 +61,7 @@ export default function MyPage() {
 
   return (
     <main className="flex flex-1 flex-col gap-9">
-      <header className="text-font-middle relative flex items-center">
-        <button className="cursor-pointer" onClick={() => router.back()}>
-          <ChevronLeftIcon size={32} />
-        </button>
-        <h3 className="h3-bold absolute left-1/2 -translate-x-1/2">
-          마이페이지
-        </h3>
-      </header>
+      <BackButton title="마이페이지" />
 
       {isLoading ? (
         <div className="flex flex-1 items-center justify-center">
