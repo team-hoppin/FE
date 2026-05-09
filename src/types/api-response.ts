@@ -69,7 +69,6 @@ export interface GetAnalysisPageRes {
 // 진단 결과 상세 조회 Res
 export interface GetDiagnosisDetailRes {
   headline: string;
-  periodLabel: string;
   summaryMetrics: {
     followerEngagementRate: number;
     promoClickRateByEngagement: number;
