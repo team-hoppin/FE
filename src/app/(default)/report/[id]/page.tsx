@@ -1,6 +1,7 @@
 "use client";
 
 import BackButton from "@/components/common/back-button";
+import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
 import { Calendar, ChevronRight } from "lucide-react";
 import { toJpeg } from "html-to-image";
@@ -15,14 +16,24 @@ export default function ReportDetailPage() {
   const promotionId = Number(id);
 
   const [data, setData] = useState<GetDiagnosisDetailRes | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const load = async () => {
-      const analysisPage = await getAnalysisPage(promotionId);
-      const cards = analysisPage.diagnosisSection.diagnosisCards;
-      if (!cards.length) return;
-      const detail = await getDiagnosisDetail(promotionId, cards[0].diagnosisId);
-      setData(detail);
+      try {
+        const analysisPage = await getAnalysisPage(promotionId);
+        const cards = analysisPage.diagnosisSection.diagnosisCards;
+        if (!cards.length) return;
+        const detail = await getDiagnosisDetail(
+          promotionId,
+          cards[0].diagnosisId
+        );
+        setData(detail);
+      } catch {
+        toast.error("데이터를 불러오는데 실패했어요.");
+      } finally {
+        setIsLoading(false);
+      }
     };
     load();
   }, [promotionId]);
@@ -47,15 +58,21 @@ export default function ReportDetailPage() {
 
   const [from, to] = data?.diagnosis.highlightSection.split(" > ") ?? [];
 
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <Spinner className="text-main" />
+      </div>
+    );
+  }
+
   return (
     <>
       <BackButton href="/report" />
       <main className="flex flex-col gap-9">
         <div className="bg-allwhite flex min-h-screen flex-col gap-9 pb-24">
           <div className="mt-7 flex flex-col items-start gap-1">
-            <h2 className="h2-bold text-font-basic">
-              홍보 현황이에요
-            </h2>
+            <h2 className="h2-bold text-font-basic">홍보 현황이에요</h2>
             <div className="border-border text-font-middle flex items-center gap-2 rounded-full border px-4 py-2">
               <Calendar size={16} />
               <span className="p2-medium">{data?.periodLabel ?? "-"}</span>
@@ -65,9 +82,18 @@ export default function ReportDetailPage() {
           <div className="flex flex-col gap-4">
             <section className="grid grid-cols-3 gap-5 text-center">
               {[
-                { label: "팔로워 대비 반응률", value: data?.summaryMetrics.followerEngagementRate },
-                { label: "반응 대비 홍보 클릭률", value: data?.summaryMetrics.promoClickRateByEngagement },
-                { label: "홍보 대비 스트리밍 클릭률", value: data?.summaryMetrics.streamingClickRateByPromoClick },
+                {
+                  label: "팔로워 대비 반응률",
+                  value: data?.summaryMetrics.followerEngagementRate,
+                },
+                {
+                  label: "반응 대비 홍보 클릭률",
+                  value: data?.summaryMetrics.promoClickRateByEngagement,
+                },
+                {
+                  label: "홍보 대비 스트리밍 클릭률",
+                  value: data?.summaryMetrics.streamingClickRateByPromoClick,
+                },
               ].map(({ label, value }) => (
                 <div
                   key={label}
@@ -106,8 +132,12 @@ export default function ReportDetailPage() {
                 <li className="bg-grey1 grid grid-cols-[1fr] items-center gap-5 rounded-2xl px-5 py-5">
                   <div className="flex flex-col gap-1 text-wrap break-keep whitespace-pre-line">
                     <h5 className="p1-bold text-main">{data.action.title}</h5>
-                    <p className="p2-medium text-font-middle">{data.action.metric}</p>
-                    <p className="p2-regular text-font-middle">{data.action.details}</p>
+                    <p className="p2-medium text-font-middle">
+                      {data.action.metric}
+                    </p>
+                    <p className="p2-regular text-font-middle">
+                      {data.action.details}
+                    </p>
                   </div>
                 </li>
               )}
