@@ -3,6 +3,8 @@ import { MusicPromotionInfo } from "@/types/album";
 import {
   AnalysisJobCreateRes,
   CreateMusicPromotionRes,
+  GetAnalysisPageRes,
+  GetDiagnosisDetailRes,
   GetMusicPromotionRes,
   GetMyPagePromotionsRes,
 } from "@/types/api-response";
@@ -100,6 +102,45 @@ export async function analyzePromotion(
     return res;
   } catch {
     throw new Error("[music-promotion]: AI 분석 요청 실패");
+  }
+}
+
+/**
+ * 홍보 분석 페이지 조회
+ * [GET] /music-promotions/{promotionId}/analysis-page
+ */
+export async function getAnalysisPage(
+  promotionId: number
+): Promise<GetAnalysisPageRes> {
+  try {
+    const res = await fetcher<GetAnalysisPageRes>(
+      `/music-promotions/${promotionId}/analysis-page`,
+      { method: "GET" }
+    );
+    return res;
+  } catch (e) {
+    console.error("[music-promotion]: 홍보 분석 페이지 조회 실패");
+    throw e;
+  }
+}
+
+/**
+ * 진단 결과 상세 조회
+ * [GET] /music-promotions/{promotionId}/diagnoses/{diagnosisId}
+ */
+export async function getDiagnosisDetail(
+  promotionId: number,
+  diagnosisId: number
+): Promise<GetDiagnosisDetailRes> {
+  try {
+    const res = await fetcher<GetDiagnosisDetailRes>(
+      `/music-promotions/${promotionId}/diagnoses/${diagnosisId}`,
+      { method: "GET" }
+    );
+    return res;
+  } catch (e) {
+    console.error("[music-promotion]: 진단 결과 상세 조회 실패");
+    throw e;
   }
 }
 

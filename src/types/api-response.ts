@@ -47,6 +47,43 @@ export interface AnalysisJobCreateRes {
   status: string;
 }
 
+// 홍보 분석 페이지 조회 Res
+export interface DiagnosisCard {
+  diagnosisId: number;
+  diagnosedDate: string;
+  bottleneckType: string;
+  headline: string;
+  actionTitle: string;
+  unread: boolean;
+}
+
+export interface GetAnalysisPageRes {
+  promotionId: number;
+  diagnosisSection: {
+    status: string;
+    diagnosisCards: DiagnosisCard[];
+  };
+}
+
+// 진단 결과 상세 조회 Res
+export interface GetDiagnosisDetailRes {
+  headline: string;
+  periodLabel: string;
+  summaryMetrics: {
+    followerEngagementRate: number;
+    promoClickRateByEngagement: number;
+    streamingClickRateByPromoClick: number;
+  };
+  diagnosis: {
+    highlightSection: string;
+  };
+  action: {
+    title: string;
+    metric: string;
+    details: string;
+  };
+}
+
 // 뮤지션 홍보 조회 Res
 export interface GetMusicPromotionRes {
   promotionId: number;
