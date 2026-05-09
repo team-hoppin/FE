@@ -78,7 +78,7 @@ export interface GetDiagnosisDetailRes {
     highlightFrom: string;
     highlightTo: string;
   };
-  action: {
+  action?: {
     title: string;
     metric: string;
     details: string;
