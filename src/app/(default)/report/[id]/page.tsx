@@ -25,10 +25,12 @@ export default function ReportDetailPage() {
   const [diagnosedDate, setDiagnosedDate] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(false);
 
   const load = useCallback(async () => {
     setIsLoading(true);
     setIsError(false);
+    setIsEmpty(false);
     try {
       const [analysisPage, promotion] = await Promise.all([
         getAnalysisPage(promotionId),
@@ -36,7 +38,10 @@ export default function ReportDetailPage() {
       ]);
       setActivityName(promotion.activityName);
       const cards = analysisPage.diagnosisSection.diagnosisCards;
-      if (!cards.length) return;
+      if (!cards.length) {
+        setIsEmpty(true);
+        return;
+      }
       setDiagnosedDate(cards[0].diagnosedDate);
       const detail = await getDiagnosisDetail(
         promotionId,
@@ -101,6 +106,8 @@ export default function ReportDetailPage() {
       />
     );
   }
+
+  if (isEmpty || !data) return null;
 
   return (
     <>
