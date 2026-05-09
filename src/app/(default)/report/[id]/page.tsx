@@ -15,6 +15,12 @@ import {
 } from "@/lib/api/music-promotion";
 import { GetDiagnosisDetailRes } from "@/types/api-response";
 
+const SUMMARY_METRICS = [
+  { label: "팔로워 대비 반응률", key: "followerEngagementRate" },
+  { label: "반응 대비 홍보 클릭률", key: "promoClickRateByEngagement" },
+  { label: "홍보 대비 스트리밍 클릭률", key: "streamingClickRateByPromoClick" },
+] as const;
+
 export default function ReportDetailPage() {
   const { id } = useParams<{ id: string }>();
   const promotionId = Number(id);
@@ -127,20 +133,7 @@ export default function ReportDetailPage() {
 
           <div className="flex flex-col gap-4">
             <section className="grid grid-cols-3 gap-5 text-center">
-              {[
-                {
-                  label: "팔로워 대비 반응률",
-                  value: data.summaryMetrics.followerEngagementRate,
-                },
-                {
-                  label: "반응 대비 홍보 클릭률",
-                  value: data.summaryMetrics.promoClickRateByEngagement,
-                },
-                {
-                  label: "홍보 대비 스트리밍 클릭률",
-                  value: data.summaryMetrics.streamingClickRateByPromoClick,
-                },
-              ].map(({ label, value }) => (
+              {SUMMARY_METRICS.map(({ label, key }) => (
                 <div
                   key={label}
                   className="box-item rounded-r2 bg-grey1 flex min-h-26 flex-col justify-start gap-2.5 p-2.5"
@@ -149,7 +142,7 @@ export default function ReportDetailPage() {
                     {label}
                   </div>
                   <h1 className="text-main text-4xl font-semibold">
-                    {value ?? "-"}
+                    {data.summaryMetrics[key] ?? "-"}
                   </h1>
                 </div>
               ))}
