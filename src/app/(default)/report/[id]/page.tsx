@@ -4,7 +4,7 @@ import BackButton from "@/components/common/back-button";
 import ErrorView from "@/components/common/error-view";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
-import { Calendar, ChevronRight } from "lucide-react";
+import { ArrowBigRight, Calendar, ChevronRight } from "lucide-react";
 import { toJpeg } from "html-to-image";
 import { toast } from "sonner";
 import { useCallback, useEffect, useState } from "react";
@@ -139,7 +139,7 @@ export default function ReportDetailPage() {
                   key={label}
                   className="box-item rounded-r2 bg-grey1 flex min-h-26 flex-col justify-start gap-2.5 p-2.5"
                 >
-                  <div className="c1-medium text-font-middle rounded-r1 w-full bg-white py-1">
+                  <div className="c1-medium text-font-middle rounded-r1 w-full bg-white py-1 break-keep">
                     {label}
                   </div>
                   <h1 className="text-main text-4xl font-semibold">
@@ -171,10 +171,13 @@ export default function ReportDetailPage() {
               {data?.action && (
                 <li className="bg-grey1 grid grid-cols-[1fr] items-center gap-5 rounded-2xl px-5 py-5">
                   <div className="flex flex-col gap-1 text-wrap break-keep whitespace-pre-line">
-                    <h5 className="p1-bold text-main">{data.action.title}</h5>
-                    <p className="p2-medium text-font-middle">
+                    <h5 className="p1-bold text-font-basic">
+                      {data.action.title}
+                    </h5>
+                    <h6 className="p2-bold text-main flex items-start gap-1">
+                      <ArrowBigRight size={20} fill="currentColor" />
                       {data.action.metric}
-                    </p>
+                    </h6>
                     <p className="p2-regular text-font-middle">
                       {data.action.details}
                     </p>
