@@ -1,4 +1,5 @@
 import { fetcher } from "@/lib/api/common";
+import { fetchEventSource } from "@microsoft/fetch-event-source";
 import { MusicPromotionInfo } from "@/types/album";
 import {
   AnalysisJobCreateRes,
@@ -6,6 +7,8 @@ import {
   GetMusicPromotionRes,
   GetMyPagePromotionsRes,
 } from "@/types/api-response";
+
+const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 /**
  * 뮤지션 홍보 생성
@@ -104,6 +107,85 @@ export async function getMyPagePromotions(
     return res;
   } catch (e) {
     console.error("[music-promotion]: 마이페이지 프로모션 목록 조회 실패");
+    throw e;
+  }
+}
+
+/**
+ * 마이페이지 프로모션 실시간 스트림 구독 (SSE)
+ * [GET] /mypage/promotions/stream
+ *
+ * 수신 이벤트 :
+ * - heartbeat                    : 연결 유지용 이벤트
+ * - connected                    : 최초 연결 성공 이벤트
+ * - promotion-analysis-updated   : 분석 상태 변경 이벤트
+ */
+export function subscribePromotionStream({
+  token,
+  onPromotionUpdated,
+}: {
+  token: string;
+  onPromotionUpdated: () => void;
+}) {
+  const controller = new AbortController();
+
+  fetchEventSource(`${BASE_URL}/mypage/promotions/stream`, {
+    method: "GET",
+
+    headers: {
+      Accept: "text/event-stream",
+      Authorization: `Bearer ${token}`,
+    },
+
+    signal: controller.signal,
+
+    openWhenHidden: true, // 브라우저 탭이 백그라운드 상태여도 연결 유지
+
+    async onopen(response) {
+      if (!response.ok) {
+        throw new Error("SSE 연결 실패");
+      }
+    },
+
+    // 서버 이벤트 수신
+    onmessage(event) {
+      switch (event.event) {
+        case "heartbeat":
+        case "connected":
+          return;
+
+        case "promotion-analysis-updated":
+          onPromotionUpdated();
+          return;
+      }
+    },
+
+    onerror(error) {
+      console.error("[SSE] 에러 발생", error);
+      throw error;
+    },
+
+    onclose() {
+      console.log("[SSE] 연결 종료");
+    },
+  }).catch((e) => {
+    console.error("[SSE] fetchEventSource 실패", e);
+  });
+
+  return controller;
+}
+
+/**
+ * 최신 AI 진단 결과 읽음 처리
+ * [PATCH] /ai/promotions/{promotionId}/diagnosis/read
+ */
+export async function patchDiagnosisRead(promotionId: number): Promise<void> {
+  try {
+    await fetcher(`/ai/promotions/${promotionId}/diagnosis/read`, {
+      method: "PATCH",
+    });
+  } catch (e) {
+    console.error("[music-promotion] 읽음 처리 실패", e);
     throw e;
   }
 }

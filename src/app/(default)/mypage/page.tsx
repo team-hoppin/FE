@@ -7,10 +7,15 @@ import AlbumItemCard from "@/components/mypage/album-item-card";
 import ErrorView from "@/components/common/error-view";
 import Link from "next/link";
 import { useRef, useEffect } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { getMyPagePromotions } from "@/lib/api/music-promotion";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  getMyPagePromotions,
+  subscribePromotionStream,
+} from "@/lib/api/music-promotion";
 
 export default function MyPage() {
+  const queryClient = useQueryClient();
+
   const observerRef = useRef<HTMLDivElement | null>(null);
 
   const {
@@ -33,6 +38,30 @@ export default function MyPage() {
     },
   });
 
+  // SSE 실시간 구독
+  useEffect(() => {
+    const token = localStorage.getItem("accessToken");
+
+    if (!token) return;
+
+    const controller = subscribePromotionStream({
+      token,
+
+      // 진단 상태 변경 시 목록 최신화
+      onPromotionUpdated: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["mypage-promotions"],
+        });
+      },
+    });
+
+    // 컴포넌트 언마운트 시 SSE 연결 종료
+    return () => {
+      controller.abort();
+    };
+  }, [queryClient]);
+
+  // 무한스크롤 observer 등록
   useEffect(() => {
     const target = observerRef.current;
 
