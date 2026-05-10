@@ -8,9 +8,10 @@ import { useRouter } from "next/navigation";
 
 interface Props {
   album: AlbumItem;
+  priority?: boolean;
 }
 
-export default function AlbumItemCard({ album }: Props) {
+export default function AlbumItemCard({ album, priority = false }: Props) {
   const router = useRouter();
 
   const { analysis } = album;
@@ -58,6 +59,7 @@ export default function AlbumItemCard({ album }: Props) {
             width={120}
             height={120}
             className="aspect-square object-cover"
+            priority={priority}
           />
         </div>
 

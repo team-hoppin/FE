@@ -113,8 +113,12 @@ export default function MyPage() {
           </div>
 
           <div className="flex flex-col gap-2">
-            {albums.map((album) => (
-              <AlbumItemCard key={album.promotionId} album={album} />
+            {albums.map((album, index) => (
+              <AlbumItemCard
+                key={album.promotionId}
+                album={album}
+                priority={index === 0}
+              />
             ))}
           </div>
 
