@@ -1,4 +1,5 @@
 import { StreamingCode } from "@/types/album";
+import { AuthProvider } from "@/types/api-response";
 
 export const mapToStreamingBtn: Record<
   StreamingCode,
@@ -26,5 +27,23 @@ export const mapToStreamingBtn: Record<
   soundcloud: {
     label: "사운드클라우드",
     icon: "/soundcloud.svg",
+  },
+};
+
+export const mapToAuthProvider: Record<
+  AuthProvider,
+  { icon: string; label: string }
+> = {
+  GOOGLE: {
+    label: "구글",
+    icon: "/google-provider.png",
+  },
+  KAKAO: {
+    label: "카카오",
+    icon: "/kakao-provider.png",
+  },
+  NAVER: {
+    label: "네이버",
+    icon: "/naver-provider.png",
   },
 };

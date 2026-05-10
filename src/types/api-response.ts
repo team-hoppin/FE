@@ -1,14 +1,18 @@
 import { AlbumItem } from "@/types/album";
 
 /******************************
- * Image Upload
+ * Musician
  ******************************/
 
-// 음악 홍보 이미지 업로드 URL 발급 Res
-export interface GetCoverImgUploadUrlRes {
-  uploadUrl: string;
-  imageKey: string;
-  imageUrl: string;
+// 로그인 유형
+export type AuthProvider = "GOOGLE" | "KAKAO" | "NAVER";
+
+// 내 정보 조회 Res
+export interface GetMeRes {
+  id: number;
+  artistName: string;
+  email: string;
+  provider: AuthProvider;
 }
 
 /******************************
@@ -92,4 +96,15 @@ export interface GetMusicPromotionRes {
     clickUrl: string;
     displayOrder: number;
   }[];
+}
+
+/******************************
+ * Image Upload
+ ******************************/
+
+// 음악 홍보 이미지 업로드 URL 발급 Res
+export interface GetCoverImgUploadUrlRes {
+  uploadUrl: string;
+  imageKey: string;
+  imageUrl: string;
 }
