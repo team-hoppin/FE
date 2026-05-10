@@ -52,14 +52,37 @@ export interface DiagnosisCard {
   headline: string;
   actionTitle: string;
   unread: boolean;
+  status: string;
 }
 
 export interface GetAnalysisPageRes {
   promotionId: number;
   activityName: string;
-  diagnosisSection: {
-    status: string;
-    diagnosisCards: DiagnosisCard[];
+  createdAt: string;
+  imageUrl: string;
+  releaseDate: string;
+  songTitle: string;
+  shortDescription: string;
+  trackingUrl: string;
+  streamingLinks: {
+    clickCount: number;
+    clickShareRate: number;
+    clickUrl: string;
+    displayOrder: number;
+    streamingCode: string;
+    url: string;
+  }[];
+  realtimeStats: {
+    trackingClickCount: number;
+    streamingClickCount: number;
+  };
+  diagnosis: DiagnosisCard[];
+  diagnosisPage: {
+    page: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    hasNext: boolean;
   };
 }
 

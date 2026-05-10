@@ -7,8 +7,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowBigRight, Calendar, ChevronRight } from "lucide-react";
 import { toJpeg } from "html-to-image";
 import { toast } from "sonner";
-import { useCallback, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { Suspense, useCallback, useEffect, useState } from "react";
+import { useParams, useSearchParams } from "next/navigation";
 import {
   getAnalysisPage,
   getDiagnosisDetail,
@@ -21,9 +21,11 @@ const SUMMARY_METRICS = [
   { label: "홍보 대비 스트리밍 클릭률", key: "streamingClickRateByPromoClick" },
 ] as const;
 
-export default function ReportDetailPage() {
+function ReportDetailContent() {
   const params = useParams<{ promotionId: string }>();
   const promotionId = Number(params.promotionId);
+  const searchParams = useSearchParams();
+  const diagnosisIdParam = searchParams.get("diagnosisId");
 
   const [data, setData] = useState<GetDiagnosisDetailRes | null>(null);
   const [activityName, setActivityName] = useState<string>("");
@@ -39,25 +41,26 @@ export default function ReportDetailPage() {
     try {
       const analysisPage = await getAnalysisPage(promotionId);
       setActivityName(analysisPage.activityName);
-      const cards = analysisPage.diagnosisSection.diagnosisCards;
+      const cards = analysisPage.diagnosis;
       if (!cards.length) {
         setIsEmpty(true);
         return;
       }
 
-      // 일단 첫번째카드 diagnosisId로 상세조회 나중에 목록생기면 삭제예정
-      setDiagnosedDate(cards[0].diagnosedDate);
-      const detail = await getDiagnosisDetail(
-        promotionId,
-        cards[0].diagnosisId
-      );
+      const targetCard = cards.find((c) => c.diagnosisId === Number(diagnosisIdParam));
+      if (!targetCard) {
+        setIsEmpty(true);
+        return;
+      }
+      setDiagnosedDate(targetCard.diagnosedDate);
+      const detail = await getDiagnosisDetail(promotionId, targetCard.diagnosisId);
       setData(detail);
     } catch {
       setIsError(true);
     } finally {
       setIsLoading(false);
     }
-  }, [promotionId]);
+  }, [promotionId, diagnosisIdParam]);
 
   useEffect(() => {
     load();
@@ -197,5 +200,13 @@ export default function ReportDetailPage() {
         </div>
       </main>
     </>
+  );
+}
+
+export default function ReportDetailPage() {
+  return (
+    <Suspense>
+      <ReportDetailContent />
+    </Suspense>
   );
 }
