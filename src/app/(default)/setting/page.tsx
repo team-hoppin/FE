@@ -36,6 +36,8 @@ export default function SettingPage() {
   const handleLogout = async () => {
     try {
       await logout();
+      document.cookie = "isLoggedIn=; path=/; max-age=0";
+      localStorage.removeItem("accessToken");
       router.push("/");
       router.refresh();
     } catch {
@@ -65,6 +67,8 @@ export default function SettingPage() {
         try {
           await withdraw();
           document.cookie = "onboarding=; path=/; max-age=0";
+          document.cookie = "isLoggedIn=; path=/; max-age=0";
+          localStorage.removeItem("accessToken");
           router.replace("/auth/withdraw");
           router.refresh();
         } catch {
