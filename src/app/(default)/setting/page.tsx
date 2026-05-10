@@ -71,7 +71,7 @@ export default function SettingPage() {
         try {
           await withdraw();
           document.cookie = "onboarding=; path=/; max-age=0";
-          router.replace("/onboarding");
+          router.replace("/auth/withdraw");
           router.refresh();
         } catch {
           toast.error("회원탈퇴에 실패했어요. 잠시 후 다시 시도해 주세요.");
