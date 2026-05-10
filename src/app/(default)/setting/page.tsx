@@ -4,20 +4,13 @@ import BackButton from "@/components/common/back-button";
 import { toast } from "sonner";
 import { ExternalLinkIcon } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useOpenAlertModal } from "@/stores/alert-modal-store";
 import { getMe, logout, withdraw } from "@/lib/api/auth";
 import { mapToAuthProvider } from "@/utils/mapper";
 import { GetMeRes } from "@/types/api-response";
-
-const EXTERNAL_LINKS = {
-  TERMS:
-    "https://www.notion.so/goormkdx/PEAK-34bc0ff4ce318055b56de402af767268?source=copy_link",
-  PRIVACY:
-    "https://www.notion.so/goormkdx/PEAK-356c0ff4ce31806dbf70c98b5942486c?source=copy_link",
-};
+import { EXTERNAL_LINKS } from "@/utils/external-links";
 
 export default function SettingPage() {
   const router = useRouter();
@@ -127,7 +120,7 @@ export default function SettingPage() {
           </li>
 
           <li>
-            <Link
+            <a
               href={EXTERNAL_LINKS.TERMS}
               target="_blank"
               rel="noopener noreferrer"
@@ -135,11 +128,11 @@ export default function SettingPage() {
             >
               <span>이용약관</span>
               <ExternalLinkIcon size={16} className="text-font-light" />
-            </Link>
+            </a>
           </li>
 
           <li>
-            <Link
+            <a
               href={EXTERNAL_LINKS.PRIVACY}
               target="_blank"
               rel="noopener noreferrer"
@@ -147,7 +140,7 @@ export default function SettingPage() {
             >
               <span>개인정보처리방침</span>
               <ExternalLinkIcon size={16} className="text-font-light" />
-            </Link>
+            </a>
           </li>
         </ul>
       </section>
