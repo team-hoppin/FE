@@ -8,6 +8,7 @@ import { ArrowBigRight, Calendar, ChevronRight } from "lucide-react";
 import { toJpeg } from "html-to-image";
 import { toast } from "sonner";
 import { useCallback, useEffect, useState } from "react";
+import { useParams, useSearchParams } from "next/navigation";
 import {
   getAnalysisPage,
   getDiagnosisDetail,
@@ -20,12 +21,11 @@ const SUMMARY_METRICS = [
   { label: "홍보 대비 스트리밍 클릭률", key: "streamingClickRateByPromoClick" },
 ] as const;
 
-interface Props {
-  promotionId: number;
-  diagnosisId: number | undefined;
-}
-
-export default function ClientReportDetail({ promotionId, diagnosisId }: Props) {
+export default function ReportDetail() {
+  const params = useParams<{ promotionId: string }>();
+  const promotionId = Number(params.promotionId);
+  const searchParams = useSearchParams();
+  const diagnosisId = searchParams.get("diagnosisId") ? Number(searchParams.get("diagnosisId")) : undefined;
   const [data, setData] = useState<GetDiagnosisDetailRes | null>(null);
   const [activityName, setActivityName] = useState<string>("");
   const [diagnosedDate, setDiagnosedDate] = useState<string>("");
