@@ -52,29 +52,53 @@ export interface DiagnosisCard {
   headline: string;
   actionTitle: string;
   unread: boolean;
+  status: string;
 }
 
 export interface GetAnalysisPageRes {
   promotionId: number;
-  diagnosisSection: {
-    status: string;
-    diagnosisCards: DiagnosisCard[];
+  activityName: string;
+  createdAt: string;
+  imageUrl: string;
+  releaseDate: string;
+  songTitle: string;
+  shortDescription: string;
+  trackingUrl: string;
+  streamingLinks: {
+    clickCount: number;
+    clickShareRate: number;
+    clickUrl: string;
+    displayOrder: number;
+    streamingCode: string;
+    url: string;
+  }[];
+  realtimeStats: {
+    trackingClickCount: number;
+    streamingClickCount: number;
+  };
+  diagnosis: DiagnosisCard[];
+  diagnosisPage: {
+    page: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
+    hasNext: boolean;
   };
 }
 
 // 진단 결과 상세 조회 Res
 export interface GetDiagnosisDetailRes {
   headline: string;
-  periodLabel: string;
   summaryMetrics: {
     followerEngagementRate: number;
     promoClickRateByEngagement: number;
     streamingClickRateByPromoClick: number;
   };
   diagnosis: {
-    highlightSection: string;
+    highlightFrom: string;
+    highlightTo: string;
   };
-  action: {
+  action?: {
     title: string;
     metric: string;
     details: string;
