@@ -54,7 +54,7 @@ export default function Complete() {
               이미 진단받은 적이 있으신가요?
             </p>
             <Link
-              href={"/"}
+              href={"/mypage/"}
               className="text-main c1-bold cursor-pointer underline"
             >
               이전 진단 내역 보기
