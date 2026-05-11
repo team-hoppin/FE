@@ -8,10 +8,21 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
+// import { useOpenAlertModal } from "@/stores/alert-modal-store";
 
 export default function HomeButtons({ showIntro }: { showIntro: boolean }) {
   const [showIntroState, setShowIntroState] = useState(showIntro);
   const router = useRouter();
+  // const openModal = useOpenAlertModal();
+
+  // useEffect(() => {
+  //   openModal({
+  //     type: "confirm",
+  //     variant: "mail-success",
+  //     message: "진단 결과가 도착했어요! 📩",
+  //     description: "내 앨범 홍보가 잘 되고 있는지 지금 확인해보세요",
+  //   });
+  // }, []);
 
   const dismissIntro = () => {
     document.cookie = "peak-intro-seen=true; path=/; max-age=31536000";

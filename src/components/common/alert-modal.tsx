@@ -4,16 +4,15 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useAlertModal } from "@/stores/alert-modal-store";
 
-const VARIANT_IMAGE: Record<"warning" | "danger" | "success", string> = {
+const VARIANT_IMAGE: Record<"warning" | "danger", string> = {
   warning: "/character/modal-warning.png",
   danger: "/character/modal-danger.png",
-  success: "/character/modal-success.png",
 };
 
 export default function AlertModal() {
   const store = useAlertModal();
 
-  if (!store.isOpen) return null;
+  if (!store.isOpen || store.variant === "mail-success") return null;
 
   const isConfirm = store.type === "confirm";
 
