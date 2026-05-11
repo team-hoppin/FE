@@ -25,10 +25,10 @@ export default async function AlbumAnalysisPage({ params }: Props) {
             <div className="flex flex-col items-center gap-6">
               <div className="bg-grey2 h-37 w-37 rounded-full">
                 <Image
-                  src={"/bamti-dancing.svg"}
+                  src={"/character/page-comingsoon.png"}
                   alt="밤티"
-                  width={148}
-                  height={148}
+                  width={220}
+                  height={173}
                 />
               </div>
               <p className="text-font-middle p1-semibold">
