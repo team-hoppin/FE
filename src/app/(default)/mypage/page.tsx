@@ -40,13 +40,7 @@ export default function MyPage() {
 
   // SSE 실시간 구독
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-
-    if (!token) return;
-
     const controller = subscribePromotionStream({
-      token,
-
       // 진단 상태 변경 시 목록 최신화
       onPromotionUpdated: () => {
         queryClient.invalidateQueries({

@@ -45,12 +45,13 @@ export default function Promote() {
           </li>
         </ul>
 
-        <div className="bg-grey1 flex flex-col gap-4 rounded-2xl px-8 pt-5">
+        <div className="bg-grey1 flex flex-col gap-4 rounded-2xl px-13 pt-6">
           <Image
             src="/ex-insta.png"
             alt="인스타그램 프로필 예시"
-            width={572}
-            height={380}
+            width={456}
+            height={348}
+            className="h-auto w-full"
           />
         </div>
       </section>
@@ -61,11 +62,11 @@ export default function Promote() {
         </Button>
         <div className="flex flex-col gap-1 text-center">
           <p className="text-font-light c1-medium cursor-pointer">
-            이미 게시물을 올렸다면?
+            이미 게시물을 올리셨나요?
           </p>
           <Link
             href={"/report/coming-soon"}
-            className="text-main cursor-pointer text-xs font-bold underline"
+            className="text-main c1-bold cursor-pointer underline"
           >
             내 홍보 콘텐츠 진단하기
           </Link>

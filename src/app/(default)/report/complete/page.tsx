@@ -1,7 +1,12 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
-export default function Complete() {
+export default async function Complete({
+  searchParams,
+}: {
+  searchParams: Promise<{ promotionId?: string }>;
+}) {
+  const { promotionId } = await searchParams;
   return (
     <main className="flex h-fit flex-col justify-between gap-16">
       <div className="mt-7 flex flex-col gap-1">
@@ -54,7 +59,7 @@ export default function Complete() {
               이미 진단받은 적이 있으신가요?
             </p>
             <Link
-              href={"/"}
+              href={promotionId ? `/album/analysis/${promotionId}` : "/mypage"}
               className="text-main c1-bold cursor-pointer underline"
             >
               이전 진단 내역 보기

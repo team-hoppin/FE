@@ -12,10 +12,13 @@ export default function Login() {
       <Suspense>
         <LoginErrorToast />
       </Suspense>
-      <div className="mt-25 mb-24 flex flex-col items-center gap-8 text-center">
-        <div className="bg-grey2 flex h-44 w-44 items-center justify-center rounded-full">
-          <Image src={"/bamti.svg"} alt="Logo" width={128} height={128} />
-        </div>
+      <div className="mt-25 mb-24 flex flex-col items-center gap-3 text-center">
+        <Image
+          src={"/character/page-login.png"}
+          alt="윙크하는 피스"
+          width={220}
+          height={174}
+        />
         <div className="flex flex-col gap-3">
           <h1 className="h1-bold">로그인하고 시작해보세요</h1>
           <p className="text-font-middle p2-regular">
@@ -29,15 +32,17 @@ export default function Login() {
             asChild
             variant="btnWhite"
             size="full"
-            className="text-[#000000]"
+            className="relative text-[#000000]"
           >
             <a href={`${BASE_URL}/google`}>
-              <Image
-                src={"/google.png"}
-                alt="Google Logo"
-                width={30}
-                height={30}
-              />
+              <span className="absolute top-1/2 left-5 -translate-y-1/2">
+                <Image
+                  src={"/brand-logo/google.png"}
+                  alt="Google Logo"
+                  width={44}
+                  height={44}
+                />
+              </span>
               구글로 시작하기
             </a>
           </Button>
@@ -45,15 +50,17 @@ export default function Login() {
             asChild
             variant="btnWhite"
             size="full"
-            className="border-none bg-[#FFE812] text-[#000000]"
+            className="relative border-none bg-[#FFE812] text-[#000000]"
           >
             <a href={`${BASE_URL}/kakao`}>
-              <Image
-                src={"/kakao.png"}
-                alt="Kakao Logo"
-                width={30}
-                height={30}
-              />
+              <span className="absolute top-1/2 left-5 -translate-y-1/2">
+                <Image
+                  src={"/brand-logo/kakao.png"}
+                  alt="Kakao Logo"
+                  width={44}
+                  height={44}
+                />
+              </span>
               카카오로 시작하기
             </a>
           </Button>
@@ -61,15 +68,17 @@ export default function Login() {
             asChild
             variant="btnWhite"
             size="full"
-            className="text-font-white border-none bg-[#03CF5D]"
+            className="text-font-white relative border-none bg-[#03CF5D]"
           >
             <a href={`${BASE_URL}/naver`}>
-              <Image
-                src={"/naver.png"}
-                alt="Naver Logo"
-                width={30}
-                height={30}
-              />
+              <span className="absolute top-1/2 left-5 -translate-y-1/2">
+                <Image
+                  src={"/brand-logo/naver.png"}
+                  alt="Naver Logo"
+                  width={40}
+                  height={40}
+                />
+              </span>
               네이버로 시작하기
             </a>
           </Button>

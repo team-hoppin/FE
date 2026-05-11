@@ -123,10 +123,8 @@ export async function getMyPagePromotions(
  * - promotion-analysis-updated   : 분석 상태 변경 이벤트
  */
 export function subscribePromotionStream({
-  token,
   onPromotionUpdated,
 }: {
-  token: string;
   onPromotionUpdated: () => void;
 }) {
   const controller = new AbortController();
@@ -134,9 +132,10 @@ export function subscribePromotionStream({
   fetchEventSource(`${BASE_URL}/mypage/promotions/stream`, {
     method: "GET",
 
+    credentials: "include",
+
     headers: {
       Accept: "text/event-stream",
-      Authorization: `Bearer ${token}`,
     },
 
     signal: controller.signal,
@@ -188,6 +187,26 @@ export async function patchDiagnosisRead(promotionId: number): Promise<void> {
     });
   } catch (e) {
     console.error("[music-promotion] 읽음 처리 실패", e);
+    throw e;
+  }
+}
+
+/**
+ * 미확인 진단 존재 여부 조회
+ * [GET] /mypage/promotions/unread-exists
+ */
+export async function getDiagnosisUnreadExists(): Promise<boolean> {
+  try {
+    const res: boolean = await fetcher<boolean>(
+      "/mypage/promotions/unread-exists",
+      {
+        method: "GET",
+      }
+    );
+
+    return res;
+  } catch (e) {
+    console.error("[music-promotion] 미확인 진단 존재 여부 조회 실패", e);
     throw e;
   }
 }

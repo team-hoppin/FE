@@ -48,6 +48,7 @@ export default function SettingPage() {
   const handleWithdraw = () => {
     openAlertModal({
       type: "confirm",
+      variant: "danger",
       message: (
         <>
           탈퇴 시{" "}

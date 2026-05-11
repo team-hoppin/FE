@@ -8,18 +8,24 @@ import { ArrowBigRight, Calendar, ChevronRight } from "lucide-react";
 import { toJpeg } from "html-to-image";
 import { toast } from "sonner";
 import { useCallback, useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import {
   getAnalysisPage,
   getDiagnosisDetail,
-  getMusicPromotion,
 } from "@/lib/api/music-promotion";
 import { GetDiagnosisDetailRes } from "@/types/api-response";
 
-export default function ReportDetailPage() {
-  const { id } = useParams<{ id: string }>();
-  const promotionId = Number(id);
+const SUMMARY_METRICS = [
+  { label: "팔로워 대비 반응률", key: "followerEngagementRate" },
+  { label: "반응 대비 홍보 클릭률", key: "promoClickRateByEngagement" },
+  { label: "홍보 대비 스트리밍 클릭률", key: "streamingClickRateByPromoClick" },
+] as const;
 
+export default function ReportDetail() {
+  const params = useParams<{ promotionId: string }>();
+  const promotionId = Number(params.promotionId);
+  const searchParams = useSearchParams();
+  const diagnosisId = searchParams.get("diagnosisId") ? Number(searchParams.get("diagnosisId")) : undefined;
   const [data, setData] = useState<GetDiagnosisDetailRes | null>(null);
   const [activityName, setActivityName] = useState<string>("");
   const [diagnosedDate, setDiagnosedDate] = useState<string>("");
@@ -32,30 +38,28 @@ export default function ReportDetailPage() {
     setIsError(false);
     setIsEmpty(false);
     try {
-      const [analysisPage, promotion] = await Promise.all([
-        getAnalysisPage(promotionId),
-        getMusicPromotion(promotionId),
-      ]);
-      setActivityName(promotion.activityName);
-      const cards = analysisPage.diagnosisSection.diagnosisCards;
+      const analysisPage = await getAnalysisPage(promotionId);
+      setActivityName(analysisPage.activityName);
+      const cards = analysisPage.diagnosis;
       if (!cards.length) {
         setIsEmpty(true);
         return;
       }
 
-      // 일단 첫번째카드 diagnosisId로 상세조회 나중에 목록생기면 삭제예정
-      setDiagnosedDate(cards[0].diagnosedDate);
-      const detail = await getDiagnosisDetail(
-        promotionId,
-        cards[0].diagnosisId
-      );
+      const targetCard = cards.find((c) => c.diagnosisId === diagnosisId);
+      if (!targetCard) {
+        setIsEmpty(true);
+        return;
+      }
+      setDiagnosedDate(targetCard.diagnosedDate);
+      const detail = await getDiagnosisDetail(promotionId, targetCard.diagnosisId);
       setData(detail);
     } catch {
       setIsError(true);
     } finally {
       setIsLoading(false);
     }
-  }, [promotionId]);
+  }, [promotionId, diagnosisId]);
 
   useEffect(() => {
     load();
@@ -78,8 +82,6 @@ export default function ReportDetailPage() {
       toast.error("이미지 저장에 실패했어요. 잠시 후 다시 시도해주세요.");
     }
   };
-
-  const [from, to] = data?.diagnosis.highlightSection.split(" > ") ?? [];
 
   const todayLabel = (() => {
     const d = new Date();
@@ -111,6 +113,9 @@ export default function ReportDetailPage() {
 
   if (isEmpty || !data) return null;
 
+  const from = data.diagnosis.highlightFrom;
+  const to = data.diagnosis.highlightTo;
+
   return (
     <>
       <BackButton href="/report" />
@@ -130,20 +135,7 @@ export default function ReportDetailPage() {
 
           <div className="flex flex-col gap-4">
             <section className="grid grid-cols-3 gap-5 text-center">
-              {[
-                {
-                  label: "팔로워 대비 반응률",
-                  value: data?.summaryMetrics.followerEngagementRate,
-                },
-                {
-                  label: "반응 대비 홍보 클릭률",
-                  value: data?.summaryMetrics.promoClickRateByEngagement,
-                },
-                {
-                  label: "홍보 대비 스트리밍 클릭률",
-                  value: data?.summaryMetrics.streamingClickRateByPromoClick,
-                },
-              ].map(({ label, value }) => (
+              {SUMMARY_METRICS.map(({ label, key }) => (
                 <div
                   key={label}
                   className="box-item rounded-r2 bg-grey1 flex min-h-26 flex-col justify-start gap-2.5 p-2.5"
@@ -152,7 +144,7 @@ export default function ReportDetailPage() {
                     {label}
                   </div>
                   <h1 className="text-main text-4xl font-semibold">
-                    {value ?? "-"}
+                    {data.summaryMetrics[key] ?? "-"}
                   </h1>
                 </div>
               ))}
@@ -169,7 +161,7 @@ export default function ReportDetailPage() {
                 이에요
               </h6>
               <div className="bg-brand-gradient rounded-r2 p-4 break-keep whitespace-pre-line text-white">
-                {data?.headline}
+                {data.headline}
               </div>
             </section>
           </div>
@@ -177,7 +169,7 @@ export default function ReportDetailPage() {
           <section className="flex flex-col gap-2">
             <h5 className="h3-bold">지금 바로 바꿔보세요</h5>
             <ul className="flex flex-col gap-2">
-              {data?.action && (
+              {data.action && (
                 <li className="bg-grey1 grid grid-cols-[1fr] items-center gap-5 rounded-2xl px-5 py-5">
                   <div className="flex flex-col gap-1 text-wrap break-keep whitespace-pre-line">
                     <h5 className="p1-bold text-font-basic">
