@@ -22,7 +22,7 @@ const SLIDES: Slide[] = [
     titleHighlight: "어떻게 해야 할지 몰라",
     titleAfter: "막막하셨죠?",
     description: "이젠 혼자 하지 마세요.\nPEAK가 도와드릴게요!",
-    src: "/step01.png",
+    src: "/tutorial/step01.png",
     imgClassName: "h-auto w-[245px] object-contain",
   },
   {
@@ -31,13 +31,13 @@ const SLIDES: Slide[] = [
     titleAfter: "만들어보세요",
     description:
       "신곡 정보 입력하면 홍보 링크 완성!\n인스타그램 프로필에 딱 붙여두면 돼요.",
-    src: "/step02.png",
+    src: "/tutorial/step02.png",
   },
   {
     titleBefore: "팬이 왜 안 느는지",
     titleHighlight: "PEAK가 찾아드려요",
-    description: "링크와 날짜만 입력하면\n홍보 상태를 점검할 수 있어요",
-    src: "/step03.png",
+    description: "진단하기를 누르면\n홍보 현황부터 해결책까지 알려줘요",
+    src: "/tutorial/step03.png",
   },
 ];
 

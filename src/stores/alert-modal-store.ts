@@ -4,7 +4,10 @@ import { ReactNode } from "react";
 interface OpenState {
   isOpen: true;
   type: "alert" | "confirm";
+  variant: "warning" | "danger" | "mail-success";
+
   message: ReactNode;
+  description?: ReactNode;
   onAction?: () => void;
   onCancel?: () => void;
 }

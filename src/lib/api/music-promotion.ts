@@ -123,10 +123,8 @@ export async function getMyPagePromotions(
  * - promotion-analysis-updated   : 분석 상태 변경 이벤트
  */
 export function subscribePromotionStream({
-  token,
   onPromotionUpdated,
 }: {
-  token: string;
   onPromotionUpdated: () => void;
 }) {
   const controller = new AbortController();
@@ -134,9 +132,10 @@ export function subscribePromotionStream({
   fetchEventSource(`${BASE_URL}/mypage/promotions/stream`, {
     method: "GET",
 
+    credentials: "include",
+
     headers: {
       Accept: "text/event-stream",
-      Authorization: `Bearer ${token}`,
     },
 
     signal: controller.signal,
