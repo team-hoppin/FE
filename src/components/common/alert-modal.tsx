@@ -32,6 +32,8 @@ export default function AlertModal() {
       onClick={handleCancelClick}
     >
       <div
+        role="dialog"
+        aria-modal="true"
         className="flex flex-col items-center gap-2.5 rounded-2xl bg-white px-6 py-5 text-center"
         onClick={(e) => e.stopPropagation()}
       >

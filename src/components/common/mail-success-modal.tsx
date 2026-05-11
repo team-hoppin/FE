@@ -27,6 +27,8 @@ export default function MailSuccessModal() {
       onClick={handleCancelClick}
     >
       <div
+        role="dialog"
+        aria-modal="true"
         className="rounded-r3 flex flex-col items-center gap-2.5 bg-white px-5 py-5"
         onClick={(e) => e.stopPropagation()}
       >
