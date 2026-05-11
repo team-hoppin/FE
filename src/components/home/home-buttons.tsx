@@ -13,6 +13,8 @@ import {
 export default function HomeButtons({ showIntro }: { showIntro: boolean }) {
   const [showIntroState, setShowIntroState] = useState(showIntro);
   const router = useRouter();
+
+  //진단완료 모달띄우기 (일단 주석처리)
   // const openModal = useOpenAlertModal();
 
   // useEffect(() => {
