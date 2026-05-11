@@ -147,6 +147,7 @@ export default function AlbumPage() {
     if (!VALID_COVER_IMG_TYPES.includes(file.type)) {
       openAlertModal({
         type: "alert",
+        variant: "warning",
         message: (
           <>
             지원하지 않는 파일 형식입니다.{"\n"}
