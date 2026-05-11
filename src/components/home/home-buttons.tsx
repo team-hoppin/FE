@@ -63,7 +63,7 @@ export default function HomeButtons({ showIntro }: { showIntro: boolean }) {
             <Button
               variant="btnWhite"
               size="full"
-              onClick={() => router.push("/album/analysis/[id]")}
+              onClick={() => router.push("/report")}
             >
               내 음원 홍보 진단하기
             </Button>

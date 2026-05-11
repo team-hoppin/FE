@@ -100,7 +100,7 @@ export default function ReportForm() {
         sinceDate: format(date!, "yyyy-MM-dd"),
         instagramUsername: instagram.replace("@", ""),
       });
-      router.push("/report/complete");
+      router.push(`/report/complete?promotionId=${selectedPromotionId}`);
     } catch {
       toast.error("분석 요청에 실패했어요. 잠시 후 다시 시도해주세요.");
     } finally {
