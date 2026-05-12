@@ -1,10 +1,10 @@
 import { cookies } from "next/headers";
-import ClientHome from "./_client-home";
+import Home from "./_client-home";
 
-export default async function Home() {
+export default async function Page() {
   const cookieStore = await cookies();
 
   const showIntro = !cookieStore.has("peak-intro-seen");
 
-  return <ClientHome showIntro={showIntro} />;
+  return <Home showIntro={showIntro} />;
 }

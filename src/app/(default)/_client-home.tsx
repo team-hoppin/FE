@@ -12,7 +12,7 @@ interface Props {
   showIntro: boolean;
 }
 
-export default function ClientHome({ showIntro }: Props) {
+export default function Home({ showIntro }: Props) {
   const router = useRouter();
   const openAlertModal = useOpenAlertModal();
 

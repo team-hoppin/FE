@@ -1,4 +1,4 @@
-import ClientAlbumAnalysis from "../_client-album-analysis";
+import AlbumAnalysisPage from "../_client-album-analysis";
 
 interface Props {
   params: Promise<{
@@ -6,8 +6,8 @@ interface Props {
   }>;
 }
 
-export default async function AlbumAnalysisPage({ params }: Props) {
+export default async function Page({ params }: Props) {
   const { id } = await params;
 
-  return <ClientAlbumAnalysis promotionId={Number(id)} />;
+  return <AlbumAnalysisPage promotionId={Number(id)} />;
 }

@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import AlbumPage from "./client-album-page";
+import AlbumPage from "./_client-album-page";
 
 export default function Page() {
   return (

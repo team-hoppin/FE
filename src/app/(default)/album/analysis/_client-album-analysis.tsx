@@ -20,7 +20,7 @@ interface Props {
   promotionId: number;
 }
 
-export default function ClientAlbumAnalysis({ promotionId }: Props) {
+export default function AlbumAnalysisPage({ promotionId }: Props) {
   const [data, setData] = useState<GetAnalysisPageRes | null>(null);
 
   useEffect(() => {
