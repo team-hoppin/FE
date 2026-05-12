@@ -66,6 +66,8 @@ export default function AlbumPage() {
     description: false,
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   useEffect(() => {
     if (!editId) return;
 
@@ -220,9 +222,13 @@ export default function AlbumPage() {
   };
 
   const handleSubmit = async () => {
+    if (isSubmitting) return;
+
     const isValid = validate();
 
     if (!isValid) return;
+
+    setIsSubmitting(true);
 
     try {
       // 1. 새 이미지를 선택했을 때 이미지 업로드
@@ -279,6 +285,8 @@ export default function AlbumPage() {
         isEditMode ? "수정에 실패했습니다." : "홍보 링크 생성에 실패했습니다.",
         { position: "bottom-center" }
       );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -463,7 +471,12 @@ export default function AlbumPage() {
           />
         </section>
 
-        <Button variant="btnPurple" size="full" onClick={handleSubmit}>
+        <Button
+          variant="btnPurple"
+          size="full"
+          onClick={handleSubmit}
+          disabled={isSubmitting}
+        >
           {isEditMode ? "수정 완료" : "홍보 링크 만들기"}
         </Button>
       </main>
