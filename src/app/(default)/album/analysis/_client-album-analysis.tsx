@@ -49,10 +49,6 @@ export default function AlbumAnalysisPage({ promotionId }: Props) {
     },
   });
 
-  useEffect(() => {
-    patchDiagnosisRead(promotionId); // 읽음 처리
-  }, [promotionId]);
-
   // 무한스크롤 observer 등록
   useEffect(() => {
     const target = observerRef.current;
@@ -81,6 +77,20 @@ export default function AlbumAnalysisPage({ promotionId }: Props) {
   const analysisData = data?.pages[0];
   const diagnosisList = data?.pages.flatMap((page) => page.diagnosis) ?? [];
 
+  // 진단 내역 존재 여부
+  const hasDiagnosis = diagnosisList.length > 0;
+
+  // 진단중인 내역 존재 여부
+  const hasAnalyzing = diagnosisList.some(
+    (item) => item.status === "PENDING" || item.status === "RUNNING"
+  );
+
+  useEffect(() => {
+    if (!hasDiagnosis) return;
+
+    patchDiagnosisRead(promotionId);
+  }, [promotionId, hasDiagnosis]);
+
   if (isError) {
     return (
       <ErrorView
@@ -99,13 +109,6 @@ export default function AlbumAnalysisPage({ promotionId }: Props) {
       </div>
     );
   }
-
-  const hasDiagnosis = diagnosisList.length > 0; // 진단 내역 존재 여부
-
-  // 진단중인 내역 존재 여부
-  const hasAnalyzing = diagnosisList.some(
-    (item) => item.status === "PENDING" || item.status === "RUNNING"
-  );
 
   const handleDiagnosis = () => {
     if (hasAnalyzing) {
