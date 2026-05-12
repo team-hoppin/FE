@@ -9,8 +9,10 @@ import RealtimeStatusSection from "@/components/mypage/analysis-realtime-status-
 import StreamingSection from "@/components/mypage/analysis-streaming-section";
 import DiagnosisSection from "@/components/mypage/analysis-diagnosis-section";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getAnalysisPage } from "@/lib/api/music-promotion";
+import { useOpenAlertModal } from "@/stores/alert-modal-store";
 import { formatDate } from "@/utils/date";
 import { GetAnalysisPageRes } from "@/types/api-response";
 
@@ -19,6 +21,9 @@ interface Props {
 }
 
 export default function AlbumAnalysisPage({ promotionId }: Props) {
+  const router = useRouter();
+  const openAlertModal = useOpenAlertModal();
+
   const [data, setData] = useState<GetAnalysisPageRes | null>(null);
 
   useEffect(() => {
@@ -43,6 +48,33 @@ export default function AlbumAnalysisPage({ promotionId }: Props) {
     );
   }
   const hasDiagnosis = data.diagnosis.length > 0; // 진단 내역 존재 여부
+
+  // 진단중인 내역 존재 여부
+  const hasAnalyzing = data.diagnosis.some(
+    (item) => item.status === "PENDING" || item.status === "RUNNING"
+  );
+
+  const handleDiagnosis = () => {
+    if (hasAnalyzing) {
+      openAlertModal({
+        type: "alert",
+        variant: "warning",
+        message: (
+          <>
+            이미 진단이 진행되고 있어요.{"\n"}
+            <span className="p2-semibold">
+              한 번에 하나의 페이지만 진단할 수 있어요.{"\n"}
+            </span>
+            결과가 나온 뒤 다시 신청해주세요!
+          </>
+        ),
+      });
+
+      return;
+    }
+
+    router.push(`/report?promotionId=${data.promotionId}`);
+  };
 
   return (
     <div className="mb-6 flex flex-col gap-7">
@@ -111,8 +143,8 @@ export default function AlbumAnalysisPage({ promotionId }: Props) {
         )}
       </main>
 
-      <Button variant="btnPurple" size="full">
-        이 앨범 홍보 다시 진단받기
+      <Button variant="btnPurple" size="full" onClick={handleDiagnosis}>
+        {hasDiagnosis ? "이 앨범 홍보 다시 진단받기" : "이 앨범 홍보 진단받기"}
       </Button>
     </div>
   );
