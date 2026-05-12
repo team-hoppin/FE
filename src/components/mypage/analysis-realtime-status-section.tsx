@@ -1,5 +1,5 @@
-import { GetAnalysisPageRes } from "@/types/api-response";
 import { LinkIcon, CirclePlayIcon } from "lucide-react";
+import { GetAnalysisPageRes } from "@/types/api-response";
 
 interface Props {
   realtimeStats: GetAnalysisPageRes["realtimeStats"];

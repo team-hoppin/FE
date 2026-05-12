@@ -7,7 +7,7 @@ import BackButton from "@/components/common/back-button";
 import AlbumAnalysisActionButton from "@/components/mypage/album-analysis-action-button";
 import RealtimeStatusSection from "@/components/mypage/analysis-realtime-status-section";
 import StreamingSection from "@/components/mypage/analysis-streaming-section";
-import DiagnosisItemCard from "@/components/mypage/diagnosis-item-card";
+import DiagnosisSection from "@/components/mypage/analysis-diagnosis-section";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { getAnalysisPage } from "@/lib/api/music-promotion";
@@ -100,17 +100,7 @@ export default function AlbumAnalysisPage({ promotionId }: Props) {
 
         <Separator className="-mx-5" />
 
-        <section className="mb-1 flex flex-col gap-6">
-          <h4 className="h4-bold text-font-basic">지금 바로 바꿔보세요</h4>
-
-          <ul className="flex flex-col gap-6">
-            {data.diagnosis.map((item) => (
-              <li key={item.diagnosisId}>
-                <DiagnosisItemCard {...item} />
-              </li>
-            ))}
-          </ul>
-        </section>
+        <DiagnosisSection diagnosis={data.diagnosis} />
       </main>
 
       <Button variant="btnPurple" size="full">
