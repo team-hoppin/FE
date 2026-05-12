@@ -238,13 +238,19 @@ export async function analyzePromotion(
  * [GET] /music-promotions/{promotionId}/analysis-page
  */
 export async function getAnalysisPage(
-  promotionId: number
+  promotionId: number,
+  page = 0
 ): Promise<GetAnalysisPageRes> {
+  const params = new URLSearchParams({
+    page: page.toString(),
+  });
+
   try {
     const res = await fetcher<GetAnalysisPageRes>(
-      `/music-promotions/${promotionId}/analysis-page`,
+      `/music-promotions/${promotionId}/analysis-page?${params.toString()}`,
       { method: "GET" }
     );
+
     return res;
   } catch (e) {
     console.error("[music-promotion]: 홍보 분석 페이지 조회 실패");

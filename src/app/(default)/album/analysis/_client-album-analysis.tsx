@@ -8,13 +8,14 @@ import AlbumAnalysisActionButton from "@/components/mypage/album-analysis-action
 import RealtimeStatusSection from "@/components/mypage/analysis-realtime-status-section";
 import StreamingSection from "@/components/mypage/analysis-streaming-section";
 import DiagnosisSection from "@/components/mypage/analysis-diagnosis-section";
+import ErrorView from "@/components/common/error-view";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRef, useEffect } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { patchDiagnosisRead, getAnalysisPage } from "@/lib/api/music-promotion";
 import { useOpenAlertModal } from "@/stores/alert-modal-store";
 import { formatDate } from "@/utils/date";
-import { GetAnalysisPageRes } from "@/types/api-response";
 
 interface Props {
   promotionId: number;
@@ -24,35 +25,85 @@ export default function AlbumAnalysisPage({ promotionId }: Props) {
   const router = useRouter();
   const openAlertModal = useOpenAlertModal();
 
-  const [data, setData] = useState<GetAnalysisPageRes | null>(null);
+  const observerRef = useRef<HTMLDivElement | null>(null);
+
+  const {
+    data,
+    isLoading,
+    isError,
+    refetch,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    queryKey: ["analysis-page", promotionId],
+
+    queryFn: ({ pageParam = 0 }) => getAnalysisPage(promotionId, pageParam),
+
+    initialPageParam: 0,
+
+    getNextPageParam: (lastPage) => {
+      if (!lastPage.diagnosisPage.hasNext) return undefined;
+
+      return lastPage.diagnosisPage.page + 1;
+    },
+  });
 
   useEffect(() => {
     patchDiagnosisRead(promotionId); // 읽음 처리
-
-    const fetchData = async () => {
-      try {
-        const res = await getAnalysisPage(promotionId);
-
-        setData(res);
-      } catch (e) {
-        console.error(e);
-      }
-    };
-
-    fetchData();
   }, [promotionId]);
 
-  if (!data) {
+  // 무한스크롤 observer 등록
+  useEffect(() => {
+    const target = observerRef.current;
+
+    if (!target || !hasNextPage) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      },
+      {
+        rootMargin: "24px",
+      }
+    );
+
+    observer.observe(target);
+
+    return () => {
+      observer.unobserve(target);
+      observer.disconnect();
+    };
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  const analysisData = data?.pages[0];
+  const diagnosisList = data?.pages.flatMap((page) => page.diagnosis) ?? [];
+
+  if (isError) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <ErrorView
+        title={`요청하신 화면을\n불러오지 못했어요`}
+        description={`페이지가 없거나 연결이 잠시 불안정해요.\n잠시 후 다시 시도해주세요.`}
+        onAction={refetch}
+        actionLabel="다시 시도하기"
+      />
+    );
+  }
+
+  if (isLoading || !analysisData) {
+    return (
+      <div className="flex flex-1 items-center justify-center">
         <Spinner className="text-main" />
       </div>
     );
   }
-  const hasDiagnosis = data.diagnosis.length > 0; // 진단 내역 존재 여부
+
+  const hasDiagnosis = diagnosisList.length > 0; // 진단 내역 존재 여부
 
   // 진단중인 내역 존재 여부
-  const hasAnalyzing = data.diagnosis.some(
+  const hasAnalyzing = diagnosisList.some(
     (item) => item.status === "PENDING" || item.status === "RUNNING"
   );
 
@@ -75,20 +126,20 @@ export default function AlbumAnalysisPage({ promotionId }: Props) {
       return;
     }
 
-    router.push(`/report?promotionId=${data.promotionId}`);
+    router.push(`/report?promotionId=${analysisData.promotionId}`);
   };
 
   return (
     <div className="mb-6 flex flex-col gap-7">
-      <BackButton title={data.songTitle} />
+      <BackButton title={analysisData.songTitle} />
 
       <main className="mb-2 flex flex-col gap-7">
         <section className="mb-1 flex flex-col items-center gap-6 px-9">
           <div className="flex flex-col gap-3">
             <div className="rounded-r2 shrink-0 overflow-hidden">
               <Image
-                src={data.imageUrl}
-                alt={data.songTitle}
+                src={analysisData.imageUrl}
+                alt={analysisData.songTitle}
                 width={126}
                 height={126}
                 className="aspect-square object-cover"
@@ -103,7 +154,7 @@ export default function AlbumAnalysisPage({ promotionId }: Props) {
                 </div>
                 <span className="bg-border h-4 w-px" />
                 <div className="p1-semibold-leading-none text-font-middle">
-                  {formatDate(data.releaseDate)}
+                  {formatDate(analysisData.releaseDate)}
                 </div>
               </li>
 
@@ -113,34 +164,42 @@ export default function AlbumAnalysisPage({ promotionId }: Props) {
                 </div>
                 <span className="bg-border h-3 w-px" />
                 <div className="p1-semibold-leading-none text-font-middle">
-                  {formatDate(data.createdAt)}
+                  {formatDate(analysisData.createdAt)}
                 </div>
               </li>
             </ul>
           </div>
 
           <AlbumAnalysisActionButton
-            promotionId={data.promotionId}
-            trackingUrl={data.trackingUrl}
+            promotionId={analysisData.promotionId}
+            trackingUrl={analysisData.trackingUrl}
           />
         </section>
 
         <Separator className="-mx-5" />
 
-        <RealtimeStatusSection realtimeStats={data.realtimeStats} />
+        <RealtimeStatusSection realtimeStats={analysisData.realtimeStats} />
 
         <Separator className="-mx-5" />
 
-        <StreamingSection streamingLinks={data.streamingLinks} />
+        <StreamingSection streamingLinks={analysisData.streamingLinks} />
 
         {hasDiagnosis && (
           <>
             <Separator className="-mx-5" />
 
             <DiagnosisSection
-              promotionId={data.promotionId}
-              diagnosis={data.diagnosis}
+              promotionId={analysisData.promotionId}
+              diagnosis={diagnosisList}
             />
+
+            {isFetchingNextPage && (
+              <div className="flex justify-center py-6">
+                <Spinner className="text-main" />
+              </div>
+            )}
+
+            <div ref={observerRef} className="-mt-7 h-1" />
           </>
         )}
       </main>
