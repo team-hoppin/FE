@@ -105,6 +105,7 @@ export interface GetAnalysisPageRes {
 
 // 진단 결과 상세 조회 Res
 export interface GetDiagnosisDetailRes {
+  periodLabel: string;
   headline: string;
   summaryMetrics: {
     followerEngagementRate: number;

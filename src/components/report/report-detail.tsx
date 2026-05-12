@@ -25,7 +25,6 @@ export default function ReportDetail() {
   const diagnosisId = searchParams.get("diagnosisId")
     ? Number(searchParams.get("diagnosisId"))
     : undefined;
-  const diagnosedDate = searchParams.get("diagnosedDate") ?? "";
   const [data, setData] = useState<GetDiagnosisDetailRes | null>(null);
   const [activityName, setActivityName] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
@@ -76,13 +75,6 @@ export default function ReportDetail() {
     }
   };
 
-  const todayLabel = (() => {
-    const d = new Date();
-    const yy = String(d.getFullYear()).slice(-2);
-    const mm = String(d.getMonth() + 1).padStart(2, "0");
-    const dd = String(d.getDate()).padStart(2, "0");
-    return `${yy}.${mm}.${dd}`;
-  })();
 
   if (isLoading) {
     return (
@@ -129,7 +121,7 @@ export default function ReportDetail() {
             <div className="border-border text-font-middle flex items-center gap-2 rounded-full border px-4 py-2">
               <Calendar size={16} />
               <span className="p2-medium">
-                {diagnosedDate ? `${diagnosedDate} - ${todayLabel}` : "-"}
+                {data.periodLabel || "-"}
               </span>
             </div>
           </div>
