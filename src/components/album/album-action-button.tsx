@@ -8,12 +8,14 @@ interface Props {
   url: string;
   promotionId: number;
   isLoggedIn: boolean;
+  fromAnalysis: boolean;
 }
 
 export default function AlbumActionButton({
   url,
   promotionId,
   isLoggedIn,
+  fromAnalysis,
 }: Props) {
   const router = useRouter();
 
@@ -31,14 +33,26 @@ export default function AlbumActionButton({
   };
 
   const handleEdit = () => {
-    router.push(`/album?edit=${promotionId}&redirect=/album/${promotionId}`);
+    router.push(
+      `/album?edit=${promotionId}&from=${fromAnalysis ? "analysis" : "detail"}`
+    );
   };
 
   return (
     <div className="flex gap-2">
-      <Button variant="btnPurple" size="md" onClick={handleCopy}>
-        🔗 링크 복사
-      </Button>
+      {fromAnalysis ? (
+        <Button
+          variant="btnPurple"
+          size="md"
+          onClick={() => router.push("/mypage")}
+        >
+          마이페이지 이동
+        </Button>
+      ) : (
+        <Button variant="btnPurple" size="md" onClick={handleCopy}>
+          🔗 링크 복사
+        </Button>
+      )}
 
       {isLoggedIn && (
         <Button variant="btnPurpleSub" size="md" onClick={handleEdit}>

@@ -6,14 +6,18 @@ import { getStreamingCode } from "@/utils/album";
 
 interface Props {
   params: Promise<{ id: string }>;
+  searchParams: Promise<{ from?: string }>;
 }
 
-export default async function AlbumDetailPage({ params }: Props) {
+export default async function AlbumDetailPage({ params, searchParams }: Props) {
   const cookieStore = await cookies();
   const isLoggedIn = cookieStore.has("accessToken");
 
   const { id } = await params;
+  const { from } = await searchParams;
+
   const promotionId = Number(id);
+  const fromAnalysis = from === "analysis";
 
   const data = await getMusicPromotion(promotionId);
 
@@ -65,6 +69,7 @@ export default async function AlbumDetailPage({ params }: Props) {
           url={data.trackingUrl}
           promotionId={promotionId}
           isLoggedIn={isLoggedIn}
+          fromAnalysis={fromAnalysis}
         />
       </div>
     </main>

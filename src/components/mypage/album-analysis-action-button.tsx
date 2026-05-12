@@ -18,9 +18,7 @@ export default function AlbumAnalysisActionButton({
 
   // 홍보 페이지 수정
   const handleEdit = () => {
-    router.push(
-      `/album?edit=${promotionId}&redirect=/album/analysis/${promotionId}`
-    );
+    router.push(`/album?edit=${promotionId}&from=analysis`);
   };
 
   // 홍보 페이지 삭제

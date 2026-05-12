@@ -37,8 +37,8 @@ export default function AlbumPage() {
 
   // 수정 모드 여부 판단
   const searchParams = useSearchParams();
-  const editId = searchParams.get("edit");
-  const redirect = searchParams.get("redirect");
+  const editId = searchParams.get("edit"); // 수정 프로모션 아이디
+  const from = searchParams.get("from"); // 진입점 (상세페이지: detail || 분석페이지: analysis)
   const isEditMode = !!editId;
 
   // 앨범 커버 이미지 상태
@@ -264,7 +264,9 @@ export default function AlbumPage() {
         // 3. 뮤지션 홍보 수정 API 호출
         await updateMusicPromotion(Number(editId), payload);
         toast.success("수정이 완료되었습니다!", { position: "bottom-center" });
-        router.push(redirect || `/album/${editId}`);
+        router.push(
+          `/album/${editId}${from === "analysis" ? "?from=analysis" : ""}`
+        );
       } else {
         // 3. 뮤지션 홍보 생성 API 호출
         const { promotionId } = await createMusicPromotion(payload);
@@ -283,8 +285,8 @@ export default function AlbumPage() {
   return (
     <>
       <BackButton />
-      <main className="flex flex-col">
-        <div className="my-7 flex flex-col gap-1">
+      <main className="flex flex-col gap-6">
+        <div className="mb-1 flex flex-col gap-1">
           <h4 className="h3-bold text-font-basic">신곡에 대해 얘기해주세요</h4>
           <p className="p2-regular text-font-middle">
             뮤지션의 한마디가 스트리밍으로 이어져요.
@@ -293,7 +295,7 @@ export default function AlbumPage() {
           </p>
         </div>
 
-        <section className="mb-5 flex flex-col gap-2">
+        <section className="flex flex-col gap-2">
           <div
             className={`bg-grey1 mb-1 flex h-22 w-22 items-center justify-center overflow-hidden rounded-2xl border ${
               errors.cover ? "border-danger" : "border-border"
@@ -462,7 +464,7 @@ export default function AlbumPage() {
         </section>
 
         <Button variant="btnPurple" size="full" onClick={handleSubmit}>
-          {isEditMode ? "수정 완료" : "홍보 링크 생성하기"}
+          {isEditMode ? "홍보 링크 수정하기" : "홍보 링크 만들기"}
         </Button>
       </main>
     </>
