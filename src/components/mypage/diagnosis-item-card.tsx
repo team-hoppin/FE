@@ -25,7 +25,7 @@ export default function DiagnosisItemCard({
 }: Props) {
   const router = useRouter();
 
-  const isAnalyzing = status === "RUNNING"; // 진단중
+  const isAnalyzing = status === "PENDING" || status === "RUNNING"; // 진단중
   const isAnalyzed = status === "COMPLETED"; // 진단완료
 
   const title = isAnalyzing ? "진단 결과 대기중이에요" : actionTitle;

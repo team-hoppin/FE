@@ -22,7 +22,7 @@ export default function AlbumAnalysisActionButton({
   };
 
   // 홍보 페이지 삭제
-  const handDelete = () => {
+  const handleDelete = () => {
     openAlertModal({
       type: "confirm",
       variant: "danger",
@@ -73,7 +73,7 @@ export default function AlbumAnalysisActionButton({
         <Button
           variant="btnPurpleSub"
           className="p2-bold h-9 flex-1 rounded-full"
-          onClick={handDelete}
+          onClick={handleDelete}
         >
           {" "}
           홍보 페이지 삭제

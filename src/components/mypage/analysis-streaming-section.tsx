@@ -22,7 +22,7 @@ export default function StreamingSection({ streamingLinks }: Props) {
 
           return (
             <li
-              key={streamingItem.label}
+              key={item.streamingCode}
               className="flex justify-between px-1 py-3"
             >
               <div className="flex items-center gap-3">
