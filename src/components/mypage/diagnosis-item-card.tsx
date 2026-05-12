@@ -1,9 +1,12 @@
 import { Card } from "@/components/ui/card";
 import DiagnosisLabel from "@/components/mypage/diagnosis-label";
 import { CalendarIcon, ChevronRightIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { AnalysisStatus } from "@/types/album";
 
 interface Props {
+  promotionId: number;
+  diagnosisId: number;
   status: AnalysisStatus;
   diagnosedDate: string;
   bottleneckType: string | null;
@@ -12,12 +15,16 @@ interface Props {
 }
 
 export default function DiagnosisItemCard({
+  promotionId,
+  diagnosisId,
   status,
   diagnosedDate,
   bottleneckType,
   actionTitle,
   headline,
 }: Props) {
+  const router = useRouter();
+
   const isAnalyzing = status === "RUNNING"; // 진단중
   const isAnalyzed = status === "COMPLETED"; // 진단완료
 
@@ -27,6 +34,12 @@ export default function DiagnosisItemCard({
     ? "평균 1~2일 이내 결과를 확인하실 수 있어요. 메일로 알려드릴게요."
     : headline;
 
+  const handleCardClick = () => {
+    if (!isAnalyzed) return;
+
+    router.push(`/report/${promotionId}?diagnosisId=${diagnosisId}`);
+  };
+
   return (
     <div className="flex flex-col gap-2">
       <div className="text-font-light flex items-center gap-1">
@@ -34,7 +47,10 @@ export default function DiagnosisItemCard({
         <span className="p2-bold">{diagnosedDate}</span>
       </div>
 
-      <div className="cursor-pointer">
+      <div
+        className={isAnalyzed ? "cursor-pointer" : ""}
+        onClick={handleCardClick}
+      >
         <Card className="border-grey1 rounded-r2 relative p-5">
           {isAnalyzed && (
             <div className="text-font-light absolute top-5 right-5 flex items-center gap-0.5">

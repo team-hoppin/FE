@@ -103,7 +103,10 @@ export default function AlbumAnalysisPage({ promotionId }: Props) {
           <>
             <Separator className="-mx-5" />
 
-            <DiagnosisSection diagnosis={data.diagnosis} />
+            <DiagnosisSection
+              promotionId={data.promotionId}
+              diagnosis={data.diagnosis}
+            />
           </>
         )}
       </main>
