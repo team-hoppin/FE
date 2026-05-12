@@ -42,6 +42,7 @@ export default function AlbumAnalysisPage({ promotionId }: Props) {
       </div>
     );
   }
+  const hasDiagnosis = data.diagnosis.length > 0; // 진단 내역 존재 여부
 
   return (
     <div className="mb-6 flex flex-col gap-7">
@@ -98,9 +99,13 @@ export default function AlbumAnalysisPage({ promotionId }: Props) {
 
         <StreamingSection streamingLinks={data.streamingLinks} />
 
-        <Separator className="-mx-5" />
+        {hasDiagnosis && (
+          <>
+            <Separator className="-mx-5" />
 
-        <DiagnosisSection diagnosis={data.diagnosis} />
+            <DiagnosisSection diagnosis={data.diagnosis} />
+          </>
+        )}
       </main>
 
       <Button variant="btnPurple" size="full">

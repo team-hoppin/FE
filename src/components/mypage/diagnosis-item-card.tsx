@@ -18,7 +18,14 @@ export default function DiagnosisItemCard({
   actionTitle,
   headline,
 }: Props) {
-  const isAnalyzed = status === "COMPLETED";
+  const isAnalyzing = status === "RUNNING"; // 진단중
+  const isAnalyzed = status === "COMPLETED"; // 진단완료
+
+  const title = isAnalyzing ? "진단 결과 대기중이에요" : actionTitle;
+
+  const description = isAnalyzing
+    ? "평균 1~2일 이내 결과를 확인하실 수 있어요. 메일로 알려드릴게요."
+    : headline;
 
   return (
     <div className="flex flex-col gap-2">
@@ -40,8 +47,8 @@ export default function DiagnosisItemCard({
             {isAnalyzed && <DiagnosisLabel label={bottleneckType} />}
 
             <div className="flex flex-col gap-1">
-              <p className="p1-bold text-font-middle">{actionTitle}</p>
-              <p className="p2-regular text-font-middle">{headline}</p>
+              <p className="p1-bold text-font-middle">{title}</p>
+              <p className="p2-regular text-font-middle">{description}</p>
             </div>
           </div>
         </Card>
