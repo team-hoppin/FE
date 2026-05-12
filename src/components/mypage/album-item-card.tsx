@@ -5,6 +5,7 @@ import { LinkIcon, CirclePlayIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { formatDate } from "@/utils/date";
 import { AlbumItem } from "@/types/album";
 
 interface Props {
@@ -34,14 +35,7 @@ export default function AlbumItemCard({ album, priority = false }: Props) {
   const isAnalyzing =
     status === "RUNNING" || (status === "COMPLETED" && !label);
 
-  const formattedDate = new Date(album.createdAt)
-    .toLocaleDateString("ko-KR", {
-      year: "2-digit",
-      month: "2-digit",
-      day: "2-digit",
-    })
-    .replace(/\.\s/g, ".")
-    .replace(/\.$/, "");
+  const formattedDate = formatDate(album.createdAt);
 
   return (
     <div

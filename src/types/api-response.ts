@@ -1,4 +1,4 @@
-import { AlbumItem } from "@/types/album";
+import { AlbumItem, AnalysisStatus } from "@/types/album";
 
 /******************************
  * Musician
@@ -69,7 +69,7 @@ export interface DiagnosisCard {
   headline: string;
   actionTitle: string;
   unread: boolean;
-  status: string;
+  status: AnalysisStatus;
 }
 
 export interface GetAnalysisPageRes {
