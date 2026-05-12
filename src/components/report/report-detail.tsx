@@ -173,7 +173,7 @@ export default function ReportDetail() {
                 </span>
                 이에요
               </h6>
-              <div className="bg-brand-gradient rounded-r2 p-4 break-keep whitespace-pre-line text-white">
+              <div className="bg-brand-gradient rounded-r2 c1-medium p-4 break-keep whitespace-pre-line text-white">
                 {data.headline}
               </div>
             </section>
