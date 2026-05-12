@@ -131,7 +131,7 @@ export default function ReportDetail() {
       <BackButton href="/report" />
       <main className="flex flex-col gap-9">
         <div className="bg-allwhite flex min-h-screen flex-col gap-9">
-          <div className="mt-7 flex flex-col items-start gap-1">
+          <div className="flex flex-col items-start gap-1">
             <h2 className="h2-bold text-font-basic">
               {activityName || "아티스트"}님의 홍보 현황이에요
             </h2>
@@ -143,7 +143,7 @@ export default function ReportDetail() {
             </div>
           </div>
 
-          <div className="flex flex-col gap-4">
+          <div className="flex flex-col gap-9">
             <section className="grid grid-cols-3 gap-5 text-center">
               {SUMMARY_METRICS.map(({ label, key }) => (
                 <div
