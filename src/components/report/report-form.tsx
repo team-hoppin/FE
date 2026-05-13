@@ -20,10 +20,10 @@ import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useOpenAlertModal } from "@/stores/alert-modal-store";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import {
   analyzePromotion,
-  getMyPagePromotions,
+  getMyPagePromotionsTitles,
   validateInstagramProfile,
 } from "@/lib/api/music-promotion";
 import { format } from "date-fns";
@@ -72,19 +72,33 @@ export default function ReportForm() {
     data: promotionsData,
     isLoading: isPromotionsLoading,
     isError: isPromotionsError,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
     refetch,
-  } = useQuery({
-    queryKey: ["myPagePromotions"],
-    queryFn: () => getMyPagePromotions(0),
+  } = useInfiniteQuery({
+    queryKey: ["myPagePromotionsTitles"],
+    queryFn: ({ pageParam }) => getMyPagePromotionsTitles(pageParam),
+    initialPageParam: 0,
+    getNextPageParam: (lastPage) =>
+      lastPage.hasNext ? lastPage.page + 1 : undefined,
   });
 
-  // 조회된 프로모션 목록
-  const promotions = promotionsData?.promotions ?? [];
+  // 조회된 프로모션 목록 (전체 페이지 합산)
+  const promotions = promotionsData?.pages.flatMap((p) => p.promotions) ?? [];
 
   // 쿼리를 통해 전달된 프로모션
   const queryPromotion = promotions.find(
     (p) => String(p.promotionId) === promotionIdFromQuery
   );
+
+  const handleSelectScroll: React.UIEventHandler<HTMLDivElement> = (e) => {
+    const { scrollTop, scrollHeight, clientHeight } = e.currentTarget;
+    const remaining = scrollHeight - scrollTop - clientHeight;
+    if (scrollTop > 0 && remaining <= 50 && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
 
   const handleSubmit = async () => {
     const newErrors: ReportFormErrors = {
@@ -225,7 +239,10 @@ export default function ReportForm() {
                       }
                     />
                   </SelectTrigger>
-                  <SelectContent position="popper">
+                  <SelectContent
+                    position="popper"
+                    onViewportScroll={handleSelectScroll}
+                  >
                     <SelectGroup>
                       {promotions.map((p) => (
                         <SelectItem
@@ -235,6 +252,11 @@ export default function ReportForm() {
                           {p.title}
                         </SelectItem>
                       ))}
+                      {isFetchingNextPage && (
+                        <div className="flex justify-center py-2">
+                          <Spinner className="text-main" />
+                        </div>
+                      )}
                     </SelectGroup>
                   </SelectContent>
                 </Select>

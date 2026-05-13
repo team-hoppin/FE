@@ -8,6 +8,7 @@ import {
   GetDiagnosisDetailRes,
   GetMusicPromotionRes,
   GetMyPagePromotionsRes,
+  GetMyPagePromotionsTitlesRes,
   ValidateInstagramRes,
 } from "@/types/api-response";
 
@@ -84,6 +85,26 @@ export async function deleteMusicPromotion(promotionId: number): Promise<void> {
     });
   } catch (e) {
     console.error("[music-promotion]: 뮤지션 홍보 삭제 실패");
+    throw e;
+  }
+}
+
+/**
+ * 마이페이지 프로모션 제목 목록 조회
+ * [GET] /mypage/promotionsTitle
+ */
+export async function getMyPagePromotionsTitles(
+  page = 0
+): Promise<GetMyPagePromotionsTitlesRes> {
+  try {
+    const params = new URLSearchParams({ page: page.toString() });
+    const res = await fetcher<GetMyPagePromotionsTitlesRes>(
+      `/mypage/promotionsTitle?${params.toString()}`,
+      { method: "GET" }
+    );
+    return res;
+  } catch (e) {
+    console.error("[music-promotion]: 마이페이지 프로모션 제목 목록 조회 실패");
     throw e;
   }
 }

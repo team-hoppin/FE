@@ -51,6 +51,21 @@ export interface GetMyPagePromotionsRes {
   hasNext: boolean;
 }
 
+// 마이페이지 프로모션 제목 목록 조회 Res
+export interface PromotionTitleItem {
+  promotionId: number;
+  title: string;
+}
+
+export interface GetMyPagePromotionsTitlesRes {
+  promotions: PromotionTitleItem[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  hasNext: boolean;
+}
+
 /******************************
  * AI Analyze
  ******************************/

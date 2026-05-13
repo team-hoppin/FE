@@ -70,8 +70,11 @@ function SelectContent({
   children,
   position = "item-aligned",
   align = "center",
+  onViewportScroll,
   ...props
-}: React.ComponentProps<typeof SelectPrimitive.Content>) {
+}: React.ComponentProps<typeof SelectPrimitive.Content> & {
+  onViewportScroll?: React.UIEventHandler<HTMLDivElement>;
+}) {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
@@ -79,7 +82,8 @@ function SelectContent({
         data-align-trigger={position === "item-aligned"}
         className={cn(
           "border-border text-font-basic bg-white z-50 w-full",
-          "rounded-r1 overflow-hidden border text-sm outline-none",
+          "rounded-r1 border text-sm outline-none",
+          position === "item-aligned" && "overflow-hidden",
           position === "popper" &&
             "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
           className
@@ -88,17 +92,18 @@ function SelectContent({
         align={align}
         {...props}
       >
-        <SelectScrollUpButton />
+        {position === "item-aligned" && <SelectScrollUpButton />}
         <SelectPrimitive.Viewport
           data-position={position}
           className={cn(
-            "data-[position=popper]:h-(--radix-select-trigger-height) data-[position=popper]:w-full data-[position=popper]:min-w-(--radix-select-trigger-width)",
-            position === "popper" && ""
+            "data-[position=popper]:w-full data-[position=popper]:min-w-(--radix-select-trigger-width)",
+            position === "popper" && "max-h-33 overflow-y-auto"
           )}
+          onScroll={onViewportScroll}
         >
           {children}
         </SelectPrimitive.Viewport>
-        <SelectScrollDownButton />
+        {position === "item-aligned" && <SelectScrollDownButton />}
       </SelectPrimitive.Content>
     </SelectPrimitive.Portal>
   );
