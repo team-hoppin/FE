@@ -10,9 +10,10 @@ import { useOpenAlertModal } from "@/stores/alert-modal-store";
 
 interface Props {
   showIntro: boolean;
+  isLoggedIn: boolean;
 }
 
-export default function Home({ showIntro }: Props) {
+export default function Home({ showIntro, isLoggedIn }: Props) {
   const router = useRouter();
   const openAlertModal = useOpenAlertModal();
 
@@ -65,12 +66,14 @@ export default function Home({ showIntro }: Props) {
       </div>
       <div className="flex flex-col items-center gap-10">
         <HomeButtons showIntro={showIntro} />
-        <div className="c1-medium text-font-light flex flex-col gap-1 text-center">
-          내 진단 결과를 한눈에 보고 싶다면?
-          <Link href="/mypage" className="text-main c1-bold underline">
-            마이페이지로 이동
-          </Link>
-        </div>
+        {isLoggedIn && (
+          <div className="c1-medium text-font-light flex flex-col gap-1 text-center">
+            내 진단 결과를 한눈에 보고 싶다면?
+            <Link href="/mypage" className="text-main c1-bold underline">
+              마이페이지로 이동
+            </Link>
+          </div>
+        )}
       </div>
     </main>
   );
