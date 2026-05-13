@@ -8,6 +8,7 @@ import {
   GetDiagnosisDetailRes,
   GetMusicPromotionRes,
   GetMyPagePromotionsRes,
+  ValidateInstagramRes,
 } from "@/types/api-response";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -208,6 +209,27 @@ export async function getDiagnosisUnreadExists(): Promise<boolean> {
   } catch (e) {
     console.error("[music-promotion] 미확인 진단 존재 여부 조회 실패", e);
     throw e;
+  }
+}
+
+/**
+ * 인스타그램 계정 유효성 검사
+ * [POST] /crawling/instagram/profile/validate
+ */
+export async function validateInstagramProfile(
+  instagramUsername: string
+): Promise<ValidateInstagramRes> {
+  try {
+    const res = await fetcher<ValidateInstagramRes>(
+      "/crawling/instagram/profile/validate",
+      {
+        method: "POST",
+        body: JSON.stringify({ instagramUsername }),
+      }
+    );
+    return res;
+  } catch {
+    throw new Error("[instagram]: 인스타그램 계정 유효성 검사 실패");
   }
 }
 

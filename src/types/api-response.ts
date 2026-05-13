@@ -124,6 +124,17 @@ export interface GetDiagnosisDetailRes {
 }
 
 /******************************
+ * Instagram
+ ******************************/
+
+// 인스타그램 계정 유효성 검사 Res
+export interface ValidateInstagramRes {
+  valid: boolean;
+  status: string;
+  message: string;
+}
+
+/******************************
  * Image Upload
  ******************************/
 
