@@ -26,7 +26,7 @@ export default function ReportDetail() {
     ? Number(searchParams.get("diagnosisId"))
     : undefined;
   const [data, setData] = useState<GetDiagnosisDetailRes | null>(null);
-  const [activityName, setActivityName] = useState<string>("");
+  const [songTitle, setSongTitle] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
   const [isEmpty, setIsEmpty] = useState(false);
@@ -44,7 +44,7 @@ export default function ReportDetail() {
         getMusicPromotion(promotionId),
         getDiagnosisDetail(promotionId, diagnosisId),
       ]);
-      setActivityName(promotion.activityName);
+      setSongTitle(promotion.songTitle);
       setData(detail);
     } catch {
       setIsError(true);
@@ -66,10 +66,16 @@ export default function ReportDetail() {
         pixelRatio: 2,
         filter: (node: HTMLElement) => !node.dataset?.captureIgnore,
       });
-      const link = document.createElement("a");
-      link.download = "report.jpg";
-      link.href = dataUrl;
-      link.click();
+      const blob = await fetch(dataUrl).then((r) => r.blob());
+      const file = new File([blob], "report.jpg", { type: "image/jpeg" });
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ files: [file] });
+      } else {
+        const link = document.createElement("a");
+        link.download = "report.jpg";
+        link.href = dataUrl;
+        link.click();
+      }
     } catch {
       toast.error("이미지 저장에 실패했어요. 잠시 후 다시 시도해주세요.");
     }
@@ -116,7 +122,7 @@ export default function ReportDetail() {
         <div className="bg-allwhite flex min-h-screen flex-col gap-9">
           <div className="flex flex-col items-start gap-1">
             <h2 className="h2-bold text-font-basic">
-              {activityName || "아티스트"}님의 홍보 현황이에요
+              {songTitle || "앨범"}의 홍보 현황이에요
             </h2>
             <div className="border-border text-font-middle flex items-center gap-2 rounded-full border px-4 py-2">
               <Calendar size={16} />
