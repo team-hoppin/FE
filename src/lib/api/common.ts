@@ -1,3 +1,5 @@
+import { openAlertModal } from "@/stores/alert-modal-store";
+
 const BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export function getAccessToken() {
@@ -54,8 +56,18 @@ async function fetchWithAuth<T>(
     throw new Error("Unauthorized");
   }
 
+  if (res.status === 403) {
+    openAlertModal({
+      type: "alert",
+      variant: "auth-error",
+      message: "계정이 서로 달라요!",
+      description: "해당 정보의 계정으로 로그인해야 확인할 수 있어요.",
+    });
+    throw Object.assign(new Error(), { status: 403 });
+  }
+
   if (!res.ok) {
-    throw Error();
+    throw Object.assign(new Error(), { status: res.status });
   }
 
   return res.json();

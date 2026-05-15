@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import AlertModal from "@/components/common/alert-modal";
 import MailSuccessModal from "@/components/common/mail-success-modal";
+import AuthErrorModal from "@/components/common/auth-error-modal";
 import ToastProvider from "@/components/ui/toast-provider";
 import QueryProvider from "@/components/common/query-provider";
 
@@ -92,6 +93,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           </div>
           <AlertModal />
           <MailSuccessModal />
+          <AuthErrorModal />
           <ToastProvider />
         </div>
       </body>

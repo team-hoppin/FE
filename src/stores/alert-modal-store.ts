@@ -4,7 +4,7 @@ import { ReactNode } from "react";
 interface OpenState {
   isOpen: true;
   type: "alert" | "confirm";
-  variant: "warning" | "danger" | "mail-success";
+  variant: "warning" | "danger" | "mail-success" | "auth-error";
 
   message: ReactNode;
   description?: ReactNode;
@@ -41,4 +41,8 @@ export const useAlertModal = () => {
 
 export const useOpenAlertModal = () => {
   return useAlertModalStore((store) => store.actions.open);
+};
+
+export const openAlertModal = (params: Omit<OpenState, "isOpen">) => {
+  useAlertModalStore.getState().actions.open(params);
 };
