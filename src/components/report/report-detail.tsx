@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowBigRight, Calendar, ChevronRight } from "lucide-react";
 import { toJpeg } from "html-to-image";
 import { toast } from "sonner";
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "next/navigation";
 import { getDiagnosisDetail, getMusicPromotion } from "@/lib/api/music-promotion";
 import { GetDiagnosisDetailRes } from "@/types/api-response";
@@ -112,8 +112,7 @@ export default function ReportDetail() {
       />
     );
 
-  const from = data.diagnosis.highlightFrom;
-  const to = data.diagnosis.highlightTo;
+  const highlightParts = data.diagnosis.highlight.split(">").map((s) => s.trim());
 
   return (
     <>
@@ -155,10 +154,13 @@ export default function ReportDetail() {
             <section className="border-border rounded-r3 flex flex-col gap-4 border p-5">
               <h6 className="text-font-middle p1-bold flex flex-col gap-1">
                 지금 홍보가 막힌 단계는
-                <span className="text-main-dark1 h3-bold flex items-center gap-1">
-                  {from}
-                  <ChevronRight size={24} />
-                  {to}
+                <span className="text-main-dark1 h3-bold flex flex-wrap items-center gap-1">
+                  {highlightParts.map((part, i) => (
+                    <Fragment key={i}>
+                      {i > 0 && <ChevronRight size={24} />}
+                      {part}
+                    </Fragment>
+                  ))}
                 </span>
                 이에요
               </h6>
