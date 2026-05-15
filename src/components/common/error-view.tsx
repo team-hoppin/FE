@@ -15,9 +15,9 @@ export default function ErrorView({
   title,
   description,
   linkHref = "/",
-  linkLabel = "메인으로 이동",
+  linkLabel = "메인으로 이동하기",
   onAction,
-  actionLabel = "다시 시도",
+  actionLabel = "다시 시도하기",
 }: ErrorViewProps) {
   return (
     <div className="flex min-h-screen flex-col items-center justify-between pt-46.5 pb-30 text-center whitespace-pre-line">

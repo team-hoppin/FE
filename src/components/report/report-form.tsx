@@ -124,8 +124,15 @@ export default function ReportForm() {
         openAlertModal({
           type: "alert",
           variant: "warning",
-          message:
-            "인스타그램 계정이 존재하지 않거나\n비공개일 경우 진단할 수 없어요.\n올바른 계정 이름을 입력해주세요.",
+          message: (
+            <>
+              인스타그램 계정이 존재하지 않거나{"\n"}비공개일 경우 진단할 수
+              없어요.{"\n"}
+              <span className="p2-semibold">
+                올바른 계정 이름을 입력해주세요.
+              </span>
+            </>
+          ),
         });
         return;
       }
@@ -168,7 +175,7 @@ export default function ReportForm() {
   return (
     <>
       <BackButton />
-      <main className="flex flex-col">
+      <main className="flex flex-col gap-6">
         {isLoading && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/80">
             <Spinner className="text-main" />
@@ -179,41 +186,20 @@ export default function ReportForm() {
             홍보가 잘 되고 있는지 확인해봐요
           </h4>
           <p className="p2-regular text-font-middle">
-            계정을 연결하면 게시물 반응부터 링크 클릭까지,
+            인스타 계정을 입력하면 피드 반응부터 홍보 링크 클릭까지
             <br />
             어느 부분이 막히고 있는지 바로 찾아드릴게요.
           </p>
         </div>
 
-        <div className="flex flex-col gap-20">
-          {/* <button className="text-font-middle bg-allwhite rounded-r2 shadow-btn flex h-15 cursor-pointer items-center gap-4 p-3">
-          <Image src="/insta.svg" alt="인스타그램" width={24} height={24} />
-          <div className="flex flex-col items-start">
-            <h6 className="p2-bold">인스타그램 계정 연동하기</h6>
-            <p className="c1-medium text-font-light">
-              프로페셔널 계정만 연동 가능해요
-            </p>
-          </div>
-        </button> */}
-          {/* <button className="text-font-middle bg-allwhite rounded-r2 shadow-btn flex h-15 items-center gap-4 p-3">
-          <Image
-            src="/peak-round-sm.svg"
-            alt="피크로고"
-            width={32}
-            height={32}
-          />
-          <div className="flex flex-col items-start">
-            <h6 className="p2-bold">music_peak</h6>
-          </div>
-        </button> */}
-
+        <div className="flex flex-col gap-7.5">
           <section className="flex flex-col gap-3">
             <div className="flex flex-col gap-1">
               <h5 className="p1-bold text-font-middle">
                 어떤 앨범을 홍보 중이신가요?
               </h5>
               <p className="p2-medium text-font-light">
-                생성된 홍보 링크 기준으로 분석해드려요
+                생성된 홍보 페이지 기준으로 분석해드려요
               </p>
             </div>
 
@@ -268,13 +254,13 @@ export default function ReportForm() {
                 </Select>
                 <div className="flex flex-col gap-1 text-center">
                   <p className="text-font-light c1-medium cursor-pointer">
-                    홍보 링크가 없으신가요?
+                    홍보 페이지가 없으신가요?
                   </p>
                   <Link
                     href={"/album"}
                     className="text-main cursor-pointer text-xs font-bold underline"
                   >
-                    새 홍보 링크 만들기
+                    새 홍보 페이지 만들기
                   </Link>
                 </div>
               </>
@@ -285,7 +271,7 @@ export default function ReportForm() {
             <div className="flex flex-col gap-1">
               <h5 className="p1-bold text-font-middle">계정을 입력해주세요</h5>
               <p className="p2-medium text-font-light">
-                홍보 중이신 인스타그램 계정을 입력해주세요
+                진단을 원하시는 인스타그램 계정을 입력해주세요
               </p>
               <Input
                 className={
@@ -305,7 +291,7 @@ export default function ReportForm() {
           <section className="flex flex-col gap-3">
             <div className="flex flex-col gap-1">
               <h5 className="p1-bold text-font-middle">
-                언제 올린 컨텐츠부터 살펴볼까요?
+                언제 올린 게시물부터 살펴볼까요?
               </h5>
               <p className="p2-medium text-font-light">
                 선택한 날짜 기준으로 피드 게시물의 상호작용이 분석돼요

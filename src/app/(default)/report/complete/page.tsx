@@ -12,9 +12,9 @@ export default async function Complete({
       <div className="mt-7 flex flex-col gap-1">
         <h4 className="h3-bold text-font-basic">진단 신청 완료!</h4>
         <p className="p2-regular text-font-middle">
-          평균 1~2일 이내 결과를 확인하실 수 있어요
+          평균 1일 이내에 결과를 확인하실 수 있어요.
           <br />
-          메일로 알려드릴게요
+          진단이 완료되면 메일로 알려드릴게요.
         </p>
       </div>
 
@@ -40,9 +40,9 @@ export default async function Complete({
             </div>
             <div className="text-wrap">
               <p className="p2-regular text-font-middle">
-                이전 진단에서 발견한 취약부분을 개선에
+                이전 진단에서 발견한 취약지점을 개선에
                 <br />
-                반영했다면 훨씬 효과적인 홍보가 될 거예요
+                반영했다면 훨씬 효과적인 홍보가 될 거예요.
               </p>
             </div>
           </li>
@@ -52,17 +52,17 @@ export default async function Complete({
       <div className="fixed right-1/2 bottom-15 flex w-full max-w-(--max-width) translate-x-1/2 justify-center px-5">
         <div className="flex w-full flex-col gap-4 px-6">
           <Button variant="btnPurple" size="full" asChild>
-            <Link href={"/mypage"}>마이페이지로 이동</Link>
+            <Link href={"/mypage"}>마이페이지로 이동하기</Link>
           </Button>
           <div className="flex flex-col gap-1 text-center">
             <p className="text-font-light c1-medium">
-              이미 진단받은 적이 있으신가요?
+              이미 진단받은 적이 있다면?
             </p>
             <Link
               href={promotionId ? `/album/analysis/${promotionId}` : "/mypage"}
               className="text-main c1-bold cursor-pointer underline"
             >
-              이전 진단 내역 보기
+              이 앨범의 홍보 현황 보기
             </Link>
           </div>
         </div>

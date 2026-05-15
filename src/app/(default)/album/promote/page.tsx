@@ -6,7 +6,7 @@ export default function Promote() {
   return (
     <main className="flex flex-col gap-16">
       <div className="mt-7 flex flex-col gap-1">
-        <h4 className="h3-bold text-font-basic">링크 복사 완료!</h4>
+        <h4 className="h3-bold text-font-basic">홍보 링크 복사 완료!</h4>
         <p className="p2-regular text-font-middle">
           이제 인스타 프로필에 링크를 붙여두세요.
           <br />
@@ -24,9 +24,11 @@ export default function Promote() {
               1
             </div>
             <div className="text-wrap">
-              <h5 className="p2-bold text-font-basic">Peak 링크 복사하기</h5>
+              <h5 className="p2-bold text-font-basic">
+                홍보 페이지의 링크를 복사하기
+              </h5>
               <p className="p2-regular text-font-middle">
-                아래 &apos;링크 복사&apos; 버튼을 누르세요
+                페이지 하단의 &apos;링크 복사&apos; 버튼을 누르세요
               </p>
             </div>
           </li>
@@ -39,7 +41,7 @@ export default function Promote() {
                 인스타 프로필 링크에 붙여넣기
               </h5>
               <p className="p2-regular text-font-middle">
-                바이오 링크 자리에 넣으면 끝!
+                인스타그램 바이오란에 넣으면 끝!
               </p>
             </div>
           </li>
@@ -49,8 +51,8 @@ export default function Promote() {
           <Image
             src="/ex-insta.png"
             alt="인스타그램 프로필 예시"
-            width={456}
-            height={348}
+            width={246}
+            height={188}
             className="h-auto w-full"
           />
         </div>
@@ -58,19 +60,8 @@ export default function Promote() {
 
       <div className="flex flex-col gap-4 px-6">
         <Button variant="btnPurple" size="full" asChild>
-          <Link href={"/mypage"}>마이페이지로 이동</Link>
+          <Link href={"/mypage"}>마이페이지로 이동하기</Link>
         </Button>
-        <div className="flex flex-col gap-1 text-center">
-          <p className="text-font-light c1-medium cursor-pointer">
-            이미 게시물을 올리셨나요?
-          </p>
-          <Link
-            href={"/report/coming-soon"}
-            className="text-main c1-bold cursor-pointer underline"
-          >
-            내 홍보 콘텐츠 진단하기
-          </Link>
-        </div>
       </div>
     </main>
   );
