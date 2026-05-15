@@ -28,11 +28,11 @@ export default function AuthErrorModal() {
   };
 
   return (
-    <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black/50">
+    <div className="fixed inset-0 z-9999 flex items-center justify-center bg-black/50 px-5">
       <div
         role="dialog"
         aria-modal="true"
-        className="rounded-r3 flex flex-col items-center gap-2.5 bg-white px-5 py-5"
+        className="rounded-r3 flex w-full max-w-87.5 flex-col items-center gap-2.5 bg-white px-5 py-5"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex w-full flex-col gap-2">
@@ -48,14 +48,14 @@ export default function AuthErrorModal() {
         <Image
           src="/character/modal-warning.png"
           alt="auth-error"
-          width={120}
-          height={95}
+          width={189}
+          height={140}
         />
-        <div className="flex gap-3">
-          <Button variant="btnWhite" size="md" onClick={handleMain}>
+        <div className="flex w-full gap-3">
+          <Button variant="btnWhite" size="md" className="w-auto flex-1" onClick={handleMain}>
             메인으로 가기
           </Button>
-          <Button variant="btnPurple" size="md" onClick={handleLogout}>
+          <Button variant="btnPurple" size="md" className="w-auto flex-1" onClick={handleLogout}>
             로그아웃 하기
           </Button>
         </div>

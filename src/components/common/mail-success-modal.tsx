@@ -23,13 +23,13 @@ export default function MailSuccessModal() {
 
   return (
     <div
-      className="fixed inset-0 z-9999 flex items-center justify-center bg-black/50"
+      className="fixed inset-0 z-9999 flex items-center justify-center bg-black/50 px-5"
       onClick={handleCancelClick}
     >
       <div
         role="dialog"
         aria-modal="true"
-        className="rounded-r3 flex flex-col items-center gap-2.5 bg-white px-5 py-5"
+        className="rounded-r3 flex w-full max-w-87.5 flex-col items-center gap-2.5 bg-white px-5 py-5"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex w-full flex-col gap-2">
@@ -49,14 +49,14 @@ export default function MailSuccessModal() {
           height={140}
         />
 
-        <div className="flex gap-3">
+        <div className="flex w-full gap-3">
           {isConfirm && (
-            <Button variant="btnWhite" size="md" onClick={handleCancelClick}>
+            <Button variant="btnWhite" size="md" className="w-auto flex-1" onClick={handleCancelClick}>
               나중에 볼게요
             </Button>
           )}
 
-          <Button variant="btnPurple" size="md" onClick={handleActionClick}>
+          <Button variant="btnPurple" size="md" className="w-auto flex-1" onClick={handleActionClick}>
             확인하러 가기
           </Button>
         </div>
