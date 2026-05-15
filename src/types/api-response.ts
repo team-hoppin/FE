@@ -128,8 +128,7 @@ export interface GetDiagnosisDetailRes {
     streamingClickRateByPromoClick: number;
   };
   diagnosis: {
-    highlightFrom: string;
-    highlightTo: string;
+    highlight: string;
   };
   action?: {
     title: string;
