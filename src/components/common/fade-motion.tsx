@@ -1,20 +1,32 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
+import { AnimatePresence, motion } from "framer-motion";
 
 interface FadeMotionProps {
   children: React.ReactNode;
   duration?: number;
   delay?: number;
+  x?: number;
   className?: string;
 }
 
-export default function FadeMotion({ children, duration = 0.3, delay = 0, className }: FadeMotionProps) {
+export function MotionLayout({ children }: { children: React.ReactNode }) {
+  return <AnimatePresence>{children}</AnimatePresence>;
+}
+
+export default function FadeMotion({
+  children,
+  duration = 0.3,
+  delay = 0,
+  x,
+  className,
+}: FadeMotionProps) {
   return (
     <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration, delay }}
+      initial={{ opacity: 0, ...(x !== undefined && { x }) }}
+      animate={{ opacity: 1, ...(x !== undefined && { x: 0 }) }}
+      exit={{ opacity: 0, ...(x !== undefined && { x: -x }) }}
+      transition={{ duration, delay, ease: "easeOut" }}
       className={className}
     >
       {children}

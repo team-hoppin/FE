@@ -5,7 +5,7 @@ import FadeMotion from "@/components/common/fade-motion";
 export default function Report() {
   return (
     <Suspense fallback={null}>
-      <FadeMotion>
+      <FadeMotion x={20}>
         <ReportForm />
       </FadeMotion>
     </Suspense>

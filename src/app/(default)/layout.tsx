@@ -1,4 +1,5 @@
 import Header from "@/components/common/header";
+import { MotionLayout } from "@/components/common/fade-motion";
 
 export default function DefaultLayout({
   children,
@@ -8,7 +9,7 @@ export default function DefaultLayout({
   return (
     <>
       <Header />
-      {children}
+      <MotionLayout>{children}</MotionLayout>
     </>
   );
 }
