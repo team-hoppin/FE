@@ -12,7 +12,7 @@ const VARIANT_IMAGE: Record<"warning" | "danger", string> = {
 export default function AlertModal() {
   const store = useAlertModal();
 
-  if (!store.isOpen || store.variant === "mail-success") return null;
+  if (!store.isOpen || store.variant === "mail-success" || store.variant === "auth-error") return null;
 
   const isConfirm = store.type === "confirm";
 
