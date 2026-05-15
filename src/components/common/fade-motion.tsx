@@ -25,7 +25,6 @@ export default function FadeMotion({
     <motion.div
       initial={{ opacity: 0, ...(x !== undefined && { x }) }}
       animate={{ opacity: 1, ...(x !== undefined && { x: 0 }) }}
-      exit={{ opacity: 0, ...(x !== undefined && { x: -x }) }}
       transition={{ duration, delay, ease: "easeOut" }}
       className={className}
     >
