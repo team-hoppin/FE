@@ -74,7 +74,11 @@ export default function CalendarInput({
         </div>
       </DialogTrigger>
 
-      <DialogContent className="max-w-2xs p-0" showCloseButton={false}>
+      <DialogContent
+        className="max-w-2xs p-0"
+        showCloseButton={false}
+        aria-describedby={undefined}
+      >
         {/* Radix Dialog 접근성 관련 콘솔 에러 지우기 위함 */}
         <VisuallyHidden.Root>
           <DialogTitle>날짜 선택</DialogTitle>
