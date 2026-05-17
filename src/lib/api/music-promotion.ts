@@ -1,6 +1,6 @@
 import { fetcher } from "@/lib/api/common";
 import { fetchEventSource } from "@microsoft/fetch-event-source";
-import { MusicPromotionInfo } from "@/types/album";
+import { AlbumItem, MusicPromotionInfo } from "@/types/album";
 import {
   AnalysisJobCreateRes,
   CreateMusicPromotionRes,
@@ -147,7 +147,7 @@ export async function getMyPagePromotions(
 export function subscribePromotionStream({
   onPromotionUpdated,
 }: {
-  onPromotionUpdated: () => void;
+  onPromotionUpdated: (updatedPromotion: AlbumItem) => void;
 }) {
   const controller = new AbortController();
 
@@ -177,9 +177,13 @@ export function subscribePromotionStream({
         case "connected":
           return;
 
-        case "promotion-analysis-updated":
-          onPromotionUpdated();
+        case "promotion-analysis-updated": {
+          const updatedPromotion: AlbumItem = JSON.parse(event.data);
+
+          onPromotionUpdated(updatedPromotion);
+
           return;
+        }
       }
     },
 
