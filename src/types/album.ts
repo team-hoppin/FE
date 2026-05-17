@@ -27,6 +27,7 @@ export interface AlbumItem {
     status: AnalysisStatus;
     label: string | null;
     hasUnreadResult: boolean;
+    diagnosedAt: string | null;
   };
 }
 

@@ -5,6 +5,7 @@ import { LinkIcon, CirclePlayIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { memo } from "react";
 import { formatDate } from "@/utils/date";
 import { AlbumItem } from "@/types/album";
 
@@ -13,7 +14,7 @@ interface Props {
   priority?: boolean;
 }
 
-export default function AlbumItemCard({ album, priority = false }: Props) {
+function AlbumItemCard({ album, priority = false }: Props) {
   const router = useRouter();
 
   const { analysis } = album;
@@ -112,3 +113,7 @@ export default function AlbumItemCard({ album, priority = false }: Props) {
     </div>
   );
 }
+
+export default memo(AlbumItemCard, (prev, next) => {
+  return prev.priority === next.priority && prev.album === next.album;
+});

@@ -7,11 +7,17 @@ import AlbumItemCard from "@/components/mypage/album-item-card";
 import ErrorView from "@/components/common/error-view";
 import Link from "next/link";
 import { useRef, useEffect } from "react";
-import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  useInfiniteQuery,
+  useQueryClient,
+  InfiniteData,
+} from "@tanstack/react-query";
 import {
   getMyPagePromotions,
   subscribePromotionStream,
 } from "@/lib/api/music-promotion";
+import { AlbumItem } from "@/types/album";
+import { GetMyPagePromotionsRes } from "@/types/api-response";
 
 export default function MyPage() {
   const queryClient = useQueryClient();
@@ -41,11 +47,27 @@ export default function MyPage() {
   // SSE 실시간 구독
   useEffect(() => {
     const controller = subscribePromotionStream({
-      // 진단 상태 변경 시 목록 최신화
-      onPromotionUpdated: () => {
-        queryClient.invalidateQueries({
-          queryKey: ["mypage-promotions"],
-        });
+      onPromotionUpdated: (updatedPromotion: AlbumItem) => {
+        queryClient.setQueryData<InfiniteData<GetMyPagePromotionsRes>>(
+          ["mypage-promotions"],
+          (oldData) => {
+            if (!oldData) return oldData;
+
+            return {
+              ...oldData,
+
+              pages: oldData.pages.map((page) => ({
+                ...page,
+
+                promotions: page.promotions.map((promotion) =>
+                  promotion.promotionId === updatedPromotion.promotionId
+                    ? updatedPromotion
+                    : promotion
+                ),
+              })),
+            };
+          }
+        );
       },
     });
 
