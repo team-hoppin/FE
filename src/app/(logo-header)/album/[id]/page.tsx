@@ -3,6 +3,7 @@ import AlbumActionButton from "@/components/album/album-action-button";
 import { cookies } from "next/headers";
 import { getMusicPromotion } from "@/lib/api/music-promotion";
 import { getStreamingCode } from "@/utils/album";
+import FadeMotion from "@/components/common/fade-motion";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -42,36 +43,39 @@ export default async function AlbumDetailPage({ params, searchParams }: Props) {
   };
 
   return (
-    <main className="mt-4 flex flex-col justify-center gap-10">
-      <AlbumDetail {...albumInfo} />
-
-      <div className="flex flex-col items-center gap-1">
-        {isLoggedIn ? (
-          <>
-            <span className="c1-medium text-font-light">
-              팬들이 링크를 눌렀을 때 이렇게 보여요.
-            </span>
-            <span className="p2-bold text-font-middle mb-2">
-              마음에 들면 인스타그램 프로필에 바로 붙여보세요!
-            </span>
-          </>
-        ) : (
-          <>
-            <span className="c1-medium text-font-light">
-              이 노래가 마음에 든다면?
-            </span>
-            <span className="p2-bold text-font-middle mb-2">
-              함께 듣고 싶은 사람에게 공유하세요.
-            </span>
-          </>
-        )}
-        <AlbumActionButton
-          url={data.trackingUrl}
-          promotionId={promotionId}
-          isLoggedIn={isLoggedIn}
-          fromAnalysis={fromAnalysis}
-        />
-      </div>
-    </main>
+    <FadeMotion>
+      <main className="flex min-h-[calc(100dvh-var(--header-height)-var(--page-padding-bottom))] flex-col">
+        <div className="mt-4 mb-6 flex flex-col justify-center gap-10">
+          <AlbumDetail {...albumInfo} />
+        </div>
+        <div className="mt-auto flex flex-col items-center gap-1">
+          {isLoggedIn ? (
+            <>
+              <span className="c1-medium text-font-light">
+                팬들이 링크를 눌렀을 때 이렇게 보여요.
+              </span>
+              <span className="p2-bold text-font-middle mb-2">
+                마음에 들면 인스타그램 프로필에 바로 붙여보세요!
+              </span>
+            </>
+          ) : (
+            <>
+              <span className="c1-medium text-font-light">
+                이 노래가 마음에 든다면?
+              </span>
+              <span className="p2-bold text-font-middle mb-2">
+                함께 듣고 싶은 사람에게 공유하세요.
+              </span>
+            </>
+          )}
+          <AlbumActionButton
+            url={data.trackingUrl}
+            promotionId={promotionId}
+            isLoggedIn={isLoggedIn}
+            fromAnalysis={fromAnalysis}
+          />
+        </div>
+      </main>
+    </FadeMotion>
   );
 }

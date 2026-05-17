@@ -1,9 +1,11 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import FadeMotion from "@/components/common/fade-motion";
 
 export default function ComingSoon() {
   return (
+    <FadeMotion>
     <main className="p-5">
       <div className="mt-25 mb-24 flex flex-col items-center gap-8 text-center">
         <div className="flex flex-col gap-3">
@@ -37,5 +39,6 @@ export default function ComingSoon() {
         </Button>
       </div>
     </main>
+    </FadeMotion>
   );
 }

@@ -9,7 +9,7 @@ export default async function Complete({
 }) {
   const { promotionId } = await searchParams;
   return (
-    <FadeMotion x={20}>
+    <FadeMotion>
       <main className="flex min-h-[calc(100dvh-var(--header-height)-var(--page-padding-bottom))] flex-col">
         <div className="flex flex-col justify-between gap-16">
           <div className="mt-7 flex flex-col gap-1">

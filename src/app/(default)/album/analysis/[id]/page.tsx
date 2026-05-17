@@ -1,3 +1,4 @@
+import FadeMotion from "@/components/common/fade-motion";
 import AlbumAnalysisPage from "@/components/mypage/album-analysis-page";
 
 interface Props {
@@ -9,5 +10,9 @@ interface Props {
 export default async function Page({ params }: Props) {
   const { id } = await params;
 
-  return <AlbumAnalysisPage promotionId={Number(id)} />;
+  return (
+    <FadeMotion x={20}>
+      <AlbumAnalysisPage promotionId={Number(id)} />
+    </FadeMotion>
+  );
 }

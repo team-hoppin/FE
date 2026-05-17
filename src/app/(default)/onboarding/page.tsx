@@ -4,6 +4,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import FadeMotion from "@/components/common/fade-motion";
 
 type Slide = {
   titleBefore: string;
@@ -83,82 +84,86 @@ export default function OnboardingPage() {
   }, [emblaApi]);
 
   return (
-    <main className="flex flex-1 flex-col px-5 pb-9">
-      <div className="mt-16 flex flex-1 flex-col items-center gap-10 text-center">
-        <div className="flex flex-col">
-          <div
-            className="embla__viewport w-full overflow-hidden"
-            ref={emblaRef}
-          >
-            <div className="embla__container">
-              {SLIDES.map((slide, index) => (
-                <div
-                  key={index}
-                  className="embla__slide flex flex-col items-center gap-3"
-                >
-                  <div className="flex flex-col gap-3">
-                    <h1 className="h1-bold text-font-basic">
-                      {slide.titleBefore}
-                      <br />
-                      <span className="text-main">{slide.titleHighlight}</span>
-                      {slide.titleAfter && (
-                        <>
-                          <br />
-                          {slide.titleAfter}
-                        </>
-                      )}
-                    </h1>
-                    <p className="text-font-light p2-semibold">
-                      {slide.description.split("\n").map((line, i) => (
-                        <span key={i}>
-                          {line}
-                          <br />
+    <FadeMotion>
+      <main className="flex flex-1 flex-col px-5 pb-9">
+        <div className="mt-16 flex flex-1 flex-col items-center gap-10 text-center">
+          <div className="flex flex-col">
+            <div
+              className="embla__viewport w-full overflow-hidden"
+              ref={emblaRef}
+            >
+              <div className="embla__container">
+                {SLIDES.map((slide, index) => (
+                  <div
+                    key={index}
+                    className="embla__slide flex flex-col items-center gap-3"
+                  >
+                    <div className="flex flex-col gap-3">
+                      <h1 className="h1-bold text-font-basic">
+                        {slide.titleBefore}
+                        <br />
+                        <span className="text-main">
+                          {slide.titleHighlight}
                         </span>
-                      ))}
-                    </p>
+                        {slide.titleAfter && (
+                          <>
+                            <br />
+                            {slide.titleAfter}
+                          </>
+                        )}
+                      </h1>
+                      <p className="text-font-light p2-semibold">
+                        {slide.description.split("\n").map((line, i) => (
+                          <span key={i}>
+                            {line}
+                            <br />
+                          </span>
+                        ))}
+                      </p>
+                    </div>
+                    <div className="flex min-h-85 items-center justify-center">
+                      <Image
+                        src={slide.src}
+                        alt="설명 이미지"
+                        width={244}
+                        height={244}
+                        className={slide.imgClassName}
+                      />
+                    </div>
                   </div>
-                  <div className="flex min-h-85 items-center justify-center">
-                    <Image
-                      src={slide.src}
-                      alt="설명 이미지"
-                      width={244}
-                      height={244}
-                      className={slide.imgClassName}
-                    />
-                  </div>
-                </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="embla__dots flex justify-center gap-3">
+              {scrollSnaps.map((_, dotIndex) => (
+                <button
+                  key={dotIndex}
+                  onClick={() => emblaApi?.scrollTo(dotIndex)}
+                  className={`embla__dot cursor-pointer ${dotIndex === selectedIndex ? "embla__dot--selected" : ""}`}
+                />
               ))}
             </div>
           </div>
 
-          <div className="embla__dots flex justify-center gap-3">
-            {scrollSnaps.map((_, dotIndex) => (
-              <button
-                key={dotIndex}
-                onClick={() => emblaApi?.scrollTo(dotIndex)}
-                className={`embla__dot cursor-pointer ${dotIndex === selectedIndex ? "embla__dot--selected" : ""}`}
-              />
-            ))}
+          <div className="flex w-full flex-col gap-4">
+            <Button
+              variant="btnPurple"
+              size="full"
+              className="embla__next"
+              onClick={handleNext}
+            >
+              다음
+            </Button>
+            <button
+              className="text-font-light p2-semibold cursor-pointer"
+              onClick={handleFinish}
+            >
+              건너뛰기
+            </button>
           </div>
         </div>
-
-        <div className="flex w-full flex-col gap-4">
-          <Button
-            variant="btnPurple"
-            size="full"
-            className="embla__next"
-            onClick={handleNext}
-          >
-            다음
-          </Button>
-          <button
-            className="text-font-light p2-semibold cursor-pointer"
-            onClick={handleFinish}
-          >
-            건너뛰기
-          </button>
-        </div>
-      </div>
-    </main>
+      </main>
+    </FadeMotion>
   );
 }

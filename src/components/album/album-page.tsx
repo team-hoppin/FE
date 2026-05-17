@@ -288,161 +288,167 @@ export default function AlbumPage() {
 
   return (
     <>
-      <BackButton />
-      <main className="flex flex-col gap-6">
-        <div className="mb-1 flex flex-col gap-1">
-          <h4 className="h3-bold text-font-basic">앨범에 대해 얘기해주세요</h4>
-          <p className="p2-regular text-font-middle">
-            뮤지션의 한마디가 스트리밍으로 이어져요.
-            <br />
-            구체적일수록 앨범의 매력을 더 잘 전달할 수 있어요.
-          </p>
-        </div>
-
-        <section className="flex flex-col gap-2">
-          <div className="mb-1 flex items-center gap-3">
-            <div
-              className={`bg-grey1 flex h-22 w-22 shrink-0 items-center justify-center overflow-hidden rounded-2xl border ${
-                errors.cover ? "border-danger" : "border-border"
-              }`}
-            >
-              <label className="relative flex h-full w-full cursor-pointer items-center justify-center">
-                {coverPreview ? (
-                  <>
-                    <Image
-                      src={coverPreview}
-                      alt="앨범 커버 이미지"
-                      width={88}
-                      height={88}
-                      className="object-cover"
-                    />
-
-                    {/* 딤 + 아이콘 오버레이 */}
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                      <ImageIcon className="text-white" size={24} />
-                    </div>
-                  </>
-                ) : (
-                  <div className="c1-medium text-font-light flex flex-col items-center">
-                    <PlusIcon size={40} />
-                    <span>커버 추가</span>
-                  </div>
-                )}
-
-                <input
-                  type="file"
-                  accept=".jpg,.jpeg,.png,.webp"
-                  className="hidden"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) handleSelectImage(file);
-                    e.target.value = "";
-                  }}
-                />
-              </label>
-            </div>
-
-            <div className="text-font-light text-c1 font-regular whitespace-pre-line">
-              <span className="font-semibold">
-                30MB 이하의 JPG, JPEG, PNG,{"\n"}WEBP
-              </span>{" "}
-              형식의 이미지만 업로드할 수 있어요.
-            </div>
+      <main className="flex min-h-[calc(100dvh-var(--header-height)-var(--page-padding-bottom))] flex-col">
+        <BackButton />
+        <div className="mb-6 flex flex-col gap-6">
+          <div className="mb-1 flex flex-col gap-1">
+            <h4 className="h3-bold text-font-basic">
+              앨범에 대해 얘기해주세요
+            </h4>
+            <p className="p2-regular text-font-middle">
+              뮤지션의 한마디가 스트리밍으로 이어져요.
+              <br />
+              구체적일수록 앨범의 매력을 더 잘 전달할 수 있어요.
+            </p>
           </div>
 
-          <Input
-            className={
-              errors.artist ? "border-danger focus-visible:ring-danger" : ""
-            }
-            label="뮤지션명"
-            placeholder="뮤지션명을 입력하세요"
-            maxLength={50}
-            value={artist}
-            onChange={(e) => updateField("artist", e.target.value, setArtist)}
-          />
+          <section className="flex flex-col gap-2">
+            <div className="mb-1 flex items-center gap-3">
+              <div
+                className={`bg-grey1 flex h-22 w-22 shrink-0 items-center justify-center overflow-hidden rounded-2xl border ${
+                  errors.cover ? "border-danger" : "border-border"
+                }`}
+              >
+                <label className="relative flex h-full w-full cursor-pointer items-center justify-center">
+                  {coverPreview ? (
+                    <>
+                      <Image
+                        src={coverPreview}
+                        alt="앨범 커버 이미지"
+                        width={88}
+                        height={88}
+                        className="object-cover"
+                      />
 
-          <Input
-            className={
-              errors.albumName ? "border-danger focus-visible:ring-danger" : ""
-            }
-            label="앨범명"
-            placeholder="앨범 / 싱글명을 입력하세요"
-            maxLength={50}
-            value={albumName}
-            onChange={(e) =>
-              updateField("albumName", e.target.value, setAlbumName)
-            }
-          />
+                      {/* 딤 + 아이콘 오버레이 */}
+                      <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                        <ImageIcon className="text-white" size={24} />
+                      </div>
+                    </>
+                  ) : (
+                    <div className="c1-medium text-font-light flex flex-col items-center">
+                      <PlusIcon size={40} />
+                      <span>커버 추가</span>
+                    </div>
+                  )}
 
-          <CalendarInput
-            label="발매일"
-            value={date}
-            onChange={(value) => updateField("date", value, setDate)}
-            error={errors.date}
-          />
+                  <input
+                    type="file"
+                    accept=".jpg,.jpeg,.png,.webp"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) handleSelectImage(file);
+                      e.target.value = "";
+                    }}
+                  />
+                </label>
+              </div>
 
-          {links.map((link, idx) => (
+              <div className="text-font-light text-c1 font-regular whitespace-pre-line">
+                <span className="font-semibold">
+                  30MB 이하의 JPG, JPEG, PNG,{"\n"}WEBP
+                </span>{" "}
+                형식의 이미지만 업로드할 수 있어요.
+              </div>
+            </div>
+
             <Input
               className={
-                errors.links[idx]
+                errors.artist ? "border-danger focus-visible:ring-danger" : ""
+              }
+              label="뮤지션명"
+              placeholder="뮤지션명을 입력하세요"
+              maxLength={50}
+              value={artist}
+              onChange={(e) => updateField("artist", e.target.value, setArtist)}
+            />
+
+            <Input
+              className={
+                errors.albumName
                   ? "border-danger focus-visible:ring-danger"
                   : ""
               }
-              key={idx}
-              label={idx === 0 ? "스트리밍 링크" : undefined}
-              placeholder="링크를 붙여넣으세요"
-              value={link}
-              onChange={(e) => updateLink(idx, e.target.value)}
-              onBlur={(e) => handleBlurLink(e.target.value, idx)}
-              iconBtn={
-                links.length > 1 && (
-                  <button
-                    className="flex items-center justify-center hover:cursor-pointer"
-                    type="button"
-                    aria-label={`스트리밍 링크 ${idx + 1} 삭제`}
-                    onClick={() => handleRemoveLink(idx)}
-                  >
-                    <XIcon size={16} />
-                  </button>
-                )
+              label="앨범명"
+              placeholder="앨범 / 싱글명을 입력하세요"
+              maxLength={50}
+              value={albumName}
+              onChange={(e) =>
+                updateField("albumName", e.target.value, setAlbumName)
               }
             />
-          ))}
-          {links.length < MAX_LINK && (
-            <button
-              className="mb-1 flex w-fit flex-col items-center self-center hover:cursor-pointer"
-              type="button"
-              onClick={handleAddLink}
-              disabled={links.length >= MAX_LINK}
-            >
-              <div className="bg-font-light mb-1 flex h-5 w-5 items-center justify-center rounded-full">
-                <PlusIcon className="text-grey1" size={16} />
-              </div>
-              <span className="c1-medium text-font-light">링크 추가</span>
-            </button>
-          )}
 
-          <Textarea
-            className={
-              errors.description
-                ? "border-danger focus-visible:ring-danger"
-                : ""
-            }
-            label="뮤지션의 한 마디"
-            placeholder="앨범에 담긴 이야기를 들려주세요"
-            maxLength={200}
-            value={description}
-            onChange={(e) =>
-              updateField("description", e.target.value, setDescription)
-            }
-          />
-        </section>
+            <CalendarInput
+              label="발매일"
+              value={date}
+              onChange={(value) => updateField("date", value, setDate)}
+              error={errors.date}
+            />
 
+            {links.map((link, idx) => (
+              <Input
+                className={
+                  errors.links[idx]
+                    ? "border-danger focus-visible:ring-danger"
+                    : ""
+                }
+                key={idx}
+                label={idx === 0 ? "스트리밍 링크" : undefined}
+                placeholder="링크를 붙여넣으세요"
+                value={link}
+                onChange={(e) => updateLink(idx, e.target.value)}
+                onBlur={(e) => handleBlurLink(e.target.value, idx)}
+                iconBtn={
+                  links.length > 1 && (
+                    <button
+                      className="flex items-center justify-center hover:cursor-pointer"
+                      type="button"
+                      aria-label={`스트리밍 링크 ${idx + 1} 삭제`}
+                      onClick={() => handleRemoveLink(idx)}
+                    >
+                      <XIcon size={16} />
+                    </button>
+                  )
+                }
+              />
+            ))}
+            {links.length < MAX_LINK && (
+              <button
+                className="mb-1 flex w-fit flex-col items-center self-center hover:cursor-pointer"
+                type="button"
+                onClick={handleAddLink}
+                disabled={links.length >= MAX_LINK}
+              >
+                <div className="bg-font-light mb-1 flex h-5 w-5 items-center justify-center rounded-full">
+                  <PlusIcon className="text-grey1" size={16} />
+                </div>
+                <span className="c1-medium text-font-light">링크 추가</span>
+              </button>
+            )}
+
+            <Textarea
+              className={
+                errors.description
+                  ? "border-danger focus-visible:ring-danger"
+                  : ""
+              }
+              label="뮤지션의 한 마디"
+              placeholder="앨범에 담긴 이야기를 들려주세요"
+              maxLength={200}
+              value={description}
+              onChange={(e) =>
+                updateField("description", e.target.value, setDescription)
+              }
+            />
+          </section>
+        </div>
         <Button
           variant="btnPurple"
           size="full"
           onClick={handleSubmit}
           disabled={isSubmitting}
+          className="mt-auto"
         >
           {isEditMode ? "수정 완료" : "홍보 페이지 만들기"}
         </Button>
