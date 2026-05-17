@@ -1,4 +1,4 @@
-import HeaderClient from "./_header-client";
+import HeaderClient from "./header-client";
 import { cookies } from "next/headers";
 
 export default async function Header() {
