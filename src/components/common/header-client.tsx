@@ -7,7 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 interface Props {
-  isLoggedIn: boolean;
+  isLoggedIn?: boolean;
 }
 
 export default function HeaderClient({ isLoggedIn }: Props) {
