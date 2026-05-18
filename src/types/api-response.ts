@@ -27,6 +27,7 @@ export interface CreateMusicPromotionRes {
 // 뮤지션 홍보 조회 Res
 export interface GetMusicPromotionRes {
   promotionId: number;
+  musicianId: number;
   activityName: string;
   songTitle: string;
   releaseDate: string;
