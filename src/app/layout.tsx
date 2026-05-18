@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { pretendard, poppins } from "./fonts/fonts";
 import "./globals.css";
@@ -9,6 +9,12 @@ import MailSuccessModal from "@/components/common/mail-success-modal";
 import AuthErrorModal from "@/components/common/auth-error-modal";
 import ToastProvider from "@/components/ui/toast-provider";
 import QueryProvider from "@/components/common/query-provider";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.musicpeak.site"),
