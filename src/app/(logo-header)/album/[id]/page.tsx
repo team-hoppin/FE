@@ -1,6 +1,7 @@
 import AlbumDetail from "@/components/album/album-detail";
 import AlbumActionButton from "@/components/album/album-action-button";
 import { cookies } from "next/headers";
+import { getMe } from "@/lib/api/auth";
 import { getMusicPromotion } from "@/lib/api/music-promotion";
 import { getStreamingCode } from "@/utils/album";
 import FadeMotion from "@/components/common/fade-motion";
@@ -21,6 +22,23 @@ export default async function AlbumDetailPage({ params, searchParams }: Props) {
   const fromAnalysis = from === "analysis";
 
   const data = await getMusicPromotion(promotionId);
+
+  let isMusician = false; // 앨범 소유자 여부
+
+  console.log("로그인 여부: " + isLoggedIn);
+  console.log("호출 전 (뮤지션)" + data.musicianId);
+
+  // 로그인 되어 있는 유저만 사용자 정보 조회
+  if (isLoggedIn) {
+    try {
+      console.log("로그인 됨: (뮤지션)" + data.musicianId);
+      const me = await getMe();
+      isMusician = me.id === data.musicianId;
+      console.log("호출 후 (사용자)" + me.id);
+    } catch {
+      isMusician = false;
+    }
+  }
 
   const albumInfo = {
     coverUrl: data.imageUrl,
@@ -49,7 +67,7 @@ export default async function AlbumDetailPage({ params, searchParams }: Props) {
           <AlbumDetail {...albumInfo} />
         </div>
         <div className="mt-auto flex flex-col items-center gap-1">
-          {isLoggedIn ? (
+          {isMusician ? (
             <>
               <span className="c1-medium text-font-light">
                 팬들이 링크를 눌렀을 때 이렇게 보여요.
@@ -71,7 +89,7 @@ export default async function AlbumDetailPage({ params, searchParams }: Props) {
           <AlbumActionButton
             url={data.trackingUrl}
             promotionId={promotionId}
-            isLoggedIn={isLoggedIn}
+            isMusician={isMusician}
             fromAnalysis={fromAnalysis}
           />
         </div>

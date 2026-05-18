@@ -9,7 +9,7 @@ import CalendarInput from "@/components/common/calendar-input";
 import { PlusIcon, ImageIcon, XIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useOpenAlertModal } from "@/stores/alert-modal-store";
 import { uploadCoverImg } from "@/lib/api/uploads";
 import {
@@ -18,13 +18,7 @@ import {
   updateMusicPromotion,
 } from "@/lib/api/music-promotion";
 import { getStreamingCode } from "@/utils/album";
-import {
-  validateField,
-  validateAll,
-  isAlbumFormValid,
-  AlbumFormValues,
-  AlbumFormErrors,
-} from "@/utils/validation";
+import { validateAll, isAlbumFormValid } from "@/utils/validation";
 import { format } from "date-fns";
 
 const MAX_COVER_IMG_SIZE = 30 * 1024 * 1024; // 30MB
@@ -53,16 +47,6 @@ export default function AlbumPage() {
     { url: string; clickUrl: string }[]
   >([]);
   const [description, setDescription] = useState("");
-
-  // 유효성 검사 실패 여부 상태 ( true = validation 실패 )
-  const [errors, setErrors] = useState<AlbumFormErrors>({
-    cover: false,
-    artist: false,
-    albumName: false,
-    date: false,
-    links: [false],
-    description: false,
-  });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -96,53 +80,20 @@ export default function AlbumPage() {
     fetchData();
   }, [editId]);
 
-  // 공통 업데이트 함수
-  const updateField = <K extends keyof AlbumFormValues>(
-    field: K,
-    value: AlbumFormValues[K],
-    setter: (v: AlbumFormValues[K]) => void
-  ) => {
-    setter(value);
-
-    const valid = validateField(field, value);
-
-    if (typeof valid === "boolean" && valid) {
-      setErrors((prev) => ({ ...prev, [field]: false }));
-    }
-  };
-
-  // 링크 전용 업데이트 함수
-  const updateLink = (idx: number, value: string) => {
-    const newLinks = [...links];
-    newLinks[idx] = value;
-    setLinks(newLinks);
-
-    const valid = validateField("links", newLinks);
-
-    if (Array.isArray(valid)) {
-      setErrors((prev) => ({
-        ...prev,
-        links: valid.map((r) => !r),
-      }));
-    }
-  };
-
-  // 유효성 검사
-  const validate = () => {
-    const newErrors = validateAll({
-      cover: coverFile,
-      coverPreview,
-      artist,
-      albumName,
-      date,
-      links,
-      description,
-    });
-
-    setErrors(newErrors);
-
-    return isAlbumFormValid(newErrors);
-  };
+  // 폼 유효성 검사
+  const isFormValid = useMemo(() => {
+    return isAlbumFormValid(
+      validateAll({
+        cover: coverFile,
+        coverPreview,
+        artist,
+        albumName,
+        date,
+        links,
+        description,
+      })
+    );
+  }, [coverFile, coverPreview, artist, albumName, date, links, description]);
 
   const handleSelectImage = (file: File) => {
     if (file.size > MAX_COVER_IMG_SIZE) {
@@ -161,31 +112,22 @@ export default function AlbumPage() {
 
     setCoverFile(file);
     setCoverPreview(URL.createObjectURL(file));
-
-    setErrors((prev) => ({
-      ...prev,
-      cover: false,
-    }));
   };
 
   const handleAddLink = () => {
     if (links.length >= MAX_LINK) return;
 
     setLinks((prev) => [...prev, ""]);
-
-    setErrors((prev) => ({
-      ...prev,
-      links: [...prev.links, false],
-    }));
   };
 
   const handleRemoveLink = (idx: number) => {
     setLinks((prev) => prev.filter((_, i) => i !== idx));
+  };
 
-    setErrors((prev) => ({
-      ...prev,
-      links: prev.links.filter((_, i) => i !== idx),
-    }));
+  const handleUpdateLink = (idx: number, value: string) => {
+    const newLinks = [...links];
+    newLinks[idx] = value;
+    setLinks(newLinks);
   };
 
   const handleBlurLink = (value: string, idx: number) => {
@@ -200,7 +142,7 @@ export default function AlbumPage() {
         message: (
           <>
             <span className="p2-semibold">
-              스포티파이 ∙ 애플뮤직 ∙ 멜론 ∙ 유튜브뮤직{"\n"}사운드클라우드
+              스포티파이 ∙ 유튜브뮤직 ∙ 애플뮤직 ∙ 멜론{"\n"}사운드클라우드
             </span>{" "}
             링크만 입력 가능해요.
           </>
@@ -218,11 +160,7 @@ export default function AlbumPage() {
   };
 
   const handleSubmit = async () => {
-    if (isSubmitting) return;
-
-    const isValid = validate();
-
-    if (!isValid) return;
+    if (isSubmitting || !isFormValid) return;
 
     setIsSubmitting(true);
 
@@ -304,11 +242,7 @@ export default function AlbumPage() {
 
           <section className="flex flex-col gap-2">
             <div className="mb-1 flex items-center gap-3">
-              <div
-                className={`bg-grey1 flex h-22 w-22 shrink-0 items-center justify-center overflow-hidden rounded-2xl border ${
-                  errors.cover ? "border-danger" : "border-border"
-                }`}
-              >
+              <div className="bg-grey1 border-border flex h-22 w-22 shrink-0 items-center justify-center overflow-hidden rounded-2xl border">
                 <label className="relative flex h-full w-full cursor-pointer items-center justify-center">
                   {coverPreview ? (
                     <>
@@ -354,50 +288,30 @@ export default function AlbumPage() {
             </div>
 
             <Input
-              className={
-                errors.artist ? "border-danger focus-visible:ring-danger" : ""
-              }
               label="뮤지션명"
               placeholder="뮤지션명을 입력하세요"
               maxLength={50}
               value={artist}
-              onChange={(e) => updateField("artist", e.target.value, setArtist)}
+              onChange={(e) => setArtist(e.target.value)}
             />
 
             <Input
-              className={
-                errors.albumName
-                  ? "border-danger focus-visible:ring-danger"
-                  : ""
-              }
               label="앨범명"
               placeholder="앨범 / 싱글명을 입력하세요"
               maxLength={50}
               value={albumName}
-              onChange={(e) =>
-                updateField("albumName", e.target.value, setAlbumName)
-              }
+              onChange={(e) => setAlbumName(e.target.value)}
             />
 
-            <CalendarInput
-              label="발매일"
-              value={date}
-              onChange={(value) => updateField("date", value, setDate)}
-              error={errors.date}
-            />
+            <CalendarInput label="발매일" value={date} onChange={setDate} />
 
             {links.map((link, idx) => (
               <Input
-                className={
-                  errors.links[idx]
-                    ? "border-danger focus-visible:ring-danger"
-                    : ""
-                }
                 key={idx}
                 label={idx === 0 ? "스트리밍 링크" : undefined}
-                placeholder="링크를 붙여넣으세요"
+                placeholder="링크를 추가하세요"
                 value={link}
-                onChange={(e) => updateLink(idx, e.target.value)}
+                onChange={(e) => handleUpdateLink(idx, e.target.value)}
                 onBlur={(e) => handleBlurLink(e.target.value, idx)}
                 iconBtn={
                   links.length > 1 && (
@@ -414,32 +328,31 @@ export default function AlbumPage() {
               />
             ))}
             {links.length < MAX_LINK && (
-              <button
-                className="mb-1 flex w-fit flex-col items-center self-center hover:cursor-pointer"
-                type="button"
-                onClick={handleAddLink}
-                disabled={links.length >= MAX_LINK}
-              >
-                <div className="bg-font-light mb-1 flex h-5 w-5 items-center justify-center rounded-full">
-                  <PlusIcon className="text-grey1" size={16} />
-                </div>
-                <span className="c1-medium text-font-light">링크 추가</span>
-              </button>
+              <>
+                <p className="c1-medium text-font-light">
+                  * 스포티파이, 유튜브뮤직, 애플뮤직, 멜론, 사운드클라우드만
+                  가능해요.
+                </p>
+                <button
+                  className="my-1 flex w-fit flex-col items-center self-center hover:cursor-pointer"
+                  type="button"
+                  onClick={handleAddLink}
+                  disabled={links.length >= MAX_LINK}
+                >
+                  <div className="bg-font-light mb-1 flex h-5 w-5 items-center justify-center rounded-full">
+                    <PlusIcon className="text-grey1" size={16} />
+                  </div>
+                  <span className="c1-medium text-font-light">링크 추가</span>
+                </button>
+              </>
             )}
 
             <Textarea
-              className={
-                errors.description
-                  ? "border-danger focus-visible:ring-danger"
-                  : ""
-              }
               label="뮤지션의 한 마디"
               placeholder="앨범에 담긴 이야기를 들려주세요"
               maxLength={200}
               value={description}
-              onChange={(e) =>
-                updateField("description", e.target.value, setDescription)
-              }
+              onChange={(e) => setDescription(e.target.value)}
             />
           </section>
         </div>
@@ -447,7 +360,7 @@ export default function AlbumPage() {
           variant="btnPurple"
           size="full"
           onClick={handleSubmit}
-          disabled={isSubmitting}
+          disabled={!isFormValid || isSubmitting}
           className="mt-auto"
         >
           {isEditMode ? "수정 완료" : "홍보 페이지 만들기"}

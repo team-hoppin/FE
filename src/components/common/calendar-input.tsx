@@ -77,7 +77,7 @@ export default function CalendarInput({
       </DialogTrigger>
 
       <DialogContent
-        className="max-w-2xs p-0"
+        className="flex max-w-2xs flex-col p-0"
         showCloseButton={false}
         aria-describedby={undefined}
       >
@@ -102,7 +102,7 @@ export default function CalendarInput({
           }}
         />
 
-        <DialogFooter>
+        <DialogFooter className="flex-row justify-center gap-2 px-4 pt-2 pb-4">
           <Button variant="btnWhite" size="mini" onClick={handleCancel}>
             취소
           </Button>

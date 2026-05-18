@@ -21,28 +21,6 @@ export type AlbumFormErrors = {
   description: boolean;
 };
 
-// 단일 필드 유효성 검사
-export const validateField = <K extends keyof AlbumFormValues>(
-  field: K,
-  value: AlbumFormValues[K],
-  extra?: string
-): boolean | boolean[] => {
-  switch (field) {
-    case "cover":
-      return !!(value || extra); // coverFile or preview
-    case "artist":
-    case "albumName":
-    case "description":
-      return !!(value as string).trim();
-    case "date":
-      return !!value;
-    case "links":
-      return (value as string[]).map((l) => l.trim() !== "");
-    default:
-      return true;
-  }
-};
-
 // 전체 유효성 검사
 export const validateAll = (values: AlbumFormValues): AlbumFormErrors => {
   const linkErrors = values.links.map((l) => l.trim() === "");
