@@ -54,8 +54,8 @@ export default function Promote() {
               <Image
                 src="/ex-insta.png"
                 alt="인스타그램 프로필 예시"
-                width={246}
-                height={188}
+                width={456}
+                height={348}
                 className="h-auto w-full"
               />
             </div>
