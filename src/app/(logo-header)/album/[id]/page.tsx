@@ -25,11 +25,16 @@ export default async function AlbumDetailPage({ params, searchParams }: Props) {
 
   let isMusician = false; // 앨범 소유자 여부
 
+  console.log("로그인 여부: " + isLoggedIn);
+  console.log("호출 전 (뮤지션)" + data.musicianId);
+
   // 로그인 되어 있는 유저만 사용자 정보 조회
   if (isLoggedIn) {
     try {
+      console.log("로그인 됨: (뮤지션)" + data.musicianId);
       const me = await getMe();
       isMusician = me.id === data.musicianId;
+      console.log("호출 후 (사용자)" + me.id);
     } catch {
       isMusician = false;
     }
