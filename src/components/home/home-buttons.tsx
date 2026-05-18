@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,12 +21,14 @@ export default function HomeButtons({ showIntro }: { showIntro: boolean }) {
 
   return (
     <>
-      {showIntroState && (
-        <div
-          className="fixed inset-0 z-1000 bg-black/50"
-          onClick={dismissIntro}
-        />
-      )}
+      {showIntroState &&
+        createPortal(
+          <div
+            className="fixed inset-0 z-1000 bg-black/50"
+            onClick={dismissIntro}
+          />,
+          document.body,
+        )}
       <div className="flex w-full flex-col gap-2">
         <Tooltip open={showIntroState}>
           <TooltipTrigger asChild>
