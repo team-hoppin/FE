@@ -52,7 +52,7 @@ export default function HomeButtons({ showIntro }: { showIntro: boolean }) {
               size="full"
               onClick={() => router.push("/report")}
             >
-              앨범 홍보 진단하기
+              앨범 홍보 진단 받기
             </Button>
           </TooltipTrigger>
           <TooltipContent side="bottom" avoidCollisions={false}>
