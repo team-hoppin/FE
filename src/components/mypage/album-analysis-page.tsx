@@ -139,13 +139,13 @@ export default function AlbumAnalysisPage({ promotionId }: Props) {
       <main className="mb-2 flex flex-col gap-7">
         <section className="mb-1 flex flex-col items-center gap-6 px-9">
           <div className="flex flex-col gap-3">
-            <div className="rounded-r2 shrink-0 overflow-hidden">
+            <div className="rounded-r2 h-[126px] w-[126px] shrink-0 overflow-hidden">
               <Image
                 src={analysisData.imageUrl}
                 alt={analysisData.songTitle}
                 width={126}
                 height={126}
-                className="aspect-square object-cover"
+                className="h-full w-full object-cover"
                 loading="eager"
               />
             </div>

@@ -8,23 +8,10 @@ import {
   TooltipTrigger,
   TooltipContent,
 } from "@/components/ui/tooltip";
-// import { useOpenAlertModal } from "@/stores/alert-modal-store";
 
 export default function HomeButtons({ showIntro }: { showIntro: boolean }) {
   const [showIntroState, setShowIntroState] = useState(showIntro);
   const router = useRouter();
-
-  //진단완료 모달띄우기 (일단 주석처리)
-  // const openModal = useOpenAlertModal();
-
-  // useEffect(() => {
-  //   openModal({
-  //     type: "confirm",
-  //     variant: "mail-success",
-  //     message: "진단 결과가 도착했어요! 📩",
-  //     description: "내 앨범 홍보가 잘 되고 있는지 지금 확인해보세요",
-  //   });
-  // }, []);
 
   const dismissIntro = () => {
     document.cookie = "peak-intro-seen=true; path=/; max-age=31536000";
@@ -65,7 +52,7 @@ export default function HomeButtons({ showIntro }: { showIntro: boolean }) {
               size="full"
               onClick={() => router.push("/report")}
             >
-              앨범 홍보 진단하기
+              앨범 홍보 진단 받기
             </Button>
           </TooltipTrigger>
           <TooltipContent side="bottom" avoidCollisions={false}>

@@ -19,7 +19,7 @@ export default function HeaderClient({ isLoggedIn }: Props) {
   return (
     <div className="sticky top-0 z-40 flex h-14 w-full items-center justify-between bg-white">
       <Link href="/">
-        <Image src="/logo.svg" alt="Logo" width={56} height={14} />
+        <Image src="/logo.svg" alt="Logo" width={56} height={14} priority />
       </Link>
 
       {isLoggedIn && !isSettingPage && (

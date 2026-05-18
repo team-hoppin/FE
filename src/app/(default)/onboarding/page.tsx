@@ -36,7 +36,7 @@ const SLIDES: Slide[] = [
   {
     titleBefore: "팬이 왜 안 느는지",
     titleHighlight: "PEAK가 찾아드려요",
-    description: "진단하기를 누르면\n홍보 현황부터 해결책까지 알려줘요",
+    description: "진단 받기를 누르면\n홍보 현황부터 해결책까지 알려줘요",
     src: "/tutorial/step03.png",
     imgClassName: "w-auto h-full",
   },

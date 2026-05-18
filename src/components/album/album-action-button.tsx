@@ -7,14 +7,14 @@ import { useRouter } from "next/navigation";
 interface Props {
   url: string;
   promotionId: number;
-  isLoggedIn: boolean;
+  isMusician: boolean;
   fromAnalysis: boolean;
 }
 
 export default function AlbumActionButton({
   url,
   promotionId,
-  isLoggedIn,
+  isMusician,
   fromAnalysis,
 }: Props) {
   const router = useRouter();
@@ -24,7 +24,7 @@ export default function AlbumActionButton({
       await navigator.clipboard.writeText(url);
       toast.success("링크가 복사되었습니다!", { position: "bottom-center" });
 
-      if (isLoggedIn) {
+      if (isMusician) {
         router.push("/album/promote");
       }
     } catch {
@@ -54,7 +54,7 @@ export default function AlbumActionButton({
         </Button>
       )}
 
-      {isLoggedIn && (
+      {isMusician && (
         <Button variant="btnPurpleSub" size="md" onClick={handleEdit}>
           수정하기
         </Button>

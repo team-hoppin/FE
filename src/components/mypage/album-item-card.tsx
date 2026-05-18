@@ -48,13 +48,13 @@ function AlbumItemCard({ album, priority = false }: Props) {
           <div className="bg-danger absolute top-3 left-3 h-2 w-2 rounded-full" />
         )}
 
-        <div className="rounded-r2 shrink-0 overflow-hidden">
+        <div className="rounded-r2 h-30 w-30 shrink-0 overflow-hidden">
           <Image
             src={album.coverImageUrl}
             alt={album.title}
             width={120}
             height={120}
-            className="aspect-square object-cover"
+            className="h-full w-full object-cover"
             priority={priority}
           />
         </div>
@@ -92,7 +92,7 @@ function AlbumItemCard({ album, priority = false }: Props) {
           </div>
 
           {(isNotAnalyzed || isAnalyzing) && (
-            <div className="mt-3" onClick={(e) => e.stopPropagation()}>
+            <div onClick={(e) => e.stopPropagation()}>
               <Button
                 variant="btnPurple"
                 className="p2-bold h-9 rounded-full px-5"
