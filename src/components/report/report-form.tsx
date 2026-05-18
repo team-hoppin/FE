@@ -302,6 +302,13 @@ export default function ReportForm() {
                 label="날짜 선택하기"
                 value={date}
                 error={errors.date}
+                disabled={(d) => {
+                  const today = new Date();
+                  today.setHours(0, 0, 0, 0);
+                  const oneYearAgo = new Date(today);
+                  oneYearAgo.setFullYear(today.getFullYear() - 1);
+                  return d > today || d < oneYearAgo;
+                }}
                 onChange={(d) => {
                   setDate(d);
 

@@ -23,6 +23,7 @@ interface Props {
   placeholder?: string;
   error?: boolean;
   className?: string;
+  disabled?: (date: Date) => boolean;
 }
 
 export default function CalendarInput({
@@ -32,6 +33,7 @@ export default function CalendarInput({
   placeholder = "YYYY.MM.DD",
   error = false,
   className,
+  disabled,
 }: Props) {
   const [open, setOpen] = useState(false);
 
@@ -88,6 +90,7 @@ export default function CalendarInput({
           mode="single"
           selected={tempDate}
           onSelect={setTempDate}
+          disabled={disabled}
           className="flex w-full"
           classNames={{
             months:
