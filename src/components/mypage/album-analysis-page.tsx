@@ -208,7 +208,9 @@ export default function AlbumAnalysisPage({ promotionId }: Props) {
       </main>
 
       <Button variant="btnPurple" size="full" onClick={handleDiagnosis}>
-        {hasDiagnosis ? "이 앨범 홍보 다시 진단받기" : "이 앨범 홍보 진단받기"}
+        {hasDiagnosis
+          ? "이 앨범 홍보 다시 진단 받기"
+          : "이 앨범 홍보 진단 받기"}
       </Button>
     </div>
   );
