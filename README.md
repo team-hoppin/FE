@@ -1,30 +1,106 @@
-프론트엔드 저장소
+# peak-FE
 
-## CodeRabbit 한국어 설정 확인
+음악인을 위한 홍보 진단 서비스 **PEAK** 프론트엔드 저장소입니다.
 
-CodeRabbit의 한국어 설정이 잘 적용되는지 확인하려면, 리뷰 포인트가 거의 없는 작은 PR을 하나 만든 뒤 아래 순서대로 확인합니다.
+## 기술 스택
 
-1. `README.md`에 빈 줄 1개 추가처럼 영향 없는 변경을 만든다.
-2. 커밋 메시지는 `chore: test coderabbit korean response`를 사용한다.
-3. PR 제목은 `chore: CodeRabbit 한국어 설정 확인`으로 작성한다.
-4. PR 본문에는 아래 내용을 넣는다.
+| 분류        | 기술                                |
+| ----------- | ----------------------------------- |
+| 프레임워크  | Next.js 16 (App Router)             |
+| 언어        | TypeScript 5                        |
+| 스타일      | Tailwind CSS v4, shadcn/ui          |
+| UI 컴포넌트 | lucide-react, react-day-picker      |
+| 상태 관리   | Zustand v5                          |
+| 서버 상태   | TanStack Query v5                   |
+| 애니메이션  | Framer Motion v12, Embla Carousel   |
+| 유틸        | date-fns, clsx, html-to-image       |
+| 네트워킹    | @microsoft/fetch-event-source (SSE) |
 
-```md
-CodeRabbit 한국어 설정 적용 여부 확인용 PR입니다.
-실제 기능 변경은 없고, 봇 응답 언어만 점검합니다.
+## 폴더 구조
+
+```
+src/
+├── app/
+│   ├── (default)/          # 기본 레이아웃 라우트 그룹
+│   │   ├── album/          # 앨범 생성 · 홍보 신청
+│   │   ├── mypage/         # 마이페이지
+│   │   ├── report/         # 진단 신청 · 결과
+│   │   ├── setting/        # 설정
+│   │   ├── login/
+│   │   ├── onboarding/
+│   │   └── auth/
+│   └── (logo-header)/      # 로고 헤더 레이아웃 라우트 그룹
+│       └── album/[id]/     # 앨범 상세 (공개)
+├── components/
+│   ├── common/             # 공통 컴포넌트 (Header, ErrorView 등)
+│   ├── ui/                 # shadcn/ui 및 커스텀 UI 컴포넌트
+│   ├── album/              # 앨범 도메인 컴포넌트
+│   ├── mypage/             # 마이페이지 도메인 컴포넌트
+│   ├── report/             # 진단 도메인 컴포넌트
+│   ├── home/
+│   └── login/
+├── lib/
+│   └── api/                # API 클라이언트 및 외부 라이브러리 설정
+├── stores/                 # Zustand 전역 상태 스토어
+├── types/                  # TypeScript 타입 · 인터페이스 정의
+└── utils/                  # 순수 유틸 함수 및 매핑 상수
 ```
 
-5. PR 댓글에 아래 명령을 순서대로 남긴다.
+## 컨벤션
 
-```text
-@coderabbitai configuration
-@coderabbitai full review
-@coderabbitai 지금 적용된 설정 기준으로 한국어로만 짧게 답변해줘. 현재 리뷰 언어 설정도 함께 알려줘.
+### 네이밍
+
+| 대상        | 규칙                   | 예시                   |
+| ----------- | ---------------------- | ---------------------- |
+| 변수 · 함수 | 카멜 케이스            | `isPrime`, `fetchData` |
+| 상수        | 대문자 스네이크 케이스 | `MAX_VALUE`            |
+| 파일명      | 케밥 케이스            | `card-title.tsx`       |
+| 컴포넌트명  | 파스칼 케이스          | `CardList`             |
+| 이미지 파일 | 케밥 케이스            | `page-login.png`       |
+
+- 이벤트 핸들러 함수: `handle___` / Props 전달 시: `on___`
+- 컴포넌트 내부 함수는 화살표 함수
+
+### 스타일
+
+- 색상은 CSS 변수 사용 (`var(--color-main)`, `var(--color-font-light)`)
+- 타이포그래피는 `globals.css`에 정의된 유틸 클래스 사용 (`h1-bold`, `p2-semibold` 등)
+- CVA 내부에서 타이포그래피 클래스 사용 시 Tailwind 유틸로 대체 (`text-base font-bold`)
+
+### 커밋
+
+첫 글자 **소문자**, 메시지 끝에 이슈 번호 포함
+
+```
+feat: 로그인 기능 개발 (#10)
 ```
 
-확인 포인트:
+| 타입       | 설명                               |
+| ---------- | ---------------------------------- |
+| `feat`     | 새로운 기능 추가                   |
+| `fix`      | 버그 수정                          |
+| `refactor` | 코드 리팩토링                      |
+| `style`    | 코드 포매팅 등 기능 변경 없는 경우 |
+| `design`   | CSS 등 UI 디자인 변경              |
+| `chore`    | 프로젝트 세팅, 패키지 수정 등 기타 |
+| `docs`     | 문서 수정                          |
+| `test`     | 테스트 코드 추가 · 수정            |
+| `comment`  | 주석 추가 · 변경                   |
+| `rename`   | 파일 · 폴더 이동 또는 이름 변경    |
+| `remove`   | 파일 삭제                          |
+| `!HOTFIX`  | 치명적인 버그 긴급 수정            |
 
-- `configuration` 응답에 `language: ko-KR`와 `tone_instructions`가 보이는지 확인
-- 이후 답변과 리뷰 문장이 한국어로 나오는지 확인
+### 브랜치 · PR
 
-기존 PR의 영어 리뷰는 자동으로 한국어로 바뀌지 않을 수 있으므로, 새 PR을 만들거나 기존 PR에 새 커밋을 추가한 뒤 확인합니다.
+```
+브랜치: 유형/#이슈번호       예) feat/#10
+PR:    #이슈번호 유형: 제목  예) #10 feat: 로그인 기능 구현
+```
+
+## 코드 리뷰
+
+PR 생성 시 **CodeRabbit**이 자동으로 코드 리뷰를 진행합니다.
+
+- AI가 변경된 코드를 분석하여 버그 가능성, 컨벤션 위반, 개선 사항 등을 코멘트로 남깁니다.
+- 리뷰 언어는 한국어로 설정되어 있습니다.
+- CodeRabbit 리뷰를 참고하여 머지 전 코드 품질을 점검합니다.
