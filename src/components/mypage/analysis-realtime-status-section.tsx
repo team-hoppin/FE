@@ -23,7 +23,7 @@ export default function RealtimeStatusSection({ realtimeStats }: Props) {
             <span className="h1-semibold text-main-mid leading-none">
               {realtimeStats.trackingClickCount}
             </span>
-            <span className="p1-bold text-main-mid self-end">명</span>
+            <span className="p1-bold text-main-mid self-end">회</span>
           </div>
         </li>
 
